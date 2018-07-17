@@ -83,7 +83,7 @@ class _StatisticsDailyCardState extends State<StatisticsDailyCard> {
                         new Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
-                            Text('Usage per km'),
+                            Text('Average kWh/km'),
                             Text(
                               '${new NumberFormat('0.00').format(mileagekWh)} kWh',
                               style: TextStyle(fontSize: 25.0),

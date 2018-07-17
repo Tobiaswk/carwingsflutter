@@ -79,19 +79,19 @@ class _BatteryLatestCardState extends State<BatteryLatestCard> {
                           children: <Widget>[
                             battery != null && battery.isCharging ? Icon(Icons.power) : new Row(),
                             Text(
-                              '$batteryPercentage%',
+                              '${new NumberFormat('0.0').format(batteryPercentage)}%',
                               style: TextStyle(fontSize: 40.0),
                             )
                           ],
                         ),
                         Text(
-                          '$cruisingRangeAcOffKm km',
+                          '${new NumberFormat('0.0').format(cruisingRangeAcOffKm)} km',
                           style: TextStyle(fontSize: 20.0),
                         ),
                         new Row(
                           children: <Widget>[
                             Text(
-                              '$cruisingRangeAcOnKm km',
+                              '${new NumberFormat('0.0').format(cruisingRangeAcOnKm)} km',
                               style: TextStyle(fontSize: 20.0),
                             ),
                             Text(

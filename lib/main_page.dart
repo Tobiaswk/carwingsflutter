@@ -1,4 +1,5 @@
 import 'package:carwingsflutter/battery_latest_card.dart';
+import 'package:carwingsflutter/climate_control_page.dart';
 import 'package:carwingsflutter/preferences_manager.dart';
 import 'package:carwingsflutter/statistics_daily_card.dart';
 import 'package:carwingsflutter/statistics_monthly_card.dart';
@@ -42,6 +43,14 @@ class _MainPageState extends State<MainPage> {
     ));
   }
 
+  _openClimateControlPage() {
+    Navigator.of(context).push(new MaterialPageRoute<Null>(
+      builder: (BuildContext context) {
+        return new ClimateControlPage(session: session);
+      },
+    ));
+  }
+
   void _onPreferencesPressed() {
     Navigator.pushNamed(context, '/preferences');
   }
@@ -66,7 +75,7 @@ class _MainPageState extends State<MainPage> {
           _buildVehicleListTiles(context),
           new ListTile(
             leading: const Icon(Icons.map),
-            title: const Text('Locate your vehicle'),
+            title: const Text('Locate my vehicle'),
             onTap: () => _locateVehicleGoogleMaps(),
           ),
           const Divider(),
@@ -97,13 +106,19 @@ class _MainPageState extends State<MainPage> {
     return  Scaffold(
       backgroundColor: Theme.of(context).primaryColor,
       appBar:  AppBar(
-        title:  Text('Dashboard'),actions: [
+        title:  new Row(
+          children: <Widget>[
+            new ImageIcon(new AssetImage('images/car-leaf.png')),
+            new Padding(padding: const EdgeInsets.all(3.0)),
+            new Text('Dashboard')
+          ],
+        ),actions: [
         new IconButton(
             icon: new Icon(Icons.power, color: Colors.white),
             onPressed: null),
         new IconButton(
             icon: new ImageIcon(AssetImage('images/aircondition.png'), color: Colors.white),
-            onPressed: null),
+            onPressed: _openClimateControlPage),
       ]
       ),
       body:  ListView(children: <Widget>[

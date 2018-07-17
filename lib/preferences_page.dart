@@ -1,3 +1,4 @@
+import 'package:carwingsflutter/about_page.dart';
 import 'package:carwingsflutter/preferences_manager.dart';
 import 'package:flutter/material.dart';
 import 'preferences_types.dart';
@@ -25,7 +26,7 @@ class _PreferencesPageState extends State<PreferencesPage> {
   _onAboutPressed() {
     Navigator.of(context).push(new MaterialPageRoute<Null>(
       builder: (BuildContext context) {
-        return new Row();
+        return new AboutPage();
       },
     ));
   }
