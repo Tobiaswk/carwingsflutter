@@ -1,3 +1,3 @@
 # carwingsflutter / My Leaf
 
-A NissanConnect EV alternative written with Flutter
+A NissanConnect EV alternative written using Flutter
