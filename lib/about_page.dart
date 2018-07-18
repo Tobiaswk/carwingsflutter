@@ -21,7 +21,11 @@ class _AboutPageState extends State<AboutPage> {
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
             const ListTile(
-              title: const Text('Developed by'),
+              title: const Text('My Leaf', ),
+              subtitle: const Text('Third party NissanEV Connect app'),
+            ),
+            const ListTile(
+              title: const Text('Developer'),
               subtitle: const Text('Tobias Westergaard Kjeldsen <tobias@wkjeldsen.dk>'),
             ),
             new Text('Graphics', style: TextStyle(fontSize: 30.0),),
@@ -37,7 +41,7 @@ class _AboutPageState extends State<AboutPage> {
               onTap: () {_launchBitbucket();},
             ),
             new ListTile(
-              title: const Text('More information and source'),
+              title: const Text('More information and sourcecode'),
               subtitle: const Text('https://bitbucket.org/Tobiaswk/carwingsflutter'),
               onTap: () {_launchBitbucket();},
             ),
