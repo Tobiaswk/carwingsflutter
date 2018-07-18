@@ -21,8 +21,8 @@ class _AboutPageState extends State<AboutPage> {
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
             const ListTile(
-              title: const Text('OpenCarwings'),
-              subtitle: const Text('Thirdparty NissanEV Connect app'),
+              title: const Text('My Leaf'),
+              subtitle: const Text('Third party NissanEV Connect app'),
             ),
             const ListTile(
               title: const Text('Developer'),

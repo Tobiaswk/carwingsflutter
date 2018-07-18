@@ -1,5 +1,7 @@
 import 'package:carwingsflutter/battery_latest_card.dart';
+import 'package:carwingsflutter/charge_control_page.dart';
 import 'package:carwingsflutter/climate_control_page.dart';
+import 'package:carwingsflutter/login_page.dart';
 import 'package:carwingsflutter/preferences_manager.dart';
 import 'package:carwingsflutter/statistics_daily_card.dart';
 import 'package:carwingsflutter/statistics_monthly_card.dart';
@@ -51,8 +53,24 @@ class _MainPageState extends State<MainPage> {
     ));
   }
 
-  void _onPreferencesPressed() {
+  _openChargingPage() {
+    Navigator.of(context).push(new MaterialPageRoute<Null>(
+      builder: (BuildContext context) {
+        return new ChargeControlPage(session: session);
+      },
+    ));
+  }
+
+  _openPreferences() {
     Navigator.pushNamed(context, '/preferences');
+  }
+
+  _logOut() {
+    Navigator.of(context).pushReplacement(new MaterialPageRoute<Null>(
+      builder: (BuildContext context) {
+        return new LoginPage();
+      },
+    ));
   }
 
   Widget _buildDrawer(BuildContext context) {
@@ -70,6 +88,8 @@ class _MainPageState extends State<MainPage> {
                         size: 100.0,
                         color: Theme.of(context).primaryColor,
                       ),
+                      new Padding(padding: const EdgeInsets.all(3.0)),
+                      Text('My Leaf', style: TextStyle(fontSize: 18.0,color: Theme.of(context).primaryColor),)
                     ],
                   ))),
           _buildVehicleListTiles(context),
@@ -82,8 +102,13 @@ class _MainPageState extends State<MainPage> {
           new ListTile(
             leading: const Icon(Icons.settings),
             title: const Text('Preferences'),
-            onTap: _onPreferencesPressed,
+            onTap: _openPreferences,
           ),
+          new ListTile(
+            leading: const Icon(Icons.exit_to_app),
+            title: const Text('Log out'),
+            onTap: _logOut,
+          )
         ],
       ),
     );
@@ -106,19 +131,13 @@ class _MainPageState extends State<MainPage> {
     return  Scaffold(
       backgroundColor: Theme.of(context).primaryColor,
       appBar:  AppBar(
-        title:  new Row(
-          children: <Widget>[
-            new ImageIcon(new AssetImage('images/car-leaf.png')),
-            new Padding(padding: const EdgeInsets.all(3.0)),
-            new Text('Dashboard')
-          ],
-        ),actions: [
-        new IconButton(
-            icon: new Icon(Icons.power, color: Colors.white),
-            onPressed: null),
+        title:  new Text('Dashboard'),actions: [
         new IconButton(
             icon: new ImageIcon(AssetImage('images/aircondition.png'), color: Colors.white),
             onPressed: _openClimateControlPage),
+        new IconButton(
+            icon: new Icon(Icons.power, color: Colors.white),
+            onPressed: _openChargingPage),
       ]
       ),
       body:  ListView(children: <Widget>[

@@ -17,6 +17,17 @@ class PreferencesPage extends StatefulWidget {
 
 class _PreferencesPageState extends State<PreferencesPage> {
 
+  bool _useMiles = false;
+
+
+  _PreferencesPageState() {
+    preferencesManager.getUseMiles().then((useMiles) {
+      setState(() {
+        _useMiles = useMiles;
+      });
+    });
+  }
+
   void _handleThemeChanged(ThemeColor color) {
     sendUpdates(widget.configuration.copyWith(theme: color));
     preferencesManager.setTheme(color.index);
@@ -115,6 +126,17 @@ class _PreferencesPageState extends State<PreferencesPage> {
         title: const Text('Color preference'),
         onTap: _changeTheme,
       ),
+      new ListTile(
+          title: Text('Show statistics in miles'),
+          trailing: Switch(
+              value: _useMiles,
+              onChanged: (bool value) {
+                setState(() {
+                  _useMiles = value;
+                  preferencesManager.setUseMiles(value);
+                });
+              }),
+          onTap: _onAboutPressed),
       new ListTile(
           leading: new Icon(Icons.info),
           title: new Text("About"),

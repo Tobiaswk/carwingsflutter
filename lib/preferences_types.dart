@@ -1,3 +1,4 @@
+import 'package:dartcarwings/dartcarwings.dart';
 import 'package:flutter/foundation.dart';
 import 'package:json_annotation/json_annotation.dart';
 
@@ -7,8 +8,9 @@ part 'preferences_types.g.dart';
 class Login extends Object with _$LoginSerializerMixin {
   String username;
   String password;
+  CarwingsRegion region;
 
-  Login({this.username, this.password});
+  Login({this.username, this.password, this.region});
 
   factory Login.fromJson(Map<String, dynamic> json) => _$LoginFromJson(json);
 }

@@ -15,27 +15,36 @@ class _LoginPageState extends State<LoginPage> {
   final GlobalKey<ScaffoldState> scaffoldKey = new GlobalKey<ScaffoldState>();
 
   PreferencesManager preferencesManager = new PreferencesManager();
+
   CarwingsSession session;
 
   TextEditingController _usernameTextController = new TextEditingController();
   TextEditingController _passwordTextController = new TextEditingController();
+
+  List<DropdownMenuItem<CarwingsRegion>> _regionDropDownMenuItems;
+  CarwingsRegion _regionSelected = CarwingsRegion.Europe;
+
   bool _rememberCredentials = false;
 
   _LoginPageState() {
+    _regionDropDownMenuItems = _buildRegionAndGetDropDownMenuItems();
     preferencesManager.getLogin().then((login) {
       if (login != null) {
         _usernameTextController.text = login.username;
         _passwordTextController.text = login.password;
-        _onLoginPressed();
+        _regionSelected = login.region;
+        _doLogin();
       }
     });
   }
 
-  _onLoginPressed() {
+  _doLogin() {
     Util.showLoadingDialog(context, 'Signing in...');
 
     session = new CarwingsSession(
-        _usernameTextController.text, _passwordTextController.text);
+      _usernameTextController.text,
+      _passwordTextController.text,
+    );
 
     session.login().then((vehicle) {
       Util.dismissLoadingDialog(context);
@@ -49,16 +58,29 @@ class _LoginPageState extends State<LoginPage> {
       ));
 
       if (_rememberCredentials) {
-        preferencesManager.setLogin(session.username, session.password);
+        preferencesManager.setLogin(
+            session.username, session.password, _regionSelected);
       }
     }).catchError((error) {
       Util.dismissLoadingDialog(context);
 
       _passwordTextController.clear();
+
       scaffoldKey.currentState.showSnackBar(new SnackBar(
           duration: new Duration(seconds: 5),
           content: new Text('Login failed. Please try again')));
     });
+  }
+
+  List<DropdownMenuItem<CarwingsRegion>> _buildRegionAndGetDropDownMenuItems() {
+    List<DropdownMenuItem<CarwingsRegion>> items = new List();
+    for (CarwingsRegion region in CarwingsRegion.values) {
+      items.add(new DropdownMenuItem(
+          value: region,
+          child:
+              new Text(region.toString().replaceAll('CarwingsRegion\.', ''))));
+    }
+    return items;
   }
 
   @override
@@ -80,6 +102,7 @@ class _LoginPageState extends State<LoginPage> {
                         accentColor: Colors.white,
                         buttonColor: Colors.white,
                         hintColor: Colors.white,
+                        canvasColor: Theme.of(context).primaryColor,
                         toggleableActiveColor: Colors.white),
                     child: new Container(
                       padding: const EdgeInsets.fromLTRB(30.0, 20.0, 30.0, 0.0),
@@ -113,6 +136,25 @@ class _LoginPageState extends State<LoginPage> {
                                       InputDecoration(labelText: 'Password'),
                                   obscureText: true,
                                 ),
+                                new Row(
+                                  children: <Widget>[
+                                    Text(
+                                      'Select region',
+                                      style: TextStyle(color: Colors.white),
+                                    ),
+                                    new Padding(
+                                        padding: const EdgeInsets.all(10.0)),
+                                    new DropdownButton(
+                                      value: _regionSelected,
+                                      items: _regionDropDownMenuItems,
+                                      onChanged: (region) {
+                                        setState(() {
+                                          _regionSelected = region;
+                                        });
+                                      },
+                                    )
+                                  ],
+                                ),
                                 new Padding(
                                     padding: const EdgeInsets.all(10.0)),
                                 new Row(
@@ -131,7 +173,7 @@ class _LoginPageState extends State<LoginPage> {
                                         }),
                                     RaisedButton(
                                         child: new Text("Login"),
-                                        onPressed: _onLoginPressed)
+                                        onPressed: _doLogin)
                                   ],
                                 )
                               ],

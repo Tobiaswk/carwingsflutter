@@ -24,8 +24,8 @@ class _StatisticsMonthlyCardState extends State<StatisticsMonthlyCard> {
   }
 
   _getMonthlyStatistics() async {
-    CarwingsStatsMonthly statsMonthly = await session.vehicle
-        .requestStatisticsMonthly(new DateTime.now());
+    CarwingsStatsMonthly statsMonthly =
+        await session.vehicle.requestStatisticsMonthly(new DateTime.now());
     setState(() {
       this.statsMonthly = statsMonthly;
     });
@@ -37,12 +37,16 @@ class _StatisticsMonthlyCardState extends State<StatisticsMonthlyCard> {
     Util.dismissLoadingDialog(context);
   }
 
-  _withPlaceHolder(DateTime month,
-      int totalNumberOfTrips,
-      double totalKWhPerKm,
-      double totalConsumptionKWh,
-      double totalTravelDistanceKm,
-      double totalCO2Reduction,) {
+  _withValues(
+    DateTime month,
+    String electricCostScale,
+    String mileageUnit,
+    int totalNumberOfTrips,
+    double totalKWhPerMileage,
+    double totalConsumptionKWh,
+    double totalTravelDistanceMileage,
+    double totalCO2Reduction,
+  ) {
     return new Material(
         borderRadius: new BorderRadius.all(new Radius.circular(4.0)),
         elevation: 2.0,
@@ -90,10 +94,10 @@ class _StatisticsMonthlyCardState extends State<StatisticsMonthlyCard> {
                         new Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
-                            Text('Average kWh/km'),
+                            Text('Average $electricCostScale'),
                             Text(
                               '${new NumberFormat('0.00').format(
-                                  totalKWhPerKm)} kWh',
+                                  totalKWhPerMileage)} kWh',
                               style: TextStyle(fontSize: 25.0),
                             )
                           ],
@@ -120,12 +124,11 @@ class _StatisticsMonthlyCardState extends State<StatisticsMonthlyCard> {
                             Text('Distance driven'),
                             Text(
                               '${new NumberFormat('0').format(
-                                  totalTravelDistanceKm)} km',
+                                  totalTravelDistanceMileage)} $mileageUnit',
                               style: TextStyle(fontSize: 25.0),
                             )
                           ],
                         ),
-
                       ],
                     )
                   ],
@@ -137,21 +140,25 @@ class _StatisticsMonthlyCardState extends State<StatisticsMonthlyCard> {
     return new Container(
         padding: const EdgeInsets.fromLTRB(15.0, 20.0, 15.0, 15.0),
         child: statsMonthly != null
-            ? _withPlaceHolder(
-          statsMonthly.month,
-          statsMonthly.totalNumberOfTrips,
-          statsMonthly.totalkWhPerKm,
-          statsMonthly.totalConsumptionKWh,
-          statsMonthly.totalTravelDistanceKm,
-          statsMonthly.totalCO2Reduction,
-        )
-            : _withPlaceHolder(
-          new DateTime.now(),
-          0,
-          .0,
-          .0,
-          .0,
-          .0,
-        ));
+            ? _withValues(
+                statsMonthly.month,
+                statsMonthly.electricCostScale,
+                statsMonthly.mileageUnit,
+                statsMonthly.totalNumberOfTrips,
+                statsMonthly.totalkWhPerMileage,
+                statsMonthly.totalConsumptionKWh,
+                statsMonthly.totalTravelDistanceMileage,
+                statsMonthly.totalCO2Reduction,
+              )
+            : _withValues(
+                new DateTime.now(),
+                'kWh/km',
+                'km',
+                0,
+                .0,
+                .0,
+                .0,
+                .0,
+              ));
   }
 }

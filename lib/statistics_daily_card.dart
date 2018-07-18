@@ -24,7 +24,8 @@ class _StatisticsDailyCardState extends State<StatisticsDailyCard> {
   }
 
   _getDailyStatistics() async {
-    CarwingsStatsDaily statsDaily = await session.vehicle.requestStatisticsDaily();
+    CarwingsStatsDaily statsDaily =
+        await session.vehicle.requestStatisticsDaily();
     setState(() {
       this.statsDaily = statsDaily;
     });
@@ -36,8 +37,9 @@ class _StatisticsDailyCardState extends State<StatisticsDailyCard> {
     Util.dismissLoadingDialog(context);
   }
 
-  _withPlaceHolder(
+  _withValues(
       DateTime date,
+      String electricCostScale,
       double mileagekWh,
       int mileageLevel,
       double accelerationWh,
@@ -83,9 +85,10 @@ class _StatisticsDailyCardState extends State<StatisticsDailyCard> {
                         new Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
-                            Text('Average kWh/km'),
+                            Text('Average $electricCostScale'),
                             Text(
-                              '${new NumberFormat('0.00').format(mileagekWh)} kWh',
+                              '${new NumberFormat('0.00').format(
+                                  mileagekWh)} kWh',
                               style: TextStyle(fontSize: 25.0),
                             )
                           ],
@@ -110,7 +113,8 @@ class _StatisticsDailyCardState extends State<StatisticsDailyCard> {
                           children: <Widget>[
                             Text('Acceleration'),
                             Text(
-                              '${new NumberFormat('0.0').format(accelerationWh)} Wh',
+                              '${new NumberFormat('0.0').format(
+                                  accelerationWh)} Wh',
                               style: TextStyle(fontSize: 25.0),
                             )
                           ],
@@ -135,7 +139,8 @@ class _StatisticsDailyCardState extends State<StatisticsDailyCard> {
                           children: <Widget>[
                             Text('Regenerative'),
                             Text(
-                              '${new NumberFormat('0.0').format(regenerativeWh)} Wh',
+                              '${new NumberFormat('0.0').format(
+                                  regenerativeWh)} Wh',
                               style: TextStyle(fontSize: 25.0),
                             )
                           ],
@@ -186,8 +191,9 @@ class _StatisticsDailyCardState extends State<StatisticsDailyCard> {
     return new Container(
         padding: const EdgeInsets.fromLTRB(15.0, 20.0, 15.0, 0.0),
         child: statsDaily != null
-            ? _withPlaceHolder(
+            ? _withValues(
                 statsDaily.date,
+                statsDaily.electricCostScale,
                 statsDaily.mileagekWh,
                 statsDaily.mileageLevel,
                 statsDaily.accelerationWh,
@@ -197,8 +203,9 @@ class _StatisticsDailyCardState extends State<StatisticsDailyCard> {
                 statsDaily.auxWh,
                 statsDaily.auxLevel,
               )
-            : _withPlaceHolder(
+            : _withValues(
                 new DateTime.now(),
+                'kWh/km',
                 .0,
                 0,
                 .0,
