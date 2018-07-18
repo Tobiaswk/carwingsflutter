@@ -21,16 +21,19 @@ class _AboutPageState extends State<AboutPage> {
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
             const ListTile(
-              title: const Text('My Leaf'),
-              subtitle: const Text('Third party NissanEV Connect app'),
-            ),
-            const ListTile(
-              title: const Text('Developer'),
+              title: const Text('Developed by'),
               subtitle: const Text('Tobias Westergaard Kjeldsen <tobias@wkjeldsen.dk>'),
             ),
+            new Text('Graphics', style: TextStyle(fontSize: 30.0),),
             new ListTile(
               title: const Text('Icons'),
               subtitle: const Text('Icons by Freepik at flaticon.com'),
+              onTap: () {_launchBitbucket();},
+            ),
+            new Text('Libraries and source', style: TextStyle(fontSize: 30.0),),
+            new ListTile(
+              title: const Text('dartcarwings library'),
+              subtitle: const Text('https://bitbucket.org/Tobiaswk/dartcarwings'),
               onTap: () {_launchBitbucket();},
             ),
             new ListTile(

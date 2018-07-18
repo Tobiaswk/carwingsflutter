@@ -103,13 +103,13 @@ class _BatteryLatestCardState extends State<BatteryLatestCard> {
                           ],
                         ),
                         Text(
-                          '$cruisingRangeAcOffKm',
+                          '${_generalSettings.useMiles ? cruisingRangeAcOffMiles : cruisingRangeAcOffKm}',
                           style: TextStyle(fontSize: 20.0),
                         ),
                         new Row(
                           children: <Widget>[
                             Text(
-                              '$cruisingRangeAcOnKm',
+                              '${_generalSettings.useMiles ? cruisingRangeAcOnMiles : cruisingRangeAcOnKm}',
                               style: TextStyle(fontSize: 20.0),
                             ),
                             Text(

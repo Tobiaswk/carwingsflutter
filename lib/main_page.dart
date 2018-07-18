@@ -87,7 +87,7 @@ class _MainPageState extends State<MainPage> {
                         color: Theme.of(context).primaryColor,
                       ),
                       new Padding(padding: const EdgeInsets.all(3.0)),
-                      Text('My Leaf', style: TextStyle(fontSize: 18.0,color: Theme.of(context).primaryColor),)
+                      Text('My Leaf', style: TextStyle(fontSize: 15.0,color: Theme.of(context).primaryColor),)
                     ],
                   ))),
           _buildVehicleListTiles(context),
