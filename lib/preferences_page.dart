@@ -145,8 +145,7 @@ class _PreferencesPageState extends State<PreferencesPage> {
                   _generalSettings.useMileagePerKWh = value;
                   preferencesManager.setGeneralSettings(_generalSettings);
                 });
-              }),
-          onTap: _onAboutPressed),
+              }),),
       new ListTile(
           leading: new Icon(Icons.info),
           title: new Text("About"),

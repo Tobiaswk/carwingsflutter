@@ -105,11 +105,11 @@ class _StatisticsMonthlyCardState extends State<StatisticsMonthlyCard> {
                         new Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
-                            Text('Average mileage'),
+                            Text('Distance driven'),
                             Text(
-                              '${_generalSettings.useMileagePerKWh ? totalMileagePerKWh : totalKWhPerMileage}',
+                              '$totalTravelDistanceMileage',
                               style: TextStyle(fontSize: 25.0),
-                            )
+                            ),
                           ],
                         ),
                         new Column(
@@ -119,7 +119,7 @@ class _StatisticsMonthlyCardState extends State<StatisticsMonthlyCard> {
                             Text(
                               '$totalConsumptionKWh',
                               style: TextStyle(fontSize: 25.0),
-                            )
+                            ),
                           ],
                         )
                       ],
@@ -130,11 +130,12 @@ class _StatisticsMonthlyCardState extends State<StatisticsMonthlyCard> {
                         new Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
-                            Text('Distance driven'),
+                            Text('Average mileage'),
                             Text(
-                              '$totalTravelDistanceMileage',
+                              '${_generalSettings.useMileagePerKWh ? totalMileagePerKWh : totalKWhPerMileage}',
                               style: TextStyle(fontSize: 25.0),
                             )
+
                           ],
                         ),
                       ],

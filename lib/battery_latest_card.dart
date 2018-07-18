@@ -103,43 +103,39 @@ class _BatteryLatestCardState extends State<BatteryLatestCard> {
                           ],
                         ),
                         Text(
-                          '${_generalSettings.useMiles
-                              ? cruisingRangeAcOffMiles
-                              : cruisingRangeAcOffKm}',
+                          '$cruisingRangeAcOffKm',
                           style: TextStyle(fontSize: 20.0),
                         ),
                         new Row(
                           children: <Widget>[
                             Text(
-                              '${ _generalSettings.useMiles
-                                  ? cruisingRangeAcOnMiles
-                                  : cruisingRangeAcOnKm}',
+                              '$cruisingRangeAcOnKm',
                               style: TextStyle(fontSize: 20.0),
                             ),
                             Text(
-                              'AC',
+                              'with AC',
                               style: TextStyle(fontSize: 15.0),
                             )
                           ],
-                        )
+                        ),
                       ],
                     ),
                     new Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: <Widget>[
-                        Text('Trickle'),
+                        Text('~1kW'),
                         Text(
-                          '${timeToFullTrickle.inHours} hours',
+                          '${timeToFullTrickle.inHours} hrs',
                           style: TextStyle(fontSize: 18.0),
                         ),
                         Text('~3kW'),
                         Text(
-                          '${timeToFullL2.inHours} hours',
+                          '${timeToFullL2.inHours} hrs',
                           style: TextStyle(fontSize: 18.0),
                         ),
                         Text('~6kW'),
                         Text(
-                          '${timeToFullL2_6kw.inHours} hours',
+                          '${timeToFullL2_6kw.inHours} hrs',
                           style: TextStyle(fontSize: 18.0),
                         ),
                       ],
