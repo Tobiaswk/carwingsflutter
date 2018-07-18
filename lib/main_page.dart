@@ -23,15 +23,13 @@ class MainPage extends StatefulWidget {
 class _MainPageState extends State<MainPage> {
   final GlobalKey<ScaffoldState> scaffoldKey =  GlobalKey<ScaffoldState>();
 
-  CarwingsSession session;
-  PreferencesManager preferencesManager =  PreferencesManager();
+  CarwingsSession _session;
 
-
-  _MainPageState(this.session);
+  _MainPageState(this._session);
 
   _locateVehicleGoogleMaps() {
     Util.showLoadingDialog(context, ('Locating vehicle..'));
-    session.getVehicle().requestLocation().then((location) {
+    _session.getVehicle().requestLocation().then((location) {
       launch('https://www.google.com/maps/search/?api=1&query=${location.latitude},${location.longitude}');
       Util.dismissLoadingDialog(context);
     });
@@ -40,7 +38,7 @@ class _MainPageState extends State<MainPage> {
   _openVehicleInfoPage() {
     Navigator.of(context).push(new MaterialPageRoute<Null>(
       builder: (BuildContext context) {
-        return new VehiclePage(session: session);
+        return new VehiclePage(session: _session);
       },
     ));
   }
@@ -48,7 +46,7 @@ class _MainPageState extends State<MainPage> {
   _openClimateControlPage() {
     Navigator.of(context).push(new MaterialPageRoute<Null>(
       builder: (BuildContext context) {
-        return new ClimateControlPage(session: session);
+        return new ClimateControlPage(session: _session);
       },
     ));
   }
@@ -56,7 +54,7 @@ class _MainPageState extends State<MainPage> {
   _openChargingPage() {
     Navigator.of(context).push(new MaterialPageRoute<Null>(
       builder: (BuildContext context) {
-        return new ChargeControlPage(session: session);
+        return new ChargeControlPage(session: _session);
       },
     ));
   }
@@ -118,7 +116,7 @@ class _MainPageState extends State<MainPage> {
     List<ListTile> accountListTiles = new List<ListTile>();
       accountListTiles.add(new ListTile(
         leading: new ImageIcon(new AssetImage('images/sports-car.png')),
-        title: new Text(session.getVehicle().nickname),
+        title: new Text(_session.getVehicle().nickname),
         onTap: () => _openVehicleInfoPage(),
         onLongPress: () => null,
       ));
@@ -141,9 +139,9 @@ class _MainPageState extends State<MainPage> {
       ]
       ),
       body:  ListView(children: <Widget>[
-        new BatteryLatestCard(session: session,),
-        new StatisticsDailyCard(session: session,),
-        new StatisticsMonthlyCard(session: session,),
+        new BatteryLatestCard(session: _session,),
+        new StatisticsDailyCard(session: _session,),
+        new StatisticsMonthlyCard(session: _session,),
       ],),
       drawer: _buildDrawer(context),
     );

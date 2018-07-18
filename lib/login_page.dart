@@ -16,7 +16,7 @@ class _LoginPageState extends State<LoginPage> {
 
   PreferencesManager preferencesManager = new PreferencesManager();
 
-  CarwingsSession session;
+  CarwingsSession _session;
 
   TextEditingController _usernameTextController = new TextEditingController();
   TextEditingController _passwordTextController = new TextEditingController();
@@ -28,7 +28,7 @@ class _LoginPageState extends State<LoginPage> {
 
   _LoginPageState() {
     _regionDropDownMenuItems = _buildRegionAndGetDropDownMenuItems();
-    preferencesManager.getLogin().then((login) {
+    preferencesManager.getLoginSettings().then((login) {
       if (login != null) {
         _usernameTextController.text = login.username;
         _passwordTextController.text = login.password;
@@ -41,25 +41,25 @@ class _LoginPageState extends State<LoginPage> {
   _doLogin() {
     Util.showLoadingDialog(context, 'Signing in...');
 
-    session = new CarwingsSession(
+    _session = new CarwingsSession(
       _usernameTextController.text,
       _passwordTextController.text,
     );
 
-    session.login().then((vehicle) {
+    _session.login().then((vehicle) {
       Util.dismissLoadingDialog(context);
 
       //Navigator.of(context).pop(); // Login was successful, pop view
 
       Navigator.of(context).pushReplacement(new MaterialPageRoute<Null>(
         builder: (BuildContext context) {
-          return new MainPage(session: session);
+          return new MainPage(session: _session);
         },
       ));
 
       if (_rememberCredentials) {
-        preferencesManager.setLogin(
-            session.username, session.password, _regionSelected);
+        preferencesManager.setLoginSettings(
+            _session.username, _session.password, _regionSelected);
       }
     }).catchError((error) {
       Util.dismissLoadingDialog(context);
@@ -89,7 +89,7 @@ class _LoginPageState extends State<LoginPage> {
         backgroundColor: Theme.of(context).primaryColor,
         key: scaffoldKey,
         body: FutureBuilder(
-            future: preferencesManager.getLogin(),
+            future: preferencesManager.getLoginSettings(),
             builder: (context, snapshot) {
               if (!snapshot.hasData) {
                 return Theme(

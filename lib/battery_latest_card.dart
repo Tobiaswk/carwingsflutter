@@ -1,4 +1,5 @@
 import 'package:carwingsflutter/preferences_manager.dart';
+import 'package:carwingsflutter/preferences_types.dart';
 import 'package:carwingsflutter/util.dart';
 import 'package:dartcarwings/dartcarwings.dart';
 import 'package:flutter/material.dart';
@@ -16,31 +17,31 @@ class BatteryLatestCard extends StatefulWidget {
 class _BatteryLatestCardState extends State<BatteryLatestCard> {
   PreferencesManager preferencesManager = new PreferencesManager();
 
-  bool _useMiles = false;
+  GeneralSettings _generalSettings = new GeneralSettings();
 
-  CarwingsSession session;
-  CarwingsBattery battery;
+  CarwingsSession _session;
+  CarwingsBattery _battery;
 
-  _BatteryLatestCardState(this.session) {
-    preferencesManager.getUseMiles().then((useMiles) {
+  _BatteryLatestCardState(this._session) {
+    preferencesManager.getGeneralSettings().then((generalSettings) {
       setState(() {
-        _useMiles = useMiles;
+        _generalSettings = generalSettings;
       });
     });
     _getBatteryLatest();
   }
 
   _getBatteryLatest() {
-    session.vehicle.requestBatteryStatusLatest().then((battery) {
+    _session.vehicle.requestBatteryStatusLatest().then((battery) {
       setState(() {
-        this.battery = battery;
+        this._battery = battery;
       });
     });
   }
 
   _updateBatteryStatus() {
     Util.showLoadingDialog(context);
-    session.vehicle.requestBatteryStatus().then((battery) {
+    _session.vehicle.requestBatteryStatus().then((battery) {
       _getBatteryLatest(); // Kinda hacky, works for now
       Util.dismissLoadingDialog(context);
     });
@@ -48,11 +49,11 @@ class _BatteryLatestCardState extends State<BatteryLatestCard> {
 
   _withValues(
       DateTime date,
-      double batteryPercentage,
-      double cruisingRangeAcOffKm,
-      double cruisingRangeAcOffMiles,
-      double cruisingRangeAcOnKm,
-      double cruisingRangeAcOnMiles,
+      String batteryPercentage,
+      String cruisingRangeAcOffKm,
+      String cruisingRangeAcOffMiles,
+      String cruisingRangeAcOnKm,
+      String cruisingRangeAcOnMiles,
       Duration timeToFullTrickle,
       Duration timeToFullL2,
       Duration timeToFullL2_6kw) {
@@ -92,26 +93,27 @@ class _BatteryLatestCardState extends State<BatteryLatestCard> {
                       children: <Widget>[
                         new Row(
                           children: <Widget>[
-                            battery != null && battery.isCharging
+                            _battery != null && _battery.isCharging
                                 ? Icon(Icons.power)
                                 : new Row(),
                             Text(
-                              '${new NumberFormat('0.0').format(
-                                  batteryPercentage)}%',
+                              '$batteryPercentage',
                               style: TextStyle(fontSize: 40.0),
                             )
                           ],
                         ),
                         Text(
-                          '${new NumberFormat('0.0').format(
-                              _useMiles ? cruisingRangeAcOffMiles : cruisingRangeAcOffKm)} ${_useMiles ? 'mi' : 'km'}',
+                          '${_generalSettings.useMiles
+                              ? cruisingRangeAcOffMiles
+                              : cruisingRangeAcOffKm}',
                           style: TextStyle(fontSize: 20.0),
                         ),
                         new Row(
                           children: <Widget>[
                             Text(
-                              '${new NumberFormat('0.0').format(
-                                  _useMiles ? cruisingRangeAcOnMiles : cruisingRangeAcOnKm)} ${_useMiles ? 'mi' : 'km'}',
+                              '${ _generalSettings.useMiles
+                                  ? cruisingRangeAcOnMiles
+                                  : cruisingRangeAcOnKm}',
                               style: TextStyle(fontSize: 20.0),
                             ),
                             Text(
@@ -151,24 +153,24 @@ class _BatteryLatestCardState extends State<BatteryLatestCard> {
   Widget build(BuildContext context) {
     return new Container(
         padding: const EdgeInsets.fromLTRB(15.0, 20.0, 15.0, 0.0),
-        child: battery != null
+        child: _battery != null
             ? _withValues(
-                battery.timeStamp,
-                battery.batteryPercentage,
-                battery.cruisingRangeAcOffKm,
-                battery.cruisingRangeAcOffMiles,
-                battery.cruisingRangeAcOnKm,
-                battery.cruisingRangeAcOnMiles,
-                battery.timeToFullTrickle,
-                battery.timeToFullL2,
-                battery.timeToFullL2_6kw)
+                _battery.timeStamp,
+                _battery.batteryPercentage,
+                _battery.cruisingRangeAcOffKm,
+                _battery.cruisingRangeAcOffMiles,
+                _battery.cruisingRangeAcOnKm,
+                _battery.cruisingRangeAcOnMiles,
+                _battery.timeToFullTrickle,
+                _battery.timeToFullL2,
+                _battery.timeToFullL2_6kw)
             : _withValues(
                 new DateTime.now(),
-                .0,
-                .0,
-                .0,
-                .0,
-                .0,
+                '0',
+                '0',
+                '0',
+                '0',
+                '0',
                 new Duration(hours: 0),
                 new Duration(hours: 0),
                 new Duration(hours: 0)));

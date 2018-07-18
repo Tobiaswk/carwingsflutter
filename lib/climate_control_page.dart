@@ -6,7 +6,7 @@ import 'package:intl/intl.dart';
 class _ClimateControlPageState extends State<ClimateControlPage> {
   final GlobalKey<ScaffoldState> scaffoldKey = new GlobalKey<ScaffoldState>();
 
-  CarwingsSession session;
+  CarwingsSession _session;
 
   bool _climateControlOn = false;
 
@@ -16,13 +16,13 @@ class _ClimateControlPageState extends State<ClimateControlPage> {
       new DateTime.now().month, new DateTime.now().day);
   DateTime _climateControlScheduled;
 
-  _ClimateControlPageState(this.session) {
-    session.vehicle.requestHVACStatus().then((hvac) {
+  _ClimateControlPageState(this._session) {
+    _session.vehicle.requestHVACStatus().then((hvac) {
       setState(() {
         _climateControlOn = hvac.isRunning;
       });
     });
-    session.vehicle.requestClimateControlScheduleGet().then((date) {
+    _session.vehicle.requestClimateControlScheduleGet().then((date) {
       _climateControlScheduled = date;
     });
   }
@@ -32,7 +32,7 @@ class _ClimateControlPageState extends State<ClimateControlPage> {
       Util.showLoadingDialog(context);
       _climateControlOn = !_climateControlOn;
       if (_climateControlOn) {
-        session.vehicle.requestClimateControlOn().then((_) {
+        _session.vehicle.requestClimateControlOn().then((_) {
           Util.dismissLoadingDialog(context);
           _snackbar('Climate Control was turned on');
         }).catchError((error) {
@@ -41,7 +41,7 @@ class _ClimateControlPageState extends State<ClimateControlPage> {
         });
         ;
       } else {
-        session.vehicle.requestClimateControlOff().then((_) {
+        _session.vehicle.requestClimateControlOff().then((_) {
           Util.dismissLoadingDialog(context);
           _snackbar('Climate Control was turned off');
         }).catchError((error) {
@@ -54,7 +54,7 @@ class _ClimateControlPageState extends State<ClimateControlPage> {
 
   _climateControlScheduledCancel() {
     Util.showLoadingDialog(context);
-    session.vehicle.requestClimateControlScheduleCancel().then((ok) {
+    _session.vehicle.requestClimateControlScheduleCancel().then((ok) {
       if (ok) {
         Util.dismissLoadingDialog(context);
         _snackbar('Scheduled Climate Control was canceled');
@@ -98,7 +98,7 @@ class _ClimateControlPageState extends State<ClimateControlPage> {
           if (time != null) {
             _currentDate = new DateTime(
                 date.year, date.month, date.day, time.hour, time.minute);
-            session.vehicle
+            _session.vehicle
                 .requestClimateControlSchedule(_currentDate)
                 .then((ok) {
               if (ok) {

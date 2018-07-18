@@ -1,5 +1,5 @@
-import 'dart:async';
-
+import 'package:carwingsflutter/preferences_manager.dart';
+import 'package:carwingsflutter/preferences_types.dart';
 import 'package:carwingsflutter/util.dart';
 import 'package:dartcarwings/dartcarwings.dart';
 import 'package:flutter/material.dart';
@@ -16,18 +16,25 @@ class StatisticsDailyCard extends StatefulWidget {
 }
 
 class _StatisticsDailyCardState extends State<StatisticsDailyCard> {
-  CarwingsSession session;
-  CarwingsStatsDaily statsDaily;
+  PreferencesManager preferencesManager = new PreferencesManager();
 
-  _StatisticsDailyCardState(this.session) {
+  GeneralSettings _generalSettings = new GeneralSettings();
+  CarwingsSession _session;
+  CarwingsStatsDaily _statsDaily;
+
+  _StatisticsDailyCardState(this._session) {
     _getDailyStatistics();
   }
 
   _getDailyStatistics() async {
     CarwingsStatsDaily statsDaily =
-        await session.vehicle.requestStatisticsDaily();
+        await _session.vehicle.requestStatisticsDaily();
     setState(() {
-      this.statsDaily = statsDaily;
+      this._statsDaily = statsDaily;
+    });
+    GeneralSettings generalSettings = await preferencesManager.getGeneralSettings();
+    setState(() {
+      _generalSettings = generalSettings;
     });
   }
 
@@ -40,14 +47,15 @@ class _StatisticsDailyCardState extends State<StatisticsDailyCard> {
   _withValues(
       DateTime date,
       String electricCostScale,
-      double mileagekWh,
-      int mileageLevel,
-      double accelerationWh,
-      int accelerationLevel,
-      double regenerativeWh,
-      int regenerativeLevel,
-      double auxWh,
-      int auxLevel) {
+      String mileagePerKWh,
+      String KWhPerMileage,
+      String mileageLevel,
+      String accelerationWh,
+      String accelerationLevel,
+      String regenerativeWh,
+      String regenerativeLevel,
+      String auxWh,
+      String auxLevel) {
     return new Material(
         borderRadius: new BorderRadius.all(new Radius.circular(4.0)),
         elevation: 2.0,
@@ -85,10 +93,9 @@ class _StatisticsDailyCardState extends State<StatisticsDailyCard> {
                         new Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
-                            Text('Average $electricCostScale'),
+                            Text('Average mileage'),
                             Text(
-                              '${new NumberFormat('0.00').format(
-                                  mileagekWh)} kWh',
+                              '${_generalSettings.useMileagePerKWh ? mileagePerKWh : KWhPerMileage}',
                               style: TextStyle(fontSize: 25.0),
                             )
                           ],
@@ -113,8 +120,7 @@ class _StatisticsDailyCardState extends State<StatisticsDailyCard> {
                           children: <Widget>[
                             Text('Acceleration'),
                             Text(
-                              '${new NumberFormat('0.0').format(
-                                  accelerationWh)} Wh',
+                              '$accelerationWh',
                               style: TextStyle(fontSize: 25.0),
                             )
                           ],
@@ -139,8 +145,7 @@ class _StatisticsDailyCardState extends State<StatisticsDailyCard> {
                           children: <Widget>[
                             Text('Regenerative'),
                             Text(
-                              '${new NumberFormat('0.0').format(
-                                  regenerativeWh)} Wh',
+                              '$regenerativeWh',
                               style: TextStyle(fontSize: 25.0),
                             )
                           ],
@@ -165,7 +170,7 @@ class _StatisticsDailyCardState extends State<StatisticsDailyCard> {
                           children: <Widget>[
                             Text('Other than driving'),
                             Text(
-                              '${new NumberFormat('0.0').format(auxWh)} Wh',
+                              '$auxWh',
                               style: TextStyle(fontSize: 25.0),
                             )
                           ],
@@ -190,30 +195,32 @@ class _StatisticsDailyCardState extends State<StatisticsDailyCard> {
   Widget build(BuildContext context) {
     return new Container(
         padding: const EdgeInsets.fromLTRB(15.0, 20.0, 15.0, 0.0),
-        child: statsDaily != null
+        child: _statsDaily != null
             ? _withValues(
-                statsDaily.date,
-                statsDaily.electricCostScale,
-                statsDaily.mileagekWh,
-                statsDaily.mileageLevel,
-                statsDaily.accelerationWh,
-                statsDaily.accelerationLevel,
-                statsDaily.regenerativeWh,
-                statsDaily.regenerativeLevel,
-                statsDaily.auxWh,
-                statsDaily.auxLevel,
+                _statsDaily.date,
+                _statsDaily.electricCostScale,
+                _statsDaily.mileagePerKWh,
+                _statsDaily.KWhPerMileage,
+                _statsDaily.mileageLevel,
+                _statsDaily.accelerationWh,
+                _statsDaily.accelerationLevel,
+                _statsDaily.regenerativeWh,
+                _statsDaily.regenerativeLevel,
+                _statsDaily.auxWh,
+                _statsDaily.auxLevel,
               )
             : _withValues(
                 new DateTime.now(),
                 'kWh/km',
-                .0,
-                0,
-                .0,
-                0,
-                .0,
-                0,
-                .0,
-                0,
+                '0',
+                '0',
+                '0',
+                '0',
+                '0',
+                '0',
+                '0',
+                '0',
+                '0',
               ));
   }
 }

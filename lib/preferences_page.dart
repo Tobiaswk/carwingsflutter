@@ -17,13 +17,12 @@ class PreferencesPage extends StatefulWidget {
 
 class _PreferencesPageState extends State<PreferencesPage> {
 
-  bool _useMiles = false;
-
+  GeneralSettings _generalSettings = new GeneralSettings();
 
   _PreferencesPageState() {
-    preferencesManager.getUseMiles().then((useMiles) {
+    preferencesManager.getGeneralSettings().then((generalSettings) {
       setState(() {
-        _useMiles = useMiles;
+        _generalSettings = generalSettings;
       });
     });
   }
@@ -129,11 +128,22 @@ class _PreferencesPageState extends State<PreferencesPage> {
       new ListTile(
           title: Text('Show statistics in miles'),
           trailing: Switch(
-              value: _useMiles,
+              value: _generalSettings.useMiles,
               onChanged: (bool value) {
                 setState(() {
-                  _useMiles = value;
-                  preferencesManager.setUseMiles(value);
+                  _generalSettings.useMiles = value;
+                  preferencesManager.setGeneralSettings(_generalSettings);
+                });
+              }),
+          onTap: _onAboutPressed),
+      new ListTile(
+          title: Text('Use mileage/kWh'),
+          trailing: Switch(
+              value: _generalSettings.useMileagePerKWh,
+              onChanged: (bool value) {
+                setState(() {
+                  _generalSettings.useMileagePerKWh = value;
+                  preferencesManager.setGeneralSettings(_generalSettings);
                 });
               }),
           onTap: _onAboutPressed),

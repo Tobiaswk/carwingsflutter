@@ -6,7 +6,7 @@ import 'package:intl/intl.dart';
 class _ChargeControlPageState extends State<ChargeControlPage> {
   final GlobalKey<ScaffoldState> scaffoldKey = new GlobalKey<ScaffoldState>();
 
-  CarwingsSession session;
+  CarwingsSession _session;
 
   bool _isCharging = false;
 
@@ -16,10 +16,10 @@ class _ChargeControlPageState extends State<ChargeControlPage> {
       new DateTime.now().month, new DateTime.now().day);
   DateTime chargingScheduled;
 
-  _ChargeControlPageState(this.session);
+  _ChargeControlPageState(this._session);
 
   _getBatteryLatest() {
-    session.vehicle.requestBatteryStatusLatest().then((battery) {
+    _session.vehicle.requestBatteryStatusLatest().then((battery) {
       setState(() {
         _isCharging = battery.isCharging;
       });
@@ -28,7 +28,7 @@ class _ChargeControlPageState extends State<ChargeControlPage> {
 
   _updateBatteryStatus() {
     Util.showLoadingDialog(context);
-    session.vehicle.requestBatteryStatus().then((battery) {
+    _session.vehicle.requestBatteryStatus().then((battery) {
       _getBatteryLatest(); // Kinda hacky, works for now
       Util.dismissLoadingDialog(context);
     });
@@ -46,7 +46,7 @@ class _ChargeControlPageState extends State<ChargeControlPage> {
           if (time != null) {
             _currentDate = new DateTime(
                 date.year, date.month, date.day, time.hour, time.minute);
-            session.vehicle.requestChargingStart(_currentDate).then((ok) {
+            _session.vehicle.requestChargingStart(_currentDate).then((ok) {
               if(ok) {
                 _updateBatteryStatus();
                 _snackbar('Charging was turned on');

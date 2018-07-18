@@ -5,16 +5,26 @@ import 'package:json_annotation/json_annotation.dart';
 part 'preferences_types.g.dart';
 
 @JsonSerializable()
-class Login extends Object with _$LoginSerializerMixin {
+class LoginSettings extends Object with _$LoginSettingsSerializerMixin {
   String username;
   String password;
   CarwingsRegion region;
 
-  Login({this.username, this.password, this.region});
+  LoginSettings({this.username, this.password, this.region});
 
-  factory Login.fromJson(Map<String, dynamic> json) => _$LoginFromJson(json);
+  factory LoginSettings.fromJson(Map<String, dynamic> json) => _$LoginSettingsFromJson(json);
 }
 
+@JsonSerializable()
+class GeneralSettings extends Object with _$GeneralSettingsSerializerMixin {
+  bool useMiles;
+  bool useMileagePerKWh;
+
+  GeneralSettings({this.useMiles = false,
+      this.useMileagePerKWh = false});
+
+  factory GeneralSettings.fromJson(Map<String, dynamic> json) => _$GeneralSettingsFromJson(json);
+}
 
 enum ThemeColor {standard, green, red, purple, dark}
 

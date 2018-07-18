@@ -1,5 +1,7 @@
 import 'dart:async';
 
+import 'package:carwingsflutter/preferences_manager.dart';
+import 'package:carwingsflutter/preferences_types.dart';
 import 'package:carwingsflutter/util.dart';
 import 'package:dartcarwings/dartcarwings.dart';
 import 'package:flutter/material.dart';
@@ -16,18 +18,26 @@ class StatisticsMonthlyCard extends StatefulWidget {
 }
 
 class _StatisticsMonthlyCardState extends State<StatisticsMonthlyCard> {
-  CarwingsSession session;
-  CarwingsStatsMonthly statsMonthly;
+  PreferencesManager preferencesManager = new PreferencesManager();
 
-  _StatisticsMonthlyCardState(this.session) {
+  GeneralSettings _generalSettings = new GeneralSettings();
+
+  CarwingsSession _session;
+  CarwingsStatsMonthly _statsMonthly;
+
+  _StatisticsMonthlyCardState(this._session) {
     _getMonthlyStatistics();
   }
 
   _getMonthlyStatistics() async {
     CarwingsStatsMonthly statsMonthly =
-        await session.vehicle.requestStatisticsMonthly(new DateTime.now());
+        await _session.vehicle.requestStatisticsMonthly(new DateTime.now());
     setState(() {
-      this.statsMonthly = statsMonthly;
+      this._statsMonthly = statsMonthly;
+    });
+    GeneralSettings generalSettings = await preferencesManager.getGeneralSettings();
+    setState(() {
+      _generalSettings = generalSettings;
     });
   }
 
@@ -42,10 +52,11 @@ class _StatisticsMonthlyCardState extends State<StatisticsMonthlyCard> {
     String electricCostScale,
     String mileageUnit,
     int totalNumberOfTrips,
-    double totalKWhPerMileage,
-    double totalConsumptionKWh,
-    double totalTravelDistanceMileage,
-    double totalCO2Reduction,
+    String totalKWhPerMileage,
+    String totalMileagePerKWh,
+    String totalConsumptionKWh,
+    String totalTravelDistanceMileage,
+    String totalCO2Reduction,
   ) {
     return new Material(
         borderRadius: new BorderRadius.all(new Radius.circular(4.0)),
@@ -94,10 +105,9 @@ class _StatisticsMonthlyCardState extends State<StatisticsMonthlyCard> {
                         new Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
-                            Text('Average $electricCostScale'),
+                            Text('Average mileage'),
                             Text(
-                              '${new NumberFormat('0.00').format(
-                                  totalKWhPerMileage)} kWh',
+                              '${_generalSettings.useMileagePerKWh ? totalMileagePerKWh : totalKWhPerMileage}',
                               style: TextStyle(fontSize: 25.0),
                             )
                           ],
@@ -107,8 +117,7 @@ class _StatisticsMonthlyCardState extends State<StatisticsMonthlyCard> {
                           children: <Widget>[
                             Text('Consumption'),
                             Text(
-                              '${new NumberFormat('0.0').format(
-                                  totalConsumptionKWh)} kWh',
+                              '$totalConsumptionKWh',
                               style: TextStyle(fontSize: 25.0),
                             )
                           ],
@@ -123,8 +132,7 @@ class _StatisticsMonthlyCardState extends State<StatisticsMonthlyCard> {
                           children: <Widget>[
                             Text('Distance driven'),
                             Text(
-                              '${new NumberFormat('0').format(
-                                  totalTravelDistanceMileage)} $mileageUnit',
+                              '$totalTravelDistanceMileage',
                               style: TextStyle(fontSize: 25.0),
                             )
                           ],
@@ -139,26 +147,28 @@ class _StatisticsMonthlyCardState extends State<StatisticsMonthlyCard> {
   Widget build(BuildContext context) {
     return new Container(
         padding: const EdgeInsets.fromLTRB(15.0, 20.0, 15.0, 15.0),
-        child: statsMonthly != null
+        child: _statsMonthly != null
             ? _withValues(
-                statsMonthly.month,
-                statsMonthly.electricCostScale,
-                statsMonthly.mileageUnit,
-                statsMonthly.totalNumberOfTrips,
-                statsMonthly.totalkWhPerMileage,
-                statsMonthly.totalConsumptionKWh,
-                statsMonthly.totalTravelDistanceMileage,
-                statsMonthly.totalCO2Reduction,
+                _statsMonthly.month,
+                _statsMonthly.electricCostScale,
+                _statsMonthly.mileageUnit,
+                _statsMonthly.totalNumberOfTrips,
+                _statsMonthly.totalkWhPerMileage,
+                _statsMonthly.totalMileagePerKWh,
+                _statsMonthly.totalConsumptionKWh,
+                _statsMonthly.totalTravelDistanceMileage,
+                _statsMonthly.totalCO2Reduction,
               )
             : _withValues(
                 new DateTime.now(),
                 'kWh/km',
                 'km',
                 0,
-                .0,
-                .0,
-                .0,
-                .0,
+                '0',
+                '0',
+                '0',
+                '0',
+                '0',
               ));
   }
 }
