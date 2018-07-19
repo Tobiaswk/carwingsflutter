@@ -1,3 +1,4 @@
+import 'package:blowfish_native/blowfish_native.dart';
 import 'package:carwingsflutter/main_page.dart';
 import 'package:carwingsflutter/preferences_manager.dart';
 import 'package:carwingsflutter/util.dart';
@@ -42,15 +43,17 @@ class _LoginPageState extends State<LoginPage> {
     Util.showLoadingDialog(context, 'Signing in...');
 
     _session = new CarwingsSession(
-      _usernameTextController.text,
-      _passwordTextController.text,
+      username: _usernameTextController.text,
+      password: _passwordTextController.text,
     );
 
-    _session.login().then((vehicle) {
+    _session.login((String encryptKey) async {
+      var encodedPassword = await BlowfishNative.encrypt(encryptKey, _session.password);
+      return encodedPassword;
+    }).then((vehicle) {
       Util.dismissLoadingDialog(context);
 
-      //Navigator.of(context).pop(); // Login was successful, pop view
-
+      // Login was successful, push main view
       Navigator.of(context).pushReplacement(new MaterialPageRoute<Null>(
         builder: (BuildContext context) {
           return new MainPage(session: _session);
