@@ -4,8 +4,7 @@ import 'package:url_launcher/url_launcher.dart';
 
 class _AboutPageState extends State<AboutPage> {
 
-  Future _launchBitbucket() async {
-    var url = 'https://bitbucket.org/Tobiaswk/carwingsflutter';
+  Future _launchBitbucket(url) async {
     if (await canLaunch(url)) {
       await launch(url);
     } else {
@@ -32,18 +31,17 @@ class _AboutPageState extends State<AboutPage> {
             new ListTile(
               title: const Text('Icons'),
               subtitle: const Text('Icons by Freepik at flaticon.com'),
-              onTap: () {_launchBitbucket();},
             ),
             new Text('Libraries and source', style: TextStyle(fontSize: 30.0),),
             new ListTile(
               title: const Text('dartcarwings library'),
               subtitle: const Text('https://bitbucket.org/Tobiaswk/dartcarwings'),
-              onTap: () {_launchBitbucket();},
+              onTap: () {_launchBitbucket('https://bitbucket.org/Tobiaswk/dartcarwings');},
             ),
             new ListTile(
-              title: const Text('More information and sourcecode'),
+              title: const Text('More information and source code'),
               subtitle: const Text('https://bitbucket.org/Tobiaswk/carwingsflutter'),
-              onTap: () {_launchBitbucket();},
+              onTap: () {_launchBitbucket('https://bitbucket.org/Tobiaswk/carwingsflutter');},
             ),
           ],
         ),
