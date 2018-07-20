@@ -6,10 +6,12 @@ import 'package:dartcarwings/dartcarwings.dart';
 import 'package:flutter/material.dart';
 
 class LoginPage extends StatefulWidget {
-  LoginPage({Key key}) : super(key: key);
+  LoginPage(this.session);
+
+  CarwingsSession session;
 
   @override
-  _LoginPageState createState() => new _LoginPageState();
+  _LoginPageState createState() => new _LoginPageState(session);
 }
 
 class _LoginPageState extends State<LoginPage> {
@@ -27,7 +29,7 @@ class _LoginPageState extends State<LoginPage> {
 
   bool _rememberCredentials = false;
 
-  _LoginPageState() {
+  _LoginPageState(this._session) {
     _regionDropDownMenuItems = _buildRegionAndGetDropDownMenuItems();
     preferencesManager.getLoginSettings().then((login) {
       if (login != null) {
@@ -42,15 +44,16 @@ class _LoginPageState extends State<LoginPage> {
   _doLogin() {
     Util.showLoadingDialog(context, 'Signing in...');
 
-    _session = new CarwingsSession(
-      username: _usernameTextController.text,
-      password: _passwordTextController.text,
-    );
-
-    _session.login((String encryptKey) async {
-      var encodedPassword = await BlowfishNative.encrypt(encryptKey, _session.password);
-      return encodedPassword;
-    }).then((vehicle) {
+    _session
+        .login(
+            username: _usernameTextController.text,
+            password: _passwordTextController.text,
+            blowfishEncryptCallback: (String key, String password) async {
+              var encodedPassword = await BlowfishNative.encrypt(key, password);
+              return encodedPassword;
+            },
+            region: _regionSelected)
+        .then((vehicle) {
       Util.dismissLoadingDialog(context);
 
       // Login was successful, push main view

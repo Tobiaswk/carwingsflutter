@@ -1,25 +1,28 @@
 import 'package:carwingsflutter/about_page.dart';
+import 'package:carwingsflutter/debug_page.dart';
 import 'package:carwingsflutter/preferences_manager.dart';
+import 'package:dartcarwings/dartcarwings.dart';
 import 'package:flutter/material.dart';
 import 'preferences_types.dart';
 
 var preferencesManager = new PreferencesManager();
 
 class PreferencesPage extends StatefulWidget {
-  const PreferencesPage(this.configuration, this.updater);
+  const PreferencesPage(this.configuration, this.updater, this.session);
 
   final Setting configuration;
   final ValueChanged<Setting> updater;
+  final CarwingsSession session;
 
   @override
-  _PreferencesPageState createState() => new _PreferencesPageState();
+  _PreferencesPageState createState() => new _PreferencesPageState(session);
 }
 
 class _PreferencesPageState extends State<PreferencesPage> {
-
   GeneralSettings _generalSettings = new GeneralSettings();
+  CarwingsSession _session;
 
-  _PreferencesPageState() {
+  _PreferencesPageState(this._session) {
     preferencesManager.getGeneralSettings().then((generalSettings) {
       setState(() {
         _generalSettings = generalSettings;
@@ -33,10 +36,18 @@ class _PreferencesPageState extends State<PreferencesPage> {
     Navigator.pop(context, true);
   }
 
-  _onAboutPressed() {
+  _openAboutPage() {
     Navigator.of(context).push(new MaterialPageRoute<Null>(
       builder: (BuildContext context) {
         return new AboutPage();
+      },
+    ));
+  }
+
+  _openDebugPage() {
+    Navigator.of(context).push(new MaterialPageRoute<Null>(
+      builder: (BuildContext context) {
+        return new DebugPage(session: _session,);
       },
     ));
   }
@@ -128,28 +139,49 @@ class _PreferencesPageState extends State<PreferencesPage> {
       new ListTile(
           title: Text('Show statistics in miles'),
           trailing: Switch(
-              value: _generalSettings.useMiles,
+              value: _generalSettings.useMiles != null
+                  ? _generalSettings.useMiles
+                  : false,
               onChanged: (bool value) {
                 setState(() {
                   _generalSettings.useMiles = value;
                   preferencesManager.setGeneralSettings(_generalSettings);
                 });
               }),
-          onTap: _onAboutPressed),
+          onTap: _openAboutPage),
       new ListTile(
-          title: Text('Use mileage/kWh'),
-          trailing: Switch(
-              value: _generalSettings.useMileagePerKWh,
-              onChanged: (bool value) {
-                setState(() {
-                  _generalSettings.useMileagePerKWh = value;
-                  preferencesManager.setGeneralSettings(_generalSettings);
-                });
-              }),),
+        title: Text('Use mileage/kWh'),
+        trailing: Switch(
+            value: _generalSettings.useMileagePerKWh != null
+                ? _generalSettings.useMileagePerKWh
+                : false,
+            onChanged: (bool value) {
+              setState(() {
+                _generalSettings.useMileagePerKWh = value;
+                preferencesManager.setGeneralSettings(_generalSettings);
+              });
+            }),
+      ),
+      new ListTile(
+        title: Text('Turn on debugging'),
+        trailing: Switch(
+            value: _session.debug != null
+                ? _session.debug
+                : false,
+            onChanged: (bool value) {
+              setState(() {
+                _session.debug = value;
+              });
+            }),
+      ),
+      new ListTile(
+          leading: new Icon(Icons.info),
+          title: new Text("Debug log"),
+          onTap: _openDebugPage),
       new ListTile(
           leading: new Icon(Icons.info),
           title: new Text("About"),
-          onTap: _onAboutPressed),
+          onTap: _openAboutPage),
     ];
     return new ListView(
       padding: const EdgeInsets.symmetric(vertical: 20.0),

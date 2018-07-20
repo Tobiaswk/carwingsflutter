@@ -152,7 +152,7 @@ class _ClimateControlPageState extends State<ClimateControlPage> {
 }
 
 class ClimateControlPage extends StatefulWidget {
-  ClimateControlPage({Key key, this.session}) : super(key: key);
+  ClimateControlPage(this.session);
 
   CarwingsSession session;
 

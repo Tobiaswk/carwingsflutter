@@ -2,6 +2,7 @@ import 'package:carwingsflutter/login_page.dart';
 import 'package:carwingsflutter/preferences_page.dart';
 import 'package:carwingsflutter/preferences_manager.dart';
 import 'package:carwingsflutter/preferences_types.dart';
+import 'package:dartcarwings/dartcarwings.dart';
 import 'package:flutter/material.dart';
 
 void main() => runApp(new MyApp());
@@ -13,6 +14,8 @@ class MyApp extends StatefulWidget {
 class MyAppState extends State<MyApp> {
 
   var preferencesManager = new PreferencesManager();
+
+  CarwingsSession _session = new CarwingsSession();
 
   MyAppState() {
     preferencesManager.getTheme().then((themeColor){
@@ -64,9 +67,9 @@ class MyAppState extends State<MyApp> {
     return new MaterialApp(
       title: 'Carwings',
       theme: theme,
-      home: new LoginPage(),
+      home: new LoginPage(_session,),
       routes: <String, WidgetBuilder>{
-        '/preferences': (BuildContext context) => new PreferencesPage(_configuration, configurationUpdater)
+        '/preferences': (BuildContext context) => new PreferencesPage(_configuration, configurationUpdater, _session)
       },
     );
   }

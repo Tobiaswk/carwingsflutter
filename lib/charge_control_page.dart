@@ -104,7 +104,7 @@ class _ChargeControlPageState extends State<ChargeControlPage> {
 }
 
 class ChargeControlPage extends StatefulWidget {
-  ChargeControlPage({Key key, this.session}) : super(key: key);
+  ChargeControlPage(this.session);
 
   CarwingsSession session;
 

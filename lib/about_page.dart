@@ -27,12 +27,12 @@ class _AboutPageState extends State<AboutPage> {
               title: const Text('Developer'),
               subtitle: const Text('Tobias Westergaard Kjeldsen <tobias@wkjeldsen.dk>'),
             ),
-            new Text('Graphics', style: TextStyle(fontSize: 30.0),),
+            new Text('Graphics', style: TextStyle(fontSize: 20.0),),
             new ListTile(
               title: const Text('Icons'),
               subtitle: const Text('Icons by Freepik at flaticon.com'),
             ),
-            new Text('Libraries and source code', style: TextStyle(fontSize: 30.0),),
+            new Text('Libraries and source code', style: TextStyle(fontSize: 20.0),),
             new ListTile(
               title: const Text('dartcarwings library'),
               subtitle: const Text('https://bitbucket.org/Tobiaswk/dartcarwings'),

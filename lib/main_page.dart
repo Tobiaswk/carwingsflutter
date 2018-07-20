@@ -2,7 +2,6 @@ import 'package:carwingsflutter/battery_latest_card.dart';
 import 'package:carwingsflutter/charge_control_page.dart';
 import 'package:carwingsflutter/climate_control_page.dart';
 import 'package:carwingsflutter/login_page.dart';
-import 'package:carwingsflutter/preferences_manager.dart';
 import 'package:carwingsflutter/statistics_daily_card.dart';
 import 'package:carwingsflutter/statistics_monthly_card.dart';
 import 'package:carwingsflutter/util.dart';
@@ -46,7 +45,7 @@ class _MainPageState extends State<MainPage> {
   _openClimateControlPage() {
     Navigator.of(context).push(new MaterialPageRoute<Null>(
       builder: (BuildContext context) {
-        return new ClimateControlPage(session: _session);
+        return new ClimateControlPage(_session);
       },
     ));
   }
@@ -54,7 +53,7 @@ class _MainPageState extends State<MainPage> {
   _openChargingPage() {
     Navigator.of(context).push(new MaterialPageRoute<Null>(
       builder: (BuildContext context) {
-        return new ChargeControlPage(session: _session);
+        return new ChargeControlPage(_session);
       },
     ));
   }
@@ -66,7 +65,7 @@ class _MainPageState extends State<MainPage> {
   _logOut() {
     Navigator.of(context).pushReplacement(new MaterialPageRoute<Null>(
       builder: (BuildContext context) {
-        return new LoginPage();
+        return new LoginPage(_session);
       },
     ));
   }

@@ -28,23 +28,25 @@ class _BatteryLatestCardState extends State<BatteryLatestCard> {
         _generalSettings = generalSettings;
       });
     });
-    _getBatteryLatest();
+    _getBatteryStatusLatest();
   }
 
-  _getBatteryLatest() {
-    _session.vehicle.requestBatteryStatusLatest().then((battery) {
-      setState(() {
-        this._battery = battery;
-      });
+  _getBatteryStatusLatest() async {
+    CarwingsBattery battery = await _session.vehicle.requestBatteryStatusLatest();
+    setState(() {
+      this._battery = battery;
     });
   }
 
-  _updateBatteryStatus() {
+  _getBatteryStatus() async {
+    await _session.vehicle.requestBatteryStatus();
+  }
+
+  _updateBatteryStatus() async {
     Util.showLoadingDialog(context);
-    _session.vehicle.requestBatteryStatus().then((battery) {
-      _getBatteryLatest(); // Kinda hacky, works for now
-      Util.dismissLoadingDialog(context);
-    });
+    await _getBatteryStatus(); // Requests new battery status polling
+    await _getBatteryStatusLatest(); // Kinda hacky, works for now
+    Util.dismissLoadingDialog(context);
   }
 
   _withValues(
