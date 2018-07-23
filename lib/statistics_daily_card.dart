@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 class StatisticsDailyCard extends StatefulWidget {
-  StatisticsDailyCard({Key key, this.session}) : super(key: key);
+  StatisticsDailyCard(this.session);
 
   final CarwingsSession session;
 

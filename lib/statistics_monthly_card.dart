@@ -8,7 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 class StatisticsMonthlyCard extends StatefulWidget {
-  StatisticsMonthlyCard({Key key, this.session}) : super(key: key);
+  StatisticsMonthlyCard(this.session);
 
   final CarwingsSession session;
 

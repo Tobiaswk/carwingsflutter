@@ -49,7 +49,7 @@ class _DebugPageState extends State<DebugPage> {
 }
 
 class DebugPage extends StatefulWidget {
-  DebugPage({Key key, this.session}) : super(key: key);
+  DebugPage(this.session);
 
   CarwingsSession session;
 

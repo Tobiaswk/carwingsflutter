@@ -6,12 +6,13 @@ import 'package:dartcarwings/dartcarwings.dart';
 import 'package:flutter/material.dart';
 
 class LoginPage extends StatefulWidget {
-  LoginPage(this.session);
+  LoginPage(this.session, [this.autoLogin = true]);
 
   CarwingsSession session;
+  bool autoLogin;
 
   @override
-  _LoginPageState createState() => new _LoginPageState(session);
+  _LoginPageState createState() => new _LoginPageState(session, autoLogin);
 }
 
 class _LoginPageState extends State<LoginPage> {
@@ -21,6 +22,8 @@ class _LoginPageState extends State<LoginPage> {
 
   CarwingsSession _session;
 
+  bool _autoLogin;
+
   TextEditingController _usernameTextController = new TextEditingController();
   TextEditingController _passwordTextController = new TextEditingController();
 
@@ -29,14 +32,15 @@ class _LoginPageState extends State<LoginPage> {
 
   bool _rememberCredentials = false;
 
-  _LoginPageState(this._session) {
+  _LoginPageState(this._session, [this._autoLogin = false]) {
     _regionDropDownMenuItems = _buildRegionAndGetDropDownMenuItems();
     preferencesManager.getLoginSettings().then((login) {
       if (login != null) {
         _usernameTextController.text = login.username;
         _passwordTextController.text = login.password;
         _regionSelected = login.region;
-        _doLogin();
+        _rememberCredentials = true;
+        if (_autoLogin) _doLogin();
       }
     });
   }
@@ -59,7 +63,7 @@ class _LoginPageState extends State<LoginPage> {
       // Login was successful, push main view
       Navigator.of(context).pushReplacement(new MaterialPageRoute<Null>(
         builder: (BuildContext context) {
-          return new MainPage(session: _session);
+          return new MainPage(_session);
         },
       ));
 
@@ -69,8 +73,6 @@ class _LoginPageState extends State<LoginPage> {
       }
     }).catchError((error) {
       Util.dismissLoadingDialog(context);
-
-      _passwordTextController.clear();
 
       scaffoldKey.currentState.showSnackBar(new SnackBar(
           duration: new Duration(seconds: 5),
@@ -94,107 +96,86 @@ class _LoginPageState extends State<LoginPage> {
     return new Scaffold(
         backgroundColor: Theme.of(context).primaryColor,
         key: scaffoldKey,
-        body: FutureBuilder(
-            future: preferencesManager.getLoginSettings(),
-            builder: (context, snapshot) {
-              if (!snapshot.hasData) {
-                return Theme(
-                    data: Theme.of(context).copyWith(
-                        primaryColorDark: Colors.white,
-                        primaryColorLight: Colors.white,
-                        textTheme:
-                            TextTheme(body1: TextStyle(color: Colors.white)),
-                        primaryColor: Colors.white,
-                        accentColor: Colors.white,
-                        buttonColor: Colors.white,
-                        hintColor: Colors.white,
-                        canvasColor: Theme.of(context).primaryColor,
-                        toggleableActiveColor: Colors.white),
-                    child: new Container(
-                      padding: const EdgeInsets.fromLTRB(30.0, 20.0, 30.0, 0.0),
-                      child: new Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
+        body: Theme(
+            data: Theme.of(context).copyWith(
+                primaryColorDark: Colors.white,
+                primaryColorLight: Colors.white,
+                textTheme: TextTheme(body1: TextStyle(color: Colors.white)),
+                primaryColor: Colors.white,
+                accentColor: Colors.white,
+                buttonColor: Colors.white,
+                hintColor: Colors.white,
+                canvasColor: Theme.of(context).primaryColor,
+                toggleableActiveColor: Colors.white),
+            child: new Container(
+              padding: const EdgeInsets.fromLTRB(30.0, 20.0, 30.0, 0.0),
+              child: new Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    ImageIcon(
+                      AssetImage('images/car-leaf.png'),
+                      color: Colors.white,
+                      size: 100.0,
+                    ),
+                    new Padding(padding: const EdgeInsets.all(10.0)),
+                    new Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.end,
+                      children: <Widget>[
+                        Text(
+                          'Enter your NissanEV Connect, also known as You+Nissan, credentials below',
+                          style: TextStyle(fontSize: 18.0, color: Colors.white),
+                        ),
+                        TextFormField(
+                          controller: _usernameTextController,
+                          autofocus: false,
+                          decoration: InputDecoration(labelText: 'Username'),
+                        ),
+                        TextFormField(
+                          controller: _passwordTextController,
+                          decoration: InputDecoration(labelText: 'Password'),
+                          obscureText: true,
+                        ),
+                        new Row(
                           children: <Widget>[
-                            ImageIcon(
-                              AssetImage('images/car-leaf.png'),
-                              color: Colors.white,
-                              size: 100.0,
+                            Text(
+                              'Select region',
+                              style: TextStyle(color: Colors.white),
                             ),
                             new Padding(padding: const EdgeInsets.all(10.0)),
-                            new Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              crossAxisAlignment: CrossAxisAlignment.end,
-                              children: <Widget>[
-                                Text(
-                                  'Enter your NissanEV Connect, also known as You+Nissan, credentials below',
-                                  style: TextStyle(
-                                      fontSize: 18.0, color: Colors.white),
-                                ),
-                                TextFormField(
-                                  controller: _usernameTextController,
-                                  autofocus: false,
-                                  decoration:
-                                      InputDecoration(labelText: 'Username'),
-                                ),
-                                TextFormField(
-                                  controller: _passwordTextController,
-                                  decoration:
-                                      InputDecoration(labelText: 'Password'),
-                                  obscureText: true,
-                                ),
-                                new Row(
-                                  children: <Widget>[
-                                    Text(
-                                      'Select region',
-                                      style: TextStyle(color: Colors.white),
-                                    ),
-                                    new Padding(
-                                        padding: const EdgeInsets.all(10.0)),
-                                    new DropdownButton(
-                                      value: _regionSelected,
-                                      items: _regionDropDownMenuItems,
-                                      onChanged: (region) {
-                                        setState(() {
-                                          _regionSelected = region;
-                                        });
-                                      },
-                                    )
-                                  ],
-                                ),
-                                new Padding(
-                                    padding: const EdgeInsets.all(10.0)),
-                                new Row(
-                                  mainAxisAlignment: MainAxisAlignment.end,
-                                  children: <Widget>[
-                                    Text(
-                                      'Remember credentials',
-                                      style: TextStyle(color: Colors.white),
-                                    ),
-                                    Switch(
-                                        value: _rememberCredentials,
-                                        onChanged: (bool value) {
-                                          setState(() {
-                                            _rememberCredentials = value;
-                                          });
-                                        }),
-                                    RaisedButton(
-                                        child: new Text("Login"),
-                                        onPressed: _doLogin)
-                                  ],
-                                )
-                              ],
+                            new DropdownButton(
+                              value: _regionSelected,
+                              items: _regionDropDownMenuItems,
+                              onChanged: (region) {
+                                setState(() {
+                                  _regionSelected = region;
+                                });
+                              },
                             )
-                          ]),
-                    ));
-              } else {
-                return Center(
-                  child: new ImageIcon(
-                    AssetImage('images/car-leaf.png'),
-                    color: Colors.white,
-                    size: 200.0,
-                  ),
-                );
-              }
-            }));
+                          ],
+                        ),
+                        new Padding(padding: const EdgeInsets.all(10.0)),
+                        new Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: <Widget>[
+                            Text(
+                              'Remember credentials',
+                              style: TextStyle(color: Colors.white),
+                            ),
+                            Switch(
+                                value: _rememberCredentials,
+                                onChanged: (bool value) {
+                                  setState(() {
+                                    _rememberCredentials = value;
+                                  });
+                                }),
+                            RaisedButton(
+                                child: new Text("Login"), onPressed: _doLogin)
+                          ],
+                        )
+                      ],
+                    )
+                  ]),
+            )));
   }
 }

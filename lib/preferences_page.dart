@@ -47,7 +47,7 @@ class _PreferencesPageState extends State<PreferencesPage> {
   _openDebugPage() {
     Navigator.of(context).push(new MaterialPageRoute<Null>(
       builder: (BuildContext context) {
-        return new DebugPage(session: _session,);
+        return new DebugPage(_session,);
       },
     ));
   }

@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 class BatteryLatestCard extends StatefulWidget {
-  BatteryLatestCard({Key key, this.session}) : super(key: key);
+  BatteryLatestCard(this.session);
 
   final CarwingsSession session;
 
