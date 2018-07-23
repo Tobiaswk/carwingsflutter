@@ -91,6 +91,10 @@ class _LoginPageState extends State<LoginPage> {
     return items;
   }
 
+  _openPreferences() {
+    Navigator.pushNamed(context, '/preferences');
+  }
+
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
@@ -112,10 +116,13 @@ class _LoginPageState extends State<LoginPage> {
               child: new Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
-                    ImageIcon(
-                      AssetImage('images/car-leaf.png'),
-                      color: Colors.white,
-                      size: 100.0,
+                    GestureDetector(
+                      child: ImageIcon(
+                        AssetImage('images/car-leaf.png'),
+                        color: Colors.white,
+                        size: 100.0,
+                      ),
+                      onLongPress: _openPreferences,
                     ),
                     new Padding(padding: const EdgeInsets.all(10.0)),
                     new Column(
