@@ -46,6 +46,7 @@ class _ChargeControlPageState extends State<ChargeControlPage> {
           if (time != null) {
             _currentDate = new DateTime(
                 date.year, date.month, date.day, time.hour, time.minute);
+            Util.showLoadingDialog(context);
             _session.vehicle.requestChargingStart(_currentDate).then((ok) {
               if(ok) {
                 _updateBatteryStatus();
@@ -92,7 +93,7 @@ class _ChargeControlPageState extends State<ChargeControlPage> {
               Text('Charging is ${_isCharging ? 'on' : 'off'}'),
               Text('Tap to update'),
               Text('Long press to schedule ${chargingScheduled != null
-                  ? '(scheduled for ${new DateFormat('EEEE H:m').format(
+                  ? '\n(scheduled for ${new DateFormat('EEEE H:m').format(
                   chargingScheduled)})'
                   : '' }')
             ],

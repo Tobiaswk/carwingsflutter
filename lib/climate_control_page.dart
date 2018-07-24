@@ -98,6 +98,7 @@ class _ClimateControlPageState extends State<ClimateControlPage> {
           if (time != null) {
             _currentDate = new DateTime(
                 date.year, date.month, date.day, time.hour, time.minute);
+            Util.showLoadingDialog(context);
             _session.vehicle
                 .requestClimateControlSchedule(_currentDate)
                 .then((ok) {
@@ -105,7 +106,9 @@ class _ClimateControlPageState extends State<ClimateControlPage> {
                 setState(() {
                   _climateControlScheduled = _currentDate;
                 });
+                _snackbar('Climate Control was scheduled');
               }
+              Util.dismissLoadingDialog(context);
             });
           }
         });
@@ -140,7 +143,7 @@ class _ClimateControlPageState extends State<ClimateControlPage> {
               Text('Climate Control is ${_climateControlOn ? 'on' : 'off'}'),
               Text('Tap to toggle'),
               Text('Long press to schedule ${_climateControlScheduled != null
-                  ? '(scheduled for ${new DateFormat('EEEE H:m').format(
+                  ? '\n(scheduled for ${new DateFormat('EEEE H:m').format(
                   _climateControlScheduled)})'
                   : '' }')
             ],
