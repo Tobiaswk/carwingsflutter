@@ -37,7 +37,9 @@ class _LoginPageState extends State<LoginPage> {
         _usernameTextController.text = login.username;
         _passwordTextController.text = login.password;
         _regionSelected = login.region;
-        _rememberLoginSettings = true;
+        setState(() {
+          _rememberLoginSettings = true;
+        });
         if (_autoLogin) _doLogin();
       }
     });
