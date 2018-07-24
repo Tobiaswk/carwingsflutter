@@ -61,11 +61,7 @@ class _LoginPageState extends State<LoginPage> {
       Util.dismissLoadingDialog(context);
 
       // Login was successful, push main view
-      Navigator.of(context).pushReplacement(new MaterialPageRoute<Null>(
-        builder: (BuildContext context) {
-          return new MainPage(_session);
-        },
-      ));
+      _openMainPage();
 
       if (_rememberLoginSettings) {
         preferencesManager.setLoginSettings(
@@ -93,7 +89,15 @@ class _LoginPageState extends State<LoginPage> {
     return items;
   }
 
-  _openPreferences() {
+  _openMainPage() {
+    Navigator.of(context).pushReplacement(new MaterialPageRoute<Null>(
+      builder: (BuildContext context) {
+        return new MainPage(_session);
+      },
+    ));
+  }
+
+  _openPreferencesPage() {
     Navigator.pushNamed(context, '/preferences');
   }
 
@@ -124,7 +128,7 @@ class _LoginPageState extends State<LoginPage> {
                         color: Colors.white,
                         size: 100.0,
                       ),
-                      onLongPress: _openPreferences,
+                      onLongPress: _openPreferencesPage,
                     ),
                     new Padding(padding: const EdgeInsets.all(10.0)),
                     new Column(
