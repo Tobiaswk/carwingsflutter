@@ -93,7 +93,7 @@ class _ChargeControlPageState extends State<ChargeControlPage> {
               Text('Charging is ${_isCharging ? 'on' : 'off'}'),
               Text('Tap to update'),
               Text('Long press to schedule ${chargingScheduled != null
-                  ? '\n(scheduled for ${new DateFormat('EEEE H:m').format(
+                  ? '(starts ${new DateFormat('EEEE H:mm').format(
                   chargingScheduled)})'
                   : '' }')
             ],

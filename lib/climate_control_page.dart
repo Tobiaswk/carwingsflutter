@@ -143,7 +143,7 @@ class _ClimateControlPageState extends State<ClimateControlPage> {
               Text('Climate Control is ${_climateControlOn ? 'on' : 'off'}'),
               Text('Tap to toggle'),
               Text('Long press to schedule ${_climateControlScheduled != null
-                  ? '\n(scheduled for ${new DateFormat('EEEE H:m').format(
+                  ? '(starts ${new DateFormat('EEEE H:mm').format(
                   _climateControlScheduled)})'
                   : '' }')
             ],
