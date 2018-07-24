@@ -21,7 +21,7 @@ class _AboutPageState extends State<AboutPage> {
           children: <Widget>[
             const ListTile(
               title: const Text('My Leaf', ),
-              subtitle: const Text('Third party NissanEV Connect app'),
+              subtitle: const Text('Third party NissanConnect EV app'),
             ),
             const ListTile(
               title: const Text('Developer'),
