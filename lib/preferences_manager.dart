@@ -5,10 +5,10 @@ import 'package:dartcarwings/dartcarwings.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class PreferencesManager {
-  final PREF_THEME = 'theme';
-  final PREF_LOGIN = 'login';
-  final PREF_POLL_INTERVAL = 'pollingInterval';
-  final PREF_GENERAL_SETTINGS = 'generalSettings';
+  static final PREF_THEME = 'theme';
+  static final PREF_LOGIN = 'login';
+  static final PREF_POLL_INTERVAL = 'pollingInterval';
+  static final PREF_GENERAL_SETTINGS = 'generalSettings';
 
   Future<SharedPreferences> getPreferences() async {
     return SharedPreferences.getInstance();
@@ -33,6 +33,11 @@ class PreferencesManager {
   Future<Null> setLoginSettings(String username, String password, CarwingsRegion region) async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
     preferences.setString(PREF_LOGIN, json.encode(new LoginSettings(username: username, password: password, region: region).toJson()));
+  }
+
+  Future<Null> clearLoginSettings() async {
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    preferences.remove(PREF_LOGIN);
   }
 
   Future<GeneralSettings> getGeneralSettings() async {

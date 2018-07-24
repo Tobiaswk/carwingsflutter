@@ -27,19 +27,17 @@ class _LoginPageState extends State<LoginPage> {
   TextEditingController _usernameTextController = new TextEditingController();
   TextEditingController _passwordTextController = new TextEditingController();
 
-  List<DropdownMenuItem<CarwingsRegion>> _regionDropDownMenuItems;
   CarwingsRegion _regionSelected = CarwingsRegion.Europe;
 
-  bool _rememberCredentials = false;
+  bool _rememberLoginSettings = false;
 
   _LoginPageState(this._session, [this._autoLogin = false]) {
-    _regionDropDownMenuItems = _buildRegionAndGetDropDownMenuItems();
     preferencesManager.getLoginSettings().then((login) {
       if (login != null) {
         _usernameTextController.text = login.username;
         _passwordTextController.text = login.password;
         _regionSelected = login.region;
-        _rememberCredentials = true;
+        _rememberLoginSettings = true;
         if (_autoLogin) _doLogin();
       }
     });
@@ -67,9 +65,11 @@ class _LoginPageState extends State<LoginPage> {
         },
       ));
 
-      if (_rememberCredentials) {
+      if (_rememberLoginSettings) {
         preferencesManager.setLoginSettings(
             _session.username, _session.password, _regionSelected);
+      } else {
+        preferencesManager.clearLoginSettings();
       }
     }).catchError((error) {
       Util.dismissLoadingDialog(context);
@@ -152,7 +152,7 @@ class _LoginPageState extends State<LoginPage> {
                             new Padding(padding: const EdgeInsets.all(10.0)),
                             new DropdownButton(
                               value: _regionSelected,
-                              items: _regionDropDownMenuItems,
+                              items: _buildRegionAndGetDropDownMenuItems(),
                               onChanged: (region) {
                                 setState(() {
                                   _regionSelected = region;
@@ -170,10 +170,10 @@ class _LoginPageState extends State<LoginPage> {
                               style: TextStyle(color: Colors.white),
                             ),
                             Switch(
-                                value: _rememberCredentials,
+                                value: _rememberLoginSettings,
                                 onChanged: (bool value) {
                                   setState(() {
-                                    _rememberCredentials = value;
+                                    _rememberLoginSettings = value;
                                   });
                                 }),
                             RaisedButton(
