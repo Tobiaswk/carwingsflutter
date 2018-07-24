@@ -56,64 +56,50 @@ class _ClimateControlPageState extends State<ClimateControlPage> {
     Util.showLoadingDialog(context);
     _session.vehicle.requestClimateControlScheduleCancel().then((ok) {
       if (ok) {
-        Util.dismissLoadingDialog(context);
         _snackbar('Scheduled Climate Control was canceled');
       } else {
         _snackbar('Could not cancel scheduled Climate Control');
       }
+      setState(() {
+        _climateControlScheduled = null;
+      });
       Util.dismissLoadingDialog(context);
     });
   }
 
   _climateControlSchedule() {
     if (_climateControlScheduled != null) {
-      showDialog<bool>(
-          context: context,
-          child: new AlertDialog(
-              title: const Text("Scheduled Climate Control"),
-              content:
-                  new Text('Do you want to cancel scheduled Climate Control?'),
-              actions: <Widget>[
-                new FlatButton(
-                    child: const Text('No'),
-                    onPressed: () {
-                      Navigator.pop(context, false);
-                    }),
-                new FlatButton(
-                    child: const Text('Yes'),
-                    onPressed: () {
-                      _climateControlScheduledCancel();
-                      Navigator.pop(context, false);
-                    }),
-              ]));
+      _climateControlScheduledCancel();
+    } else {
+      showDatePicker(
+              context: context,
+              initialDate: _currentDate,
+              firstDate: _startDate,
+              lastDate: new DateTime.now().add(new Duration(days: 30)))
+          .then((date) {
+        if (date != null) {
+          showTimePicker(context: context, initialTime: TimeOfDay.now())
+              .then((time) {
+            if (time != null) {
+              _currentDate = new DateTime(
+                  date.year, date.month, date.day, time.hour, time.minute);
+              Util.showLoadingDialog(context);
+              _session.vehicle
+                  .requestClimateControlSchedule(_currentDate)
+                  .then((ok) {
+                if (ok) {
+                  setState(() {
+                    _climateControlScheduled = _currentDate;
+                  });
+                  _snackbar('Climate Control was scheduled');
+                }
+                Util.dismissLoadingDialog(context);
+              });
+            }
+          });
+        }
+      });
     }
-    showDatePicker(
-        context: context,
-        initialDate: _currentDate,
-        firstDate: _startDate,
-        lastDate: new DateTime.now().add(new Duration(days: 30))).then((date) {
-      if (date != null) {
-        showTimePicker(context: context, initialTime: TimeOfDay.now())
-            .then((time) {
-          if (time != null) {
-            _currentDate = new DateTime(
-                date.year, date.month, date.day, time.hour, time.minute);
-            Util.showLoadingDialog(context);
-            _session.vehicle
-                .requestClimateControlSchedule(_currentDate)
-                .then((ok) {
-              if (ok) {
-                setState(() {
-                  _climateControlScheduled = _currentDate;
-                });
-                _snackbar('Climate Control was scheduled');
-              }
-              Util.dismissLoadingDialog(context);
-            });
-          }
-        });
-      }
-    });
   }
 
   _snackbar(message) {
