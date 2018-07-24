@@ -136,7 +136,7 @@ class _LoginPageState extends State<LoginPage> {
                       crossAxisAlignment: CrossAxisAlignment.end,
                       children: <Widget>[
                         Text(
-                          'Enter your NissanEV Connect, also known as You+Nissan, credentials below',
+                          'Enter your NissanConnect EV, also known as You+Nissan, credentials below',
                           style: TextStyle(fontSize: 18.0, color: Colors.white),
                         ),
                         TextFormField(
