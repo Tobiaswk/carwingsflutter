@@ -50,7 +50,7 @@ class _MainPageState extends State<MainPage> {
   }
 
   _locateVehicleGoogleMaps() {
-    Util.showLoadingDialog(context, ('Locating vehicle..'));
+    Util.showLoadingDialog(context, ('Locating vehicle...'));
     _session.getVehicle().requestLocation().then((location) {
       launch('https://www.google.com/maps/search/?api=1&query=${location
           .latitude},${location.longitude}');
