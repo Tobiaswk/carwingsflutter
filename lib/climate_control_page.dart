@@ -8,6 +8,7 @@ class _ClimateControlPageState extends State<ClimateControlPage> {
 
   CarwingsSession _session;
 
+  bool _climateControlIsReady = false;
   bool _climateControlOn = false;
 
   DateTime _startDate = new DateTime(new DateTime.now().year,
@@ -20,6 +21,7 @@ class _ClimateControlPageState extends State<ClimateControlPage> {
     _session.vehicle.requestHVACStatus().then((hvac) {
       setState(() {
         _climateControlOn = hvac.isRunning;
+        _climateControlIsReady = true;
       });
     });
     _session.vehicle.requestClimateControlScheduleGet().then((date) {
@@ -108,8 +110,8 @@ class _ClimateControlPageState extends State<ClimateControlPage> {
       key: scaffoldKey,
       appBar: new AppBar(title: new Text("Climate Control")),
       body: new InkWell(
-        onTap: _climateControlToggle,
-        onLongPress: _climateControlSchedule,
+        onTap: _climateControlIsReady ? _climateControlToggle : null,
+        onLongPress: _climateControlIsReady ? _climateControlSchedule : null,
         child: Center(
           child: new Column(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -121,7 +123,7 @@ class _ClimateControlPageState extends State<ClimateControlPage> {
                     : Theme.of(context).disabledColor,
                 size: 200.0,
               ),
-              Text('Climate Control is ${_climateControlOn ? 'on' : 'off'}'),
+              Text('Climate Control is ${_climateControlIsReady ? _climateControlOn ? 'on' : 'off' : '(updating)'}'),
               Text('Tap to toggle'),
               Text('Long press to schedule ${_climateControlScheduled != null
                   ? '(starts ${new DateFormat('EEEE H:mm').format(
