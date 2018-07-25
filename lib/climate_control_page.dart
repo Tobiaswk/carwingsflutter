@@ -33,21 +33,18 @@ class _ClimateControlPageState extends State<ClimateControlPage> {
       _climateControlOn = !_climateControlOn;
       if (_climateControlOn) {
         _session.vehicle.requestClimateControlOn().then((_) {
-          Util.dismissLoadingDialog(context);
           _snackbar('Climate Control was turned on');
         }).catchError((error) {
           _climateControlOn = !_climateControlOn;
           _snackbar('Climate Control failed to turn on');
-        });
-        ;
+        }).whenComplete(() => Util.dismissLoadingDialog(context));
       } else {
         _session.vehicle.requestClimateControlOff().then((_) {
-          Util.dismissLoadingDialog(context);
           _snackbar('Climate Control was turned off');
         }).catchError((error) {
           _climateControlOn = !_climateControlOn;
           _snackbar('Climate Control failed to turn off');
-        });
+        }).whenComplete(() => Util.dismissLoadingDialog(context));
       }
     });
   }
@@ -63,8 +60,7 @@ class _ClimateControlPageState extends State<ClimateControlPage> {
       setState(() {
         _climateControlScheduled = null;
       });
-      Util.dismissLoadingDialog(context);
-    });
+    }).whenComplete(() => Util.dismissLoadingDialog(context));
   }
 
   _climateControlSchedule() {
@@ -93,8 +89,7 @@ class _ClimateControlPageState extends State<ClimateControlPage> {
                   });
                   _snackbar('Climate Control was scheduled');
                 }
-                Util.dismissLoadingDialog(context);
-              });
+              }).whenComplete(() => Util.dismissLoadingDialog(context));
             }
           });
         }

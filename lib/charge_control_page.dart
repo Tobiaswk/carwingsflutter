@@ -30,8 +30,7 @@ class _ChargeControlPageState extends State<ChargeControlPage> {
     Util.showLoadingDialog(context);
     _session.vehicle.requestBatteryStatus().then((battery) {
       _getBatteryLatest(); // Kinda hacky, works for now
-      Util.dismissLoadingDialog(context);
-    });
+    }).whenComplete(() => Util.dismissLoadingDialog(context));
   }
 
   _chargingSchedule() {
@@ -54,12 +53,10 @@ class _ChargeControlPageState extends State<ChargeControlPage> {
               } else {
                 _snackbar('Charging did not start');
               }
-              Util.dismissLoadingDialog(context);
-
             }).catchError((error) {
               _isCharging = false;
               _snackbar('Error');
-            });
+            }).whenComplete(() => Util.dismissLoadingDialog(context));
           }
         });
       }
