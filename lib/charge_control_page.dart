@@ -46,16 +46,12 @@ class _ChargeControlPageState extends State<ChargeControlPage> {
             _currentDate = new DateTime(
                 date.year, date.month, date.day, time.hour, time.minute);
             Util.showLoadingDialog(context);
-            _session.vehicle.requestChargingStart(_currentDate).then((ok) {
-              if(ok) {
-                _updateBatteryStatus();
-                _snackbar('Charging was turned on');
-              } else {
-                _snackbar('Charging did not start');
-              }
+            _session.vehicle.requestChargingStart(_currentDate).then((_) {
+              _updateBatteryStatus();
+              _snackbar('Charging was turned on');
             }).catchError((error) {
               _isCharging = false;
-              _snackbar('Error');
+              _snackbar('Charging did not start');
             }).whenComplete(() => Util.dismissLoadingDialog(context));
           }
         });

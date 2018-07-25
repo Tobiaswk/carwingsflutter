@@ -23,9 +23,11 @@ class _ClimateControlPageState extends State<ClimateControlPage> {
         _climateControlOn = hvac.isRunning;
         _climateControlIsReady = true;
       });
-    });
-    _session.vehicle.requestClimateControlScheduleGet().then((date) {
-      _climateControlScheduled = date;
+      _session.vehicle.requestClimateControlScheduleGet().then((date) {
+        setState(() {
+          _climateControlScheduled = date;
+        });
+      });
     });
   }
 
@@ -53,15 +55,13 @@ class _ClimateControlPageState extends State<ClimateControlPage> {
 
   _climateControlScheduledCancel() {
     Util.showLoadingDialog(context);
-    _session.vehicle.requestClimateControlScheduleCancel().then((ok) {
-      if (ok) {
-        _snackbar('Scheduled Climate Control was canceled');
-      } else {
-        _snackbar('Could not cancel scheduled Climate Control');
-      }
+    _session.vehicle.requestClimateControlScheduleCancel().then((_) {
+      _snackbar('Scheduled Climate Control was canceled');
       setState(() {
         _climateControlScheduled = null;
       });
+    }).catchError((error) {
+      _snackbar('Could not cancel scheduled Climate Control');
     }).whenComplete(() => Util.dismissLoadingDialog(context));
   }
 
@@ -84,13 +84,13 @@ class _ClimateControlPageState extends State<ClimateControlPage> {
               Util.showLoadingDialog(context);
               _session.vehicle
                   .requestClimateControlSchedule(_currentDate)
-                  .then((ok) {
-                if (ok) {
-                  setState(() {
-                    _climateControlScheduled = _currentDate;
-                  });
-                  _snackbar('Climate Control was scheduled');
-                }
+                  .then((_) {
+                setState(() {
+                  _climateControlScheduled = _currentDate;
+                });
+                _snackbar('Climate Control was scheduled');
+              }).catchError((error) {
+                _snackbar('Climate Control schedule failed');
               }).whenComplete(() => Util.dismissLoadingDialog(context));
             }
           });
@@ -123,7 +123,9 @@ class _ClimateControlPageState extends State<ClimateControlPage> {
                     : Theme.of(context).disabledColor,
                 size: 200.0,
               ),
-              Text('Climate Control is ${_climateControlIsReady ? _climateControlOn ? 'on' : 'off' : '(updating)'}'),
+              Text('Climate Control is ${_climateControlIsReady
+                  ? _climateControlOn ? 'on' : 'off'
+                  : 'updating...'}'),
               Text('Tap to toggle'),
               Text('Long press to schedule ${_climateControlScheduled != null
                   ? '(starts ${new DateFormat('EEEE H:mm').format(
