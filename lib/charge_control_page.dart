@@ -9,6 +9,7 @@ class _ChargeControlPageState extends State<ChargeControlPage> {
   CarwingsSession _session;
 
   bool _isCharging = false;
+  bool _chargeControlReady = false;
 
   DateTime _startDate = new DateTime(new DateTime.now().year,
       new DateTime.now().month, new DateTime.now().day);
@@ -16,21 +17,19 @@ class _ChargeControlPageState extends State<ChargeControlPage> {
       new DateTime.now().month, new DateTime.now().day);
   DateTime chargingScheduled;
 
-  _ChargeControlPageState(this._session);
-
-  _getBatteryLatest() {
-    _session.vehicle.requestBatteryStatusLatest().then((battery) {
-      setState(() {
-        _isCharging = battery.isCharging;
-      });
-    });
+  _ChargeControlPageState(this._session) {
+    _updateBatteryStatus();
   }
 
   _updateBatteryStatus() {
-    Util.showLoadingDialog(context);
     _session.vehicle.requestBatteryStatus().then((battery) {
-      _getBatteryLatest(); // Kinda hacky, works for now
-    }).whenComplete(() => Util.dismissLoadingDialog(context));
+      _session.vehicle.requestBatteryStatusLatest().then((battery) {
+        setState(() {
+          _isCharging = battery.isCharging;
+          _chargeControlReady = true;
+        });
+      }); // Kinda hacky, works for now
+    });
   }
 
   _chargingSchedule() {
@@ -70,8 +69,8 @@ class _ChargeControlPageState extends State<ChargeControlPage> {
       key: scaffoldKey,
       appBar: new AppBar(title: new Text("Charging")),
       body: new InkWell(
-        onTap: _updateBatteryStatus,
-        onLongPress: _chargingSchedule,
+        onTap: _chargeControlReady ? _updateBatteryStatus : null,
+        onLongPress: _chargeControlReady ? _chargingSchedule : null,
         child: Center(
           child: new Column(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -83,8 +82,7 @@ class _ChargeControlPageState extends State<ChargeControlPage> {
                     : Theme.of(context).disabledColor,
                 size: 200.0,
               ),
-              Text('Charging is ${_isCharging ? 'on' : 'off'}'),
-              Text('Tap to update'),
+              Text('Charging is ${_chargeControlReady ? _isCharging ? 'on' : 'off' : 'updating...'}'),
               Text('Long press to schedule ${chargingScheduled != null
                   ? '(starts ${new DateFormat('EEEE H:mm').format(
                   chargingScheduled)})'
