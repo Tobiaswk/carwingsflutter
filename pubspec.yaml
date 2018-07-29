@@ -9,11 +9,9 @@ dependencies:
   url_launcher: ^3.0.3
   flutter_payments: ^0.1.5
   dartcarwings:
-    git:
-      url: https://bitbucket.org/Tobiaswk/dartcarwings/src/master
+    git: https://gitlab.com/tobiaswkjeldsen/dartcarwings.git
   blowfish_native:
-    git:
-      url: https://bitbucket.org/Tobiaswk/dartblowfishnative/src/master
+    git: https://gitlab.com/tobiaswkjeldsen/blowfish_native.git
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.

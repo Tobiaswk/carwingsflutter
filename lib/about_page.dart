@@ -4,7 +4,7 @@ import 'package:url_launcher/url_launcher.dart';
 
 class _AboutPageState extends State<AboutPage> {
 
-  Future _launchBitbucket(url) async {
+  Future _launchUrl(url) async {
     if (await canLaunch(url)) {
       await launch(url);
     } else {
@@ -35,13 +35,13 @@ class _AboutPageState extends State<AboutPage> {
             new Text('Libraries and source code', style: TextStyle(fontSize: 20.0),),
             new ListTile(
               title: const Text('dartcarwings library'),
-              subtitle: const Text('https://bitbucket.org/Tobiaswk/dartcarwings'),
-              onTap: () {_launchBitbucket('https://bitbucket.org/Tobiaswk/dartcarwings');},
+              subtitle: const Text('https://gitlab.com/tobiaswkjeldsen/dartcarwings'),
+              onTap: () {_launchUrl('https://gitlab.com/tobiaswkjeldsen/dartcarwings');},
             ),
             new ListTile(
               title: const Text('More information and source code'),
-              subtitle: const Text('https://bitbucket.org/Tobiaswk/carwingsflutter'),
-              onTap: () {_launchBitbucket('https://bitbucket.org/Tobiaswk/carwingsflutter');},
+              subtitle: const Text('https://gitlab.com/tobiaswkjeldsen/carwingsflutter'),
+              onTap: () {_launchUrl('https://gitlab.com/tobiaswkjeldsen/carwingsflutter');},
             ),
           ],
         ),
