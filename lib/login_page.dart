@@ -152,7 +152,7 @@ class _LoginPageState extends State<LoginPage> {
                         new Row(
                           children: <Widget>[
                             Text(
-                              'Select region',
+                              'Region',
                               style: TextStyle(color: Colors.white),
                             ),
                             new Padding(padding: const EdgeInsets.all(10.0)),
@@ -183,7 +183,7 @@ class _LoginPageState extends State<LoginPage> {
                                   });
                                 }),
                             RaisedButton(
-                                child: new Text("Login"), onPressed: _doLogin)
+                                child: new Text("Sign in"), onPressed: _doLogin)
                           ],
                         )
                       ],
