@@ -115,7 +115,7 @@ class _BatteryLatestCardState extends State<BatteryLatestCard> {
                               style: TextStyle(fontSize: 20.0),
                             ),
                             Text(
-                              'with AC',
+                              'AC',
                               style: TextStyle(fontSize: 15.0),
                             )
                           ],
