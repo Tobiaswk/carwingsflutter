@@ -32,7 +32,8 @@ class _StatisticsDailyCardState extends State<StatisticsDailyCard> {
     setState(() {
       this._statsDaily = statsDaily;
     });
-    GeneralSettings generalSettings = await preferencesManager.getGeneralSettings();
+    GeneralSettings generalSettings =
+        await preferencesManager.getGeneralSettings();
     setState(() {
       _generalSettings = generalSettings;
     });
@@ -47,14 +48,19 @@ class _StatisticsDailyCardState extends State<StatisticsDailyCard> {
   Widget _generateStars(int numberOfStars, [int maxNumberOfStars = 5]) {
     List<Icon> stars = new List<Icon>();
     int starsAdded;
-    for(starsAdded = 0; starsAdded < numberOfStars; starsAdded++) {
+    for (starsAdded = 0; starsAdded < numberOfStars; starsAdded++) {
       stars.add(Icon(Icons.star, size: 18.0));
     }
-    int starsRemaining = maxNumberOfStars-starsAdded;
-    for(; starsRemaining > 0; starsRemaining--) {
-      stars.add(Icon(Icons.star_border, size: 18.0,));
+    int starsRemaining = maxNumberOfStars - starsAdded;
+    for (; starsRemaining > 0; starsRemaining--) {
+      stars.add(Icon(
+        Icons.star_border,
+        size: 18.0,
+      ));
     }
-    return Row(children: stars,);
+    return Row(
+      children: stars,
+    );
   }
 
   _withValues(
@@ -108,7 +114,9 @@ class _StatisticsDailyCardState extends State<StatisticsDailyCard> {
                           children: <Widget>[
                             Text('Average mileage'),
                             Text(
-                              '${_generalSettings.useMileagePerKWh ? mileagePerKWh : KWhPerMileage}',
+                              '${_generalSettings.useMileagePerKWh
+                                  ? mileagePerKWh
+                                  : KWhPerMileage}',
                               style: TextStyle(fontSize: 25.0),
                             )
                           ],
@@ -125,15 +133,18 @@ class _StatisticsDailyCardState extends State<StatisticsDailyCard> {
                     new Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: <Widget>[
-                        new Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: <Widget>[
-                            Text('Acceleration'),
-                            Text(
-                              '$accelerationWh',
-                              style: TextStyle(fontSize: 25.0),
-                            )
-                          ],
+                        Tooltip(
+                          message: 'The gentler acceleration the better',
+                          child: new Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: <Widget>[
+                              Text('Acceleration'),
+                              Text(
+                                '$accelerationWh',
+                                style: TextStyle(fontSize: 25.0),
+                              )
+                            ],
+                          ),
                         ),
                         new Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
@@ -147,15 +158,18 @@ class _StatisticsDailyCardState extends State<StatisticsDailyCard> {
                     new Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: <Widget>[
-                        new Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: <Widget>[
-                            Text('Regenerative'),
-                            Text(
-                              '$regenerativeWh',
-                              style: TextStyle(fontSize: 25.0),
-                            )
-                          ],
+                        Tooltip(
+                          message: 'The higher regeneration the better',
+                          child: new Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: <Widget>[
+                              Text('Regenerative'),
+                              Text(
+                                '$regenerativeWh',
+                                style: TextStyle(fontSize: 25.0),
+                              )
+                            ],
+                          ),
                         ),
                         new Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
@@ -169,15 +183,19 @@ class _StatisticsDailyCardState extends State<StatisticsDailyCard> {
                     new Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: <Widget>[
-                        new Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: <Widget>[
-                            Text('Other than driving'),
-                            Text(
-                              '$auxWh',
-                              style: TextStyle(fontSize: 25.0),
-                            )
-                          ],
+                        Tooltip(
+                          message:
+                              'The lower usage of other systems the better',
+                          child: new Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: <Widget>[
+                              Text('Other than driving'),
+                              Text(
+                                '$auxWh',
+                                style: TextStyle(fontSize: 25.0),
+                              )
+                            ],
+                          ),
                         ),
                         new Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
