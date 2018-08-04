@@ -44,6 +44,19 @@ class _StatisticsDailyCardState extends State<StatisticsDailyCard> {
     Util.dismissLoadingDialog(context);
   }
 
+  Widget _generateStars(int numberOfStars, [int maxNumberOfStars = 5]) {
+    List<Icon> stars = new List<Icon>();
+    int starsAdded;
+    for(starsAdded = 0; starsAdded < numberOfStars; starsAdded++) {
+      stars.add(Icon(Icons.star, size: 18.0));
+    }
+    int starsRemaining = maxNumberOfStars-starsAdded;
+    for(; starsRemaining > 0; starsRemaining--) {
+      stars.add(Icon(Icons.star_border, size: 18.0,));
+    }
+    return Row(children: stars,);
+  }
+
   _withValues(
       DateTime date,
       String electricCostScale,
@@ -104,10 +117,7 @@ class _StatisticsDailyCardState extends State<StatisticsDailyCard> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
                             Text('Rating'),
-                            Text(
-                              '$mileageLevel / 5',
-                              style: TextStyle(fontSize: 25.0),
-                            )
+                            _generateStars(int.parse(mileageLevel))
                           ],
                         )
                       ],
@@ -129,10 +139,7 @@ class _StatisticsDailyCardState extends State<StatisticsDailyCard> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
                             Text('Rating'),
-                            Text(
-                              '$accelerationLevel / 5',
-                              style: TextStyle(fontSize: 25.0),
-                            )
+                            _generateStars(int.parse(accelerationLevel))
                           ],
                         )
                       ],
@@ -154,10 +161,7 @@ class _StatisticsDailyCardState extends State<StatisticsDailyCard> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
                             Text('Rating'),
-                            Text(
-                              '$regenerativeLevel / 5',
-                              style: TextStyle(fontSize: 25.0),
-                            )
+                            _generateStars(int.parse(regenerativeLevel))
                           ],
                         )
                       ],
@@ -179,10 +183,7 @@ class _StatisticsDailyCardState extends State<StatisticsDailyCard> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
                             Text('Rating'),
-                            Text(
-                              '$auxLevel / 5',
-                              style: TextStyle(fontSize: 25.0),
-                            )
+                            _generateStars(int.parse(auxLevel))
                           ],
                         )
                       ],
