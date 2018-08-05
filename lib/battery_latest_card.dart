@@ -32,7 +32,8 @@ class _BatteryLatestCardState extends State<BatteryLatestCard> {
   }
 
   _getBatteryStatusLatest() async {
-    CarwingsBattery battery = await _session.vehicle.requestBatteryStatusLatest();
+    CarwingsBattery battery =
+        await _session.vehicle.requestBatteryStatusLatest();
     setState(() {
       this._battery = battery;
     });
@@ -62,10 +63,17 @@ class _BatteryLatestCardState extends State<BatteryLatestCard> {
     return new Material(
         borderRadius: new BorderRadius.all(new Radius.circular(4.0)),
         elevation: 2.0,
-        type: MaterialType.card,
+        type: _isDarkTheme()
+            ? MaterialType.transparency
+            : MaterialType.card,
         child: new InkWell(
             child: new Container(
-                decoration: new BoxDecoration(),
+                decoration: _isDarkTheme()
+                    ? new BoxDecoration(
+                        image: DecorationImage(
+                            image: AssetImage('images/leaf-header.png'),
+                            fit: BoxFit.cover))
+                    : new BoxDecoration(),
                 padding: const EdgeInsets.fromLTRB(15.0, 0.0, 15.0, 10.0),
                 child: new Column(
                   children: <Widget>[
@@ -105,13 +113,17 @@ class _BatteryLatestCardState extends State<BatteryLatestCard> {
                           ],
                         ),
                         Text(
-                          '${_generalSettings.useMiles ? cruisingRangeAcOffMiles : cruisingRangeAcOffKm}',
+                          '${_generalSettings.useMiles
+                              ? cruisingRangeAcOffMiles
+                              : cruisingRangeAcOffKm}',
                           style: TextStyle(fontSize: 20.0),
                         ),
                         new Row(
                           children: <Widget>[
                             Text(
-                              '${_generalSettings.useMiles ? cruisingRangeAcOnMiles : cruisingRangeAcOnKm}',
+                              '${_generalSettings.useMiles
+                                  ? cruisingRangeAcOnMiles
+                                  : cruisingRangeAcOnKm}',
                               style: TextStyle(fontSize: 20.0),
                             ),
                             Text(
@@ -146,6 +158,8 @@ class _BatteryLatestCardState extends State<BatteryLatestCard> {
                   ],
                 ))));
   }
+
+  bool _isDarkTheme() => Theme.of(context).brightness == Brightness.dark;
 
   @override
   Widget build(BuildContext context) {

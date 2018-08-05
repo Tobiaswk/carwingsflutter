@@ -41,6 +41,7 @@ flutter:
     - images/sports-car.png
     - images/car-leaf.png
     - images/aircondition.png
+    - images/leaf-header.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.io/assets-and-images/#resolution-aware.
