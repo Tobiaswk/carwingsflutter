@@ -8,5 +8,5 @@ You can ask your vehicle for the latest data, see current battery and charging s
 
 My Leaf is free and open source.
 
-Join the test and feedback community at;
+Join the testing and feedback community at;
 https://plus.google.com/communities/116772939554254023683
