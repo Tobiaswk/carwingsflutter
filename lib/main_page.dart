@@ -125,7 +125,7 @@ class _MainPageState extends State<MainPage> {
           ),
           new ListTile(
             leading: const Icon(Icons.exit_to_app),
-            title: const Text('Log out'),
+            title: const Text('Sign out'),
             onTap: _logOut,
           ),
           _donated ? Row() : _buildDonateListTile(context)
