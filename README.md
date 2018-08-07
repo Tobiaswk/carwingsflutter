@@ -6,7 +6,7 @@ My Leaf is a simple, striving to be great looking, and fast alternative to the o
 
 You can ask your vehicle for the latest data, see current battery and charging statuses, see the current climate control state, start or stop climate control remotely, remotely start charging, and retrieve the last known location of the vehicle.
 
-My Leaf is free 🎉and open source ✌️ It takes effort to continually maintain and improve. Therefore donations are more than welcome! 😎 You can do it directly in-app!
+My Leaf is free 🎉 and open source ✌️ It takes effort to continually maintain and improve. Therefore donations are more than welcome! 😎 You can do it directly in-app!
 
 Join the testing and feedback community at;
 https://plus.google.com/communities/116772939554254023683
