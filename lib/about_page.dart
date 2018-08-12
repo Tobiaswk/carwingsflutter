@@ -19,18 +19,23 @@ class _AboutPageState extends State<AboutPage> {
       body: new Column(
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
-            const ListTile(
-              title: const Text('My Leaf', ),
-              subtitle: const Text('Third party NissanConnect EV app'),
+            new Padding(padding: const EdgeInsets.all(10.0)),
+            ImageIcon(
+              AssetImage('images/car-leaf.png'),
+              color: Theme.of(context).primaryColor,
+              size: 100.0,
             ),
-            const ListTile(
-              title: const Text('Developer'),
-              subtitle: const Text('Tobias Westergaard Kjeldsen <tobias@wkjeldsen.dk>'),
-            ),
-            new Text('Graphics', style: TextStyle(fontSize: 20.0),),
+            new Padding(padding: const EdgeInsets.all(5.0)),
+            new Text('My Leaf', style: TextStyle(fontSize: 20.0),),
+            new Text('Third party NissanConnect EV app', style: TextStyle(fontSize: 18.0),),
             new ListTile(
-              title: const Text('Icons'),
-              subtitle: const Text('Icons by Freepik at flaticon.com'),
+              title: const Text('Developed by'),
+              subtitle: const Text('Tobias Westergaard Kjeldsen <me@tobis.dk>'),
+              onTap: () {_launchUrl('mailto:me@tobis.dk');},
+            ),
+            new ListTile(
+              title: const Text('My Leaf icon by'),
+              subtitle: const Text('Freepik at flaticon.com'),
             ),
             new Text('Libraries and source code', style: TextStyle(fontSize: 20.0),),
             new ListTile(
@@ -39,7 +44,7 @@ class _AboutPageState extends State<AboutPage> {
               onTap: () {_launchUrl('https://gitlab.com/tobiaswkjeldsen/dartcarwings');},
             ),
             new ListTile(
-              title: const Text('More information and source code'),
+              title: const Text('My Leaf source code'),
               subtitle: const Text('https://gitlab.com/tobiaswkjeldsen/carwingsflutter'),
               onTap: () {_launchUrl('https://gitlab.com/tobiaswkjeldsen/carwingsflutter');},
             ),
