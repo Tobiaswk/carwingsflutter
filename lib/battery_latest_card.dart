@@ -118,6 +118,7 @@ class _BatteryLatestCardState extends State<BatteryLatestCard> {
                               : cruisingRangeAcOffKm}',
                           style: TextStyle(fontSize: 20.0),
                         ),
+                        new Text('/'),
                         new Row(
                           children: <Widget>[
                             Text(

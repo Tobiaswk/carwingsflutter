@@ -65,7 +65,7 @@ class MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     return new MaterialApp(
-      title: 'Carwings',
+      title: 'My Leaf',
       theme: theme,
       home: new LoginPage(_session,),
       routes: <String, WidgetBuilder>{
