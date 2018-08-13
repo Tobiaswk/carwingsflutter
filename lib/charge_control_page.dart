@@ -78,11 +78,13 @@ class _ChargeControlPageState extends State<ChargeControlPage> {
               new Icon(
                 Icons.power,
                 color: _isCharging
-                    ? Theme.of(context).primaryColor
+                    ? Util.primaryColor(context)
                     : Theme.of(context).disabledColor,
                 size: 200.0,
               ),
-              Text('Charging is ${_chargeControlReady ? _isCharging ? 'on' : 'off' : 'updating...'}'),
+              Text('Charging is ${_chargeControlReady ? _isCharging
+                  ? 'on'
+                  : 'off' : 'updating...'}'),
               Text('Long press to schedule ${chargingScheduled != null
                   ? '(starts ${new DateFormat('EEEE H:mm').format(
                   chargingScheduled)})'

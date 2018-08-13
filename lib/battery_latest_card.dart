@@ -63,12 +63,12 @@ class _BatteryLatestCardState extends State<BatteryLatestCard> {
     return new Material(
         borderRadius: new BorderRadius.all(new Radius.circular(4.0)),
         elevation: 2.0,
-        type: _isDarkTheme()
+        type: Util.isDarkTheme(context)
             ? MaterialType.transparency
             : MaterialType.card,
         child: new InkWell(
             child: new Container(
-                decoration: _isDarkTheme()
+                decoration: Util.isDarkTheme(context)
                     ? new BoxDecoration(
                         image: DecorationImage(
                             image: AssetImage('images/leaf-header.png'),
@@ -159,8 +159,6 @@ class _BatteryLatestCardState extends State<BatteryLatestCard> {
                   ],
                 ))));
   }
-
-  bool _isDarkTheme() => Theme.of(context).brightness == Brightness.dark;
 
   @override
   Widget build(BuildContext context) {

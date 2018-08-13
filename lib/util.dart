@@ -20,4 +20,8 @@ class Util {
   static void dismissLoadingDialog(context) {
     Navigator.of(context).pop();
   }
+
+  static Color primaryColor(context) => isDarkTheme(context) ? Colors.white : Theme.of(context).primaryColor;
+
+  static bool isDarkTheme(context) => Theme.of(context).brightness == Brightness.dark;
 }

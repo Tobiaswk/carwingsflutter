@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:carwingsflutter/util.dart';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -22,7 +23,7 @@ class _AboutPageState extends State<AboutPage> {
             new Padding(padding: const EdgeInsets.all(10.0)),
             ImageIcon(
               AssetImage('images/car-leaf.png'),
-              color: Theme.of(context).primaryColor,
+              color: Util.primaryColor(context),
               size: 100.0,
             ),
             new Padding(padding: const EdgeInsets.all(5.0)),

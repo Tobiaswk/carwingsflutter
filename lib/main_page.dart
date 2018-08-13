@@ -107,7 +107,7 @@ class _MainPageState extends State<MainPage> {
               new ImageIcon(
                 new AssetImage('images/car-leaf.png'),
                 size: 100.0,
-                color: Theme.of(context).primaryColor,
+                color: Util.primaryColor(context),
               ),
             ],
           ))),

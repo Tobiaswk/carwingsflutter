@@ -118,8 +118,9 @@ class _ClimateControlPageState extends State<ClimateControlPage> {
             children: <Widget>[
               new ImageIcon(
                 AssetImage('images/aircondition.png'),
-                color: _climateControlOn
-                    ? Theme.of(context).primaryColor
+                color:
+                _climateControlOn
+                    ? Util.primaryColor(context)
                     : Theme.of(context).disabledColor,
                 size: 200.0,
               ),
