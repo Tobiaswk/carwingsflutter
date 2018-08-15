@@ -130,7 +130,7 @@ class _StatisticsMonthlyCardState extends State<StatisticsMonthlyCard> {
                         new Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
-                            Text('Average mileage'),
+                            Text('Driving efficiency'),
                             Text(
                               '${_generalSettings.useMileagePerKWh ? totalMileagePerKWh : totalKWhPerMileage}',
                               style: TextStyle(fontSize: 25.0),

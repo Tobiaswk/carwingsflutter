@@ -112,7 +112,7 @@ class _StatisticsDailyCardState extends State<StatisticsDailyCard> {
                         new Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
-                            Text('Average mileage'),
+                            Text('Driving efficiency'),
                             Text(
                               '${_generalSettings.useMileagePerKWh
                                   ? mileagePerKWh
