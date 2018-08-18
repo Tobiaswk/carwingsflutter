@@ -45,6 +45,11 @@ class _AboutPageState extends State<AboutPage> {
               onTap: () {_launchUrl('https://gitlab.com/tobiaswkjeldsen/dartcarwings');},
             ),
             new ListTile(
+              title: const Text('blowfish_native library'),
+              subtitle: const Text('https://gitlab.com/tobiaswkjeldsen/blowfish_native'),
+              onTap: () {_launchUrl('https://gitlab.com/tobiaswkjeldsen/blowfish_native');},
+            ),
+            new ListTile(
               title: const Text('My Leaf source code'),
               subtitle: const Text('https://gitlab.com/tobiaswkjeldsen/carwingsflutter'),
               onTap: () {_launchUrl('https://gitlab.com/tobiaswkjeldsen/carwingsflutter');},
