@@ -17,7 +17,8 @@ class _AboutPageState extends State<AboutPage> {
   Widget build(BuildContext context) {
     return new Scaffold(
       appBar: new AppBar(title: new Text("About")),
-      body: new Column(
+      body: new ListView(children: <Widget>[
+        new Column(
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
             new Padding(padding: const EdgeInsets.all(10.0)),
@@ -55,7 +56,8 @@ class _AboutPageState extends State<AboutPage> {
               onTap: () {_launchUrl('https://gitlab.com/tobiaswkjeldsen/carwingsflutter');},
             ),
           ],
-        ),
+        )
+      ],),
     );
   }
 }
