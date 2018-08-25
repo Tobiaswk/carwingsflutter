@@ -86,7 +86,7 @@ class _MainPageState extends State<MainPage> {
     Navigator.pushNamed(context, '/preferences');
   }
 
-  _logOut() {
+  _signOut() {
     Navigator.of(context).pushReplacement(new MaterialPageRoute<Null>(
       builder: (BuildContext context) {
         return new LoginPage(_session, false);
@@ -126,7 +126,7 @@ class _MainPageState extends State<MainPage> {
           new ListTile(
             leading: const Icon(Icons.exit_to_app),
             title: const Text('Sign out'),
-            onTap: _logOut,
+            onTap: _signOut,
           ),
           _donated ? Row() : _buildDonateListTile(context)
         ],

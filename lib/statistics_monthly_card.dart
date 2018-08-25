@@ -1,8 +1,6 @@
-import 'dart:async';
-
 import 'package:carwingsflutter/preferences_manager.dart';
 import 'package:carwingsflutter/preferences_types.dart';
-import 'package:carwingsflutter/util.dart';
+import 'package:carwingsflutter/widget_rotater.dart';
 import 'package:dartcarwings/dartcarwings.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -25,8 +23,10 @@ class _StatisticsMonthlyCardState extends State<StatisticsMonthlyCard> {
   CarwingsSession _session;
   CarwingsStatsMonthly _statsMonthly;
 
+  bool _isUpdating = false;
+
   _StatisticsMonthlyCardState(this._session) {
-    _getMonthlyStatistics();
+    _update();
   }
 
   _getMonthlyStatistics() async {
@@ -35,23 +35,28 @@ class _StatisticsMonthlyCardState extends State<StatisticsMonthlyCard> {
     setState(() {
       this._statsMonthly = statsMonthly;
     });
-    GeneralSettings generalSettings = await preferencesManager.getGeneralSettings();
+    GeneralSettings generalSettings =
+        await preferencesManager.getGeneralSettings();
     setState(() {
       _generalSettings = generalSettings;
     });
   }
 
-  _updateMonthlyStatistics() async {
-    Util.showLoadingDialog(context);
+  _update() async {
+    setState(() {
+      _isUpdating = true;
+    });
     await _getMonthlyStatistics();
-    Util.dismissLoadingDialog(context);
+    setState(() {
+      _isUpdating = false;
+    });
   }
 
   _withValues(
     DateTime month,
     String electricCostScale,
     String mileageUnit,
-    int totalNumberOfTrips,
+    String totalNumberOfTrips,
     String totalKWhPerMileage,
     String totalMileagePerKWh,
     String totalConsumptionKWh,
@@ -83,10 +88,15 @@ class _StatisticsMonthlyCardState extends State<StatisticsMonthlyCard> {
                             Text(new DateFormat("MMMM").format(month)),
                           ],
                         ),
-                        IconButton(
-                          icon: Icon(Icons.refresh),
-                          onPressed: _updateMonthlyStatistics,
-                        ),
+                        _isUpdating
+                            ? WidgetRotater(IconButton(
+                                icon: Icon(Icons.refresh),
+                                onPressed: () => {},
+                              ))
+                            : IconButton(
+                                icon: Icon(Icons.refresh),
+                                onPressed: _update,
+                              ),
                       ],
                     ),
                     new Row(
@@ -132,10 +142,11 @@ class _StatisticsMonthlyCardState extends State<StatisticsMonthlyCard> {
                           children: <Widget>[
                             Text('Driving efficiency'),
                             Text(
-                              '${_generalSettings.useMileagePerKWh ? totalMileagePerKWh : totalKWhPerMileage}',
+                              '${_generalSettings.useMileagePerKWh
+                                  ? totalMileagePerKWh
+                                  : totalKWhPerMileage}',
                               style: TextStyle(fontSize: 25.0),
                             )
-
                           ],
                         ),
                       ],
@@ -164,12 +175,12 @@ class _StatisticsMonthlyCardState extends State<StatisticsMonthlyCard> {
                 new DateTime.now(),
                 'kWh/km',
                 'km',
-                0,
-                '0',
-                '0',
-                '0',
-                '0',
-                '0',
+                '-',
+                '-',
+                '-',
+                '-',
+                '-',
+                '-',
               ));
   }
 }

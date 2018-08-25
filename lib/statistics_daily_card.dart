@@ -1,6 +1,6 @@
 import 'package:carwingsflutter/preferences_manager.dart';
 import 'package:carwingsflutter/preferences_types.dart';
-import 'package:carwingsflutter/util.dart';
+import 'package:carwingsflutter/widget_rotater.dart';
 import 'package:dartcarwings/dartcarwings.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -22,8 +22,10 @@ class _StatisticsDailyCardState extends State<StatisticsDailyCard> {
   CarwingsSession _session;
   CarwingsStatsDaily _statsDaily;
 
+  bool _isLoading = false;
+
   _StatisticsDailyCardState(this._session) {
-    _getDailyStatistics();
+    _update();
   }
 
   _getDailyStatistics() async {
@@ -39,10 +41,14 @@ class _StatisticsDailyCardState extends State<StatisticsDailyCard> {
     });
   }
 
-  _updateDailyStatistics() async {
-    Util.showLoadingDialog(context);
+  _update() async {
+    setState(() {
+      _isLoading = true;
+    });
     await _getDailyStatistics();
-    Util.dismissLoadingDialog(context);
+    setState(() {
+      _isLoading = false;
+    });
   }
 
   Widget _generateStars(int numberOfStars, [int maxNumberOfStars = 5]) {
@@ -100,10 +106,15 @@ class _StatisticsDailyCardState extends State<StatisticsDailyCard> {
                             Text(new DateFormat("EEEE").format(date)),
                           ],
                         ),
-                        IconButton(
-                          icon: Icon(Icons.refresh),
-                          onPressed: _updateDailyStatistics,
-                        ),
+                        _isLoading
+                            ? WidgetRotater(IconButton(
+                                icon: Icon(Icons.refresh),
+                                onPressed: () =>  {},
+                              ))
+                            : IconButton(
+                                icon: Icon(Icons.refresh),
+                                onPressed: _update,
+                              ),
                       ],
                     ),
                     new Row(
@@ -231,14 +242,14 @@ class _StatisticsDailyCardState extends State<StatisticsDailyCard> {
             : _withValues(
                 new DateTime.now(),
                 'kWh/km',
+                '-',
+                '-',
                 '0',
+                '-',
                 '0',
+                '-',
                 '0',
-                '0',
-                '0',
-                '0',
-                '0',
-                '0',
+                '-',
                 '0',
               ));
   }

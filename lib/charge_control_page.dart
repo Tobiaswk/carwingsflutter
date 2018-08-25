@@ -47,10 +47,10 @@ class _ChargeControlPageState extends State<ChargeControlPage> {
             Util.showLoadingDialog(context);
             _session.vehicle.requestChargingStart(_currentDate).then((_) {
               _updateBatteryStatus();
-              _snackbar('Charging was turned on');
+              _snackbar('Charging was scheduled');
             }).catchError((error) {
               _isCharging = false;
-              _snackbar('Charging did not start');
+              _snackbar('Charging was not scheduled');
             }).whenComplete(() => Util.dismissLoadingDialog(context));
           }
         });

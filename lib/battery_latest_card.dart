@@ -1,6 +1,7 @@
 import 'package:carwingsflutter/preferences_manager.dart';
 import 'package:carwingsflutter/preferences_types.dart';
 import 'package:carwingsflutter/util.dart';
+import 'package:carwingsflutter/widget_rotater.dart';
 import 'package:dartcarwings/dartcarwings.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -22,13 +23,15 @@ class _BatteryLatestCardState extends State<BatteryLatestCard> {
   CarwingsSession _session;
   CarwingsBattery _battery;
 
+  bool _isLoading = false;
+
   _BatteryLatestCardState(this._session) {
     preferencesManager.getGeneralSettings().then((generalSettings) {
       setState(() {
         _generalSettings = generalSettings;
       });
     });
-    _getBatteryStatusLatest();
+    _update();
   }
 
   _getBatteryStatusLatest() async {
@@ -43,15 +46,20 @@ class _BatteryLatestCardState extends State<BatteryLatestCard> {
     await _session.vehicle.requestBatteryStatus();
   }
 
-  _updateBatteryStatus() async {
-    Util.showLoadingDialog(context);
+  _update() async {
+    setState(() {
+      _isLoading = true;
+    });
     await _getBatteryStatus(); // Requests new battery status polling
     await _getBatteryStatusLatest(); // Kinda hacky, works for now
-    Util.dismissLoadingDialog(context);
+    setState(() {
+      _isLoading = false;
+    });
   }
 
   _withValues(
       DateTime date,
+      bool isCharging,
       String batteryPercentage,
       String cruisingRangeAcOffKm,
       String cruisingRangeAcOffMiles,
@@ -59,7 +67,9 @@ class _BatteryLatestCardState extends State<BatteryLatestCard> {
       String cruisingRangeAcOnMiles,
       Duration timeToFullTrickle,
       Duration timeToFullL2,
-      Duration timeToFullL2_6kw) {
+      Duration timeToFullL2_6kw,
+      String chargingkWLevelText,
+      String chargingRemainingText) {
     return new Material(
         borderRadius: new BorderRadius.all(new Radius.circular(4.0)),
         elevation: 2.0,
@@ -92,10 +102,15 @@ class _BatteryLatestCardState extends State<BatteryLatestCard> {
                             Text(new DateFormat("EEEE H:mm").format(date)),
                           ],
                         ),
-                        IconButton(
-                          icon: Icon(Icons.refresh),
-                          onPressed: _updateBatteryStatus,
-                        ),
+                        _isLoading
+                            ? WidgetRotater(IconButton(
+                                icon: Icon(Icons.refresh),
+                                onPressed: () =>  {},
+                              ))
+                            : IconButton(
+                                icon: Icon(Icons.refresh),
+                                onPressed: _update,
+                              ),
                       ],
                     ),
                     new Row(
@@ -103,9 +118,7 @@ class _BatteryLatestCardState extends State<BatteryLatestCard> {
                       children: <Widget>[
                         new Row(
                           children: <Widget>[
-                            _battery != null && _battery.isCharging
-                                ? Icon(Icons.power)
-                                : new Row(),
+                            isCharging ? Icon(Icons.power) : new Row(),
                             Text(
                               '$batteryPercentage',
                               style: TextStyle(fontSize: 40.0),
@@ -135,27 +148,42 @@ class _BatteryLatestCardState extends State<BatteryLatestCard> {
                         ),
                       ],
                     ),
-                    new Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: <Widget>[
-                        Text('~1kW'),
-                        Text(
-                          '${timeToFullTrickle.inHours} hrs',
-                          style: TextStyle(fontSize: 18.0),
-                        ),
-                        Text('~3kW'),
-                        Text(
-                          '${timeToFullL2.inHours} hrs',
-                          style: TextStyle(fontSize: 18.0),
-                        ),
-                        Text('~6kW'),
-                        Text(
-                          '${timeToFullL2_6kw.inHours} hrs',
-                          style: TextStyle(fontSize: 18.0),
-                        ),
-                      ],
-                    )
-                    /**/
+                    isCharging
+                        ? new Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: <Widget>[
+                              Text(
+                                chargingRemainingText,
+                                style: TextStyle(
+                                    fontSize: 18.0,
+                                    fontWeight: FontWeight.bold),
+                              ),
+                              Text(
+                                chargingkWLevelText,
+                                style: TextStyle(fontSize: 18.0),
+                              ),
+                            ],
+                          )
+                        : new Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: <Widget>[
+                              Text('~1kW'),
+                              Text(
+                                '${timeToFullTrickle.inHours} hrs',
+                                style: TextStyle(fontSize: 18.0),
+                              ),
+                              Text('~3kW'),
+                              Text(
+                                '${timeToFullL2.inHours} hrs',
+                                style: TextStyle(fontSize: 18.0),
+                              ),
+                              Text('~6kW'),
+                              Text(
+                                '${timeToFullL2_6kw.inHours} hrs',
+                                style: TextStyle(fontSize: 18.0),
+                              ),
+                            ],
+                          )
                   ],
                 ))));
   }
@@ -167,6 +195,7 @@ class _BatteryLatestCardState extends State<BatteryLatestCard> {
         child: _battery != null
             ? _withValues(
                 _battery.timeStamp,
+                _battery.isCharging,
                 _battery.batteryPercentage,
                 _battery.cruisingRangeAcOffKm,
                 _battery.cruisingRangeAcOffMiles,
@@ -174,16 +203,21 @@ class _BatteryLatestCardState extends State<BatteryLatestCard> {
                 _battery.cruisingRangeAcOnMiles,
                 _battery.timeToFullTrickle,
                 _battery.timeToFullL2,
-                _battery.timeToFullL2_6kw)
+                _battery.timeToFullL2_6kw,
+                _battery.chargingkWLevelText,
+                _battery.chargingRemainingText)
             : _withValues(
                 new DateTime.now(),
-                '0',
-                '0',
-                '0',
-                '0',
-                '0',
+                false,
+                '-',
+                '-',
+                '-',
+                '-',
+                '-',
                 new Duration(hours: 0),
                 new Duration(hours: 0),
-                new Duration(hours: 0)));
+                new Duration(hours: 0),
+                '',
+                ''));
   }
 }
