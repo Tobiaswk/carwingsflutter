@@ -1,3 +1,4 @@
+import 'package:carwingsflutter/preferences_manager.dart';
 import 'package:carwingsflutter/util.dart';
 import 'package:dartcarwings/dartcarwings.dart';
 import 'package:flutter/material.dart';
@@ -5,6 +6,8 @@ import 'package:intl/intl.dart';
 
 class _ChargeControlPageState extends State<ChargeControlPage> {
   final GlobalKey<ScaffoldState> scaffoldKey = new GlobalKey<ScaffoldState>();
+
+  PreferencesManager preferencesManager = new PreferencesManager();
 
   CarwingsSession _session;
 
@@ -15,10 +18,19 @@ class _ChargeControlPageState extends State<ChargeControlPage> {
       new DateTime.now().month, new DateTime.now().day);
   DateTime _currentDate = new DateTime(new DateTime.now().year,
       new DateTime.now().month, new DateTime.now().day);
-  DateTime chargingScheduled;
+  DateTime _chargingScheduled;
 
   _ChargeControlPageState(this._session) {
     _updateBatteryStatus();
+    _updateChargingSchedule();
+  }
+
+  _updateChargingSchedule() {
+    preferencesManager.getChargingSchedule().then((chargingSchedule) {
+      setState(() {
+        _chargingScheduled = chargingSchedule;
+      });
+    });
   }
 
   _updateBatteryStatus() {
@@ -32,7 +44,11 @@ class _ChargeControlPageState extends State<ChargeControlPage> {
     });
   }
 
-  _chargingSchedule() {
+  _chargingSchedule([now = false]) {
+    if (now) {
+      _requestStartCharging();
+      return;
+    }
     showDatePicker(
         context: context,
         initialDate: _currentDate,
@@ -44,18 +60,26 @@ class _ChargeControlPageState extends State<ChargeControlPage> {
           if (time != null) {
             _currentDate = new DateTime(
                 date.year, date.month, date.day, time.hour, time.minute);
-            Util.showLoadingDialog(context);
-            _session.vehicle.requestChargingStart(_currentDate).then((_) {
-              _updateBatteryStatus();
-              _snackbar('Charging was scheduled');
-            }).catchError((error) {
-              _isCharging = false;
-              _snackbar('Charging was not scheduled');
-            }).whenComplete(() => Util.dismissLoadingDialog(context));
+            _requestStartCharging();
           }
         });
       }
     });
+  }
+
+  void _requestStartCharging() {
+    Util.showLoadingDialog(context);
+    _session.vehicle.requestChargingStart(_currentDate).then((_) {
+      _updateBatteryStatus();
+      _snackbar('Charging was scheduled');
+      preferencesManager.setChargingSchedule(_currentDate);
+      setState(() {
+        _chargingScheduled = _currentDate;
+      });
+    }).catchError((error) {
+      _isCharging = false;
+      _snackbar('Charging was not scheduled');
+    }).whenComplete(() => Util.dismissLoadingDialog(context));
   }
 
   _snackbar(message) {
@@ -68,29 +92,41 @@ class _ChargeControlPageState extends State<ChargeControlPage> {
     return new Scaffold(
       key: scaffoldKey,
       appBar: new AppBar(title: new Text("Charging")),
-      body: new InkWell(
-        onTap: _chargeControlReady ? _updateBatteryStatus : null,
-        onLongPress: _chargeControlReady ? _chargingSchedule : null,
-        child: Center(
-          child: new Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              new Icon(
-                Icons.power,
-                color: _isCharging
-                    ? Util.primaryColor(context)
-                    : Theme.of(context).disabledColor,
-                size: 200.0,
-              ),
-              Text('Charging is ${_chargeControlReady ? _isCharging
-                  ? 'on'
-                  : 'off' : 'updating...'}'),
-              Text('Long press to schedule ${chargingScheduled != null
-                  ? '(starts ${new DateFormat('EEEE H:mm').format(
-                  chargingScheduled)})'
-                  : '' }')
-            ],
-          ),
+      body: Center(
+        child: new Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            IconButton(
+              icon: Icon(Icons.power),
+              iconSize: 200.0,
+              color: _isCharging
+                  ? Util.primaryColor(context)
+                  : Theme.of(context).disabledColor,
+              onPressed: () => _chargingSchedule(true),
+            ),
+            Text(
+              'Charging is ${_chargeControlReady ? _isCharging
+                ? 'on'
+                : 'off' : 'updating...'}',
+              style: TextStyle(fontSize: 18.0),
+            ),
+            IconButton(
+              icon: Icon(Icons.access_time),
+              iconSize: 200.0,
+              color: _chargingScheduled != null
+                  ? Util.primaryColor(context)
+                  : Theme.of(context).disabledColor,
+              onPressed: () => _chargingSchedule(false),
+            ),
+            Text(
+              _chargingScheduled != null
+                  ? 'At ${ DateFormat('HH:mm \'this\' EEEE')
+                  .format(
+                  _chargingScheduled)}'
+                  : 'Not scheduled',
+              style: TextStyle(fontSize: 18.0),
+            ),
+          ],
         ),
       ),
     );

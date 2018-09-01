@@ -52,10 +52,11 @@ class _MainPageState extends State<MainPage> {
   _locateVehicleGoogleMaps() {
     Util.showLoadingDialog(context, ('Locating vehicle...'));
     _session.getVehicle().requestLocation().then((location) {
-      launch('https://www.google.com/maps/search/?api=1&query=${location
-          .latitude},${location.longitude}');
-      Util.dismissLoadingDialog(context);
-    });
+      launch(
+          'https://www.google.com/maps/search/?api=1&query=${location.latitude},${location.longitude}');
+    }).catchError(() {
+      _snackBar('Could not locate your vehicle!');
+    }).whenComplete(() => Util.dismissLoadingDialog(context));
   }
 
   _openVehicleInfoPage() {
@@ -149,25 +150,26 @@ class _MainPageState extends State<MainPage> {
     return new ListTile(
       onTap: () async {
         try {
-          final List<Purchase> list = await FlutterPayments.purchase(
+          await FlutterPayments.purchase(
             sku: SKU_DONATE,
             type: ProductType.InApp,
           );
 
-          scaffoldKey.currentState.showSnackBar(new SnackBar(
-              duration: new Duration(seconds: 5),
-              content: new Text('Thank you for the donation!')));
+          _snackBar('Thank you for the donation!');
 
           _donationMadeCheck();
         } on FlutterPaymentsException catch (error) {
-          scaffoldKey.currentState.showSnackBar(new SnackBar(
-              duration: new Duration(seconds: 5),
-              content: new Text('Too bad, donation failed!')));
+          _snackBar('Too bad, donation failed!');
         }
       },
       leading: const Icon(Icons.monetization_on),
       title: Text('Donate'),
     );
+  }
+
+  void _snackBar(message) {
+    scaffoldKey.currentState.showSnackBar(new SnackBar(
+        duration: new Duration(seconds: 5), content: new Text(message)));
   }
 
   @override

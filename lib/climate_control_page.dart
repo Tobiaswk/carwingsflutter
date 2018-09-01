@@ -4,17 +4,17 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 class _ClimateControlPageState extends State<ClimateControlPage> {
-  final GlobalKey<ScaffoldState> scaffoldKey = new GlobalKey<ScaffoldState>();
+  final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
 
   CarwingsSession _session;
 
   bool _climateControlIsReady = false;
   bool _climateControlOn = false;
 
-  DateTime _startDate = new DateTime(new DateTime.now().year,
-      new DateTime.now().month, new DateTime.now().day);
-  DateTime _currentDate = new DateTime(new DateTime.now().year,
-      new DateTime.now().month, new DateTime.now().day);
+  DateTime _startDate =
+      DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day);
+  DateTime _currentDate =
+      DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day);
   DateTime _climateControlScheduled;
 
   _ClimateControlPageState(this._session) {
@@ -70,16 +70,15 @@ class _ClimateControlPageState extends State<ClimateControlPage> {
       _climateControlScheduledCancel();
     } else {
       showDatePicker(
-              context: context,
-              initialDate: _currentDate,
-              firstDate: _startDate,
-              lastDate: new DateTime.now().add(new Duration(days: 30)))
-          .then((date) {
+          context: context,
+          initialDate: _currentDate,
+          firstDate: _startDate,
+          lastDate: DateTime.now().add(Duration(days: 30))).then((date) {
         if (date != null) {
           showTimePicker(context: context, initialTime: TimeOfDay.now())
               .then((time) {
             if (time != null) {
-              _currentDate = new DateTime(
+              _currentDate = DateTime(
                   date.year, date.month, date.day, time.hour, time.minute);
               Util.showLoadingDialog(context);
               _session.vehicle
@@ -100,40 +99,50 @@ class _ClimateControlPageState extends State<ClimateControlPage> {
   }
 
   _snackbar(message) {
-    scaffoldKey.currentState.showSnackBar(new SnackBar(
-        duration: new Duration(seconds: 5), content: new Text(message)));
+    scaffoldKey.currentState.showSnackBar(
+        SnackBar(duration: Duration(seconds: 5), content: Text(message)));
   }
 
   @override
   Widget build(BuildContext context) {
-    return new Scaffold(
+    return Scaffold(
       key: scaffoldKey,
-      appBar: new AppBar(title: new Text("Climate Control")),
-      body: new InkWell(
-        onTap: _climateControlIsReady ? _climateControlToggle : null,
-        onLongPress: _climateControlIsReady ? _climateControlSchedule : null,
-        child: Center(
-          child: new Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              new ImageIcon(
-                AssetImage('images/aircondition.png'),
-                color:
-                _climateControlOn
-                    ? Util.primaryColor(context)
-                    : Theme.of(context).disabledColor,
-                size: 200.0,
-              ),
-              Text('Climate Control is ${_climateControlIsReady
-                  ? _climateControlOn ? 'on' : 'off'
-                  : 'updating...'}'),
-              Text('Tap to toggle'),
-              Text('Long press to schedule ${_climateControlScheduled != null
-                  ? '(starts ${new DateFormat('EEEE H:mm').format(
-                  _climateControlScheduled)})'
-                  : '' }')
-            ],
-          ),
+      appBar: AppBar(title: Text("Climate Control")),
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            IconButton(
+              icon: ImageIcon(AssetImage('images/aircondition.png')),
+              iconSize: 200.0,
+              color: _climateControlOn
+                  ? Util.primaryColor(context)
+                  : Theme.of(context).disabledColor,
+              onPressed: _climateControlToggle,
+            ),
+            Text(
+              'Climate Control is ${_climateControlIsReady
+                ? _climateControlOn ? 'on' : 'off'
+                : 'updating...'}',
+              style: TextStyle(fontSize: 18.0),
+            ),
+            IconButton(
+              icon: Icon(Icons.access_time),
+              iconSize: 200.0,
+              color: _climateControlScheduled != null
+                  ? Util.primaryColor(context)
+                  : Theme.of(context).disabledColor,
+              onPressed: _climateControlSchedule,
+            ),
+            Text(
+              _climateControlScheduled != null
+                  ? 'At ${ DateFormat('HH:mm \'this\' EEEE')
+                  .format(
+                  _climateControlScheduled)}'
+                  : 'Not scheduled',
+              style: TextStyle(fontSize: 18.0),
+            ),
+          ],
         ),
       ),
     );
@@ -146,6 +155,5 @@ class ClimateControlPage extends StatefulWidget {
   CarwingsSession session;
 
   @override
-  _ClimateControlPageState createState() =>
-      new _ClimateControlPageState(session);
+  _ClimateControlPageState createState() => _ClimateControlPageState(session);
 }
