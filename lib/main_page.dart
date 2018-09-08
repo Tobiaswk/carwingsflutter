@@ -29,7 +29,11 @@ class _MainPageState extends State<MainPage> {
 
   bool _donated = false;
 
-  _MainPageState(this._session) {
+  _MainPageState(this._session);
+
+  @override
+  void initState() {
+    super.initState();
     _donationMadeCheck();
   }
 

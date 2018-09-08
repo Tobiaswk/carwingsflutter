@@ -11,8 +11,9 @@ dependencies:
   json_annotation: ^1.1.0
   url_launcher: ^3.0.3
   flutter_payments: ^0.1.5
+  cron: ^0.2.0
   dartcarwings:
-    git: https://gitlab.com/tobiaswkjeldsen/dartcarwings.git
+    git: ../dartcarwings
   blowfish_native:
     git: https://gitlab.com/tobiaswkjeldsen/blowfish_native.git
 
