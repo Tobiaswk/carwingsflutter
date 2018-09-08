@@ -25,12 +25,11 @@ class _BatteryLatestCardState extends State<BatteryLatestCard> {
 
   bool _isLoading = false;
 
-  _BatteryLatestCardState(this._session) {
-    preferencesManager.getGeneralSettings().then((generalSettings) {
-      setState(() {
-        _generalSettings = generalSettings;
-      });
-    });
+  _BatteryLatestCardState(this._session);
+
+  @override
+  void initState() {
+    super.initState();
     _update();
   }
 
@@ -39,6 +38,11 @@ class _BatteryLatestCardState extends State<BatteryLatestCard> {
         await _session.vehicle.requestBatteryStatusLatest();
     setState(() {
       this._battery = battery;
+    });
+    GeneralSettings generalSettings =
+    await preferencesManager.getGeneralSettings();
+    setState(() {
+      _generalSettings = generalSettings;
     });
   }
 

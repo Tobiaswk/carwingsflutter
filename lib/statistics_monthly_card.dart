@@ -25,7 +25,11 @@ class _StatisticsMonthlyCardState extends State<StatisticsMonthlyCard> {
 
   bool _isUpdating = false;
 
-  _StatisticsMonthlyCardState(this._session) {
+  _StatisticsMonthlyCardState(this._session);
+
+  @override
+  void initState() {
+    super.initState();
     _update();
   }
 

@@ -6,36 +6,56 @@ part of 'preferences_types.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-LoginSettings _$LoginSettingsFromJson(Map<String, dynamic> json) =>
-    new LoginSettings(
-        username: json['username'] as String,
-        password: json['password'] as String,
-        region: json['region'] == null
-            ? null
-            : CarwingsRegion.values.singleWhere(
-                (x) => x.toString() == 'CarwingsRegion.${json['region']}'));
-
-abstract class _$LoginSettingsSerializerMixin {
-  String get username;
-  String get password;
-  CarwingsRegion get region;
-  Map<String, dynamic> toJson() => <String, dynamic>{
-        'username': username,
-        'password': password,
-        'region': region == null ? null : region.toString().split('.')[1]
-      };
+LoginSettings _$LoginSettingsFromJson(Map<String, dynamic> json) {
+  return LoginSettings(
+      username: json['username'] as String,
+      password: json['password'] as String,
+      region: _$enumDecodeNullable(_$CarwingsRegionEnumMap, json['region']));
 }
 
-GeneralSettings _$GeneralSettingsFromJson(Map<String, dynamic> json) =>
-    new GeneralSettings(
-        useMiles: json['useMiles'] as bool,
-        useMileagePerKWh: json['useMileagePerKWh'] as bool);
+Map<String, dynamic> _$LoginSettingsToJson(LoginSettings instance) =>
+    <String, dynamic>{
+      'username': instance.username,
+      'password': instance.password,
+      'region': _$CarwingsRegionEnumMap[instance.region]
+    };
 
-abstract class _$GeneralSettingsSerializerMixin {
-  bool get useMiles;
-  bool get useMileagePerKWh;
-  Map<String, dynamic> toJson() => <String, dynamic>{
-        'useMiles': useMiles,
-        'useMileagePerKWh': useMileagePerKWh
-      };
+T _$enumDecode<T>(Map<T, dynamic> enumValues, dynamic source) {
+  if (source == null) {
+    throw ArgumentError('A value must be provided. Supported values: '
+        '${enumValues.values.join(', ')}');
+  }
+  return enumValues.entries
+      .singleWhere((e) => e.value == source,
+          orElse: () => throw ArgumentError(
+              '`$source` is not one of the supported values: '
+              '${enumValues.values.join(', ')}'))
+      .key;
 }
+
+T _$enumDecodeNullable<T>(Map<T, dynamic> enumValues, dynamic source) {
+  if (source == null) {
+    return null;
+  }
+  return _$enumDecode<T>(enumValues, source);
+}
+
+const _$CarwingsRegionEnumMap = <CarwingsRegion, dynamic>{
+  CarwingsRegion.USA: 'USA',
+  CarwingsRegion.Europe: 'Europe',
+  CarwingsRegion.Canada: 'Canada',
+  CarwingsRegion.Australia: 'Australia',
+  CarwingsRegion.Japan: 'Japan'
+};
+
+GeneralSettings _$GeneralSettingsFromJson(Map<String, dynamic> json) {
+  return GeneralSettings(
+      useMiles: json['useMiles'] as bool,
+      useMileagePerKWh: json['useMileagePerKWh'] as bool);
+}
+
+Map<String, dynamic> _$GeneralSettingsToJson(GeneralSettings instance) =>
+    <String, dynamic>{
+      'useMiles': instance.useMiles,
+      'useMileagePerKWh': instance.useMileagePerKWh
+    };

@@ -24,7 +24,11 @@ class _StatisticsDailyCardState extends State<StatisticsDailyCard> {
 
   bool _isLoading = false;
 
-  _StatisticsDailyCardState(this._session) {
+  _StatisticsDailyCardState(this._session);
+
+  @override
+  void initState() {
+    super.initState();
     _update();
   }
 

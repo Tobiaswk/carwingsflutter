@@ -17,7 +17,12 @@ class _ClimateControlPageState extends State<ClimateControlPage> {
       DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day);
   DateTime _climateControlScheduled;
 
-  _ClimateControlPageState(this._session) {
+  _ClimateControlPageState(this._session);
+
+
+  @override
+  void initState() {
+    super.initState();
     _session.vehicle.requestHVACStatus().then((hvac) {
       setState(() {
         _climateControlOn = hvac.isRunning;

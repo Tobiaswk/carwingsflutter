@@ -20,7 +20,12 @@ class _ChargeControlPageState extends State<ChargeControlPage> {
       new DateTime.now().month, new DateTime.now().day);
   DateTime _chargingScheduled;
 
-  _ChargeControlPageState(this._session) {
+  _ChargeControlPageState(this._session);
+
+
+  @override
+  void initState() {
+    super.initState();
     _updateBatteryStatus();
     _updateChargingSchedule();
   }
@@ -28,7 +33,10 @@ class _ChargeControlPageState extends State<ChargeControlPage> {
   _updateChargingSchedule() {
     preferencesManager.getChargingSchedule().then((chargingSchedule) {
       setState(() {
-        _chargingScheduled = chargingSchedule;
+        // Charging is "expired"
+        if(chargingSchedule.isAfter(DateTime.now())) {
+          _chargingScheduled = chargingSchedule;
+        }
       });
     });
   }

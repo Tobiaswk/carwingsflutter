@@ -22,7 +22,12 @@ class _PreferencesPageState extends State<PreferencesPage> {
   GeneralSettings _generalSettings = new GeneralSettings();
   CarwingsSession _session;
 
-  _PreferencesPageState(this._session) {
+  _PreferencesPageState(this._session);
+
+
+  @override
+  void initState() {
+    super.initState();
     preferencesManager.getGeneralSettings().then((generalSettings) {
       setState(() {
         _generalSettings = generalSettings;
