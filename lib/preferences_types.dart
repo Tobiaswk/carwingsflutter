@@ -21,9 +21,11 @@ class LoginSettings {
 class GeneralSettings {
   bool useMiles;
   bool useMileagePerKWh;
+  bool timeZoneOverride;
+  String timeZone;
 
   GeneralSettings({this.useMiles = false,
-      this.useMileagePerKWh = false});
+      this.useMileagePerKWh = false, this.timeZoneOverride = false, this.timeZone});
 
   factory GeneralSettings.fromJson(Map<String, dynamic> json) => _$GeneralSettingsFromJson(json);
 

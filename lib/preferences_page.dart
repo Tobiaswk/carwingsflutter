@@ -4,6 +4,7 @@ import 'package:carwingsflutter/preferences_manager.dart';
 import 'package:dartcarwings/dartcarwings.dart';
 import 'package:flutter/material.dart';
 import 'preferences_types.dart';
+import 'time_zones.dart';
 
 var preferencesManager = new PreferencesManager();
 
@@ -23,7 +24,6 @@ class _PreferencesPageState extends State<PreferencesPage> {
   CarwingsSession _session;
 
   _PreferencesPageState(this._session);
-
 
   @override
   void initState() {
@@ -52,7 +52,9 @@ class _PreferencesPageState extends State<PreferencesPage> {
   _openDebugPage() {
     Navigator.of(context).push(new MaterialPageRoute<Null>(
       builder: (BuildContext context) {
-        return new DebugPage(_session,);
+        return new DebugPage(
+          _session,
+        );
       },
     ));
   }
@@ -150,10 +152,9 @@ class _PreferencesPageState extends State<PreferencesPage> {
               onChanged: (bool value) {
                 setState(() {
                   _generalSettings.useMiles = value;
-                  preferencesManager.setGeneralSettings(_generalSettings);
+                  persistGeneralSettings();
                 });
-              }),
-          onTap: _openAboutPage),
+              })),
       new ListTile(
         title: Text('Use mileage/kWh'),
         trailing: Switch(
@@ -163,16 +164,44 @@ class _PreferencesPageState extends State<PreferencesPage> {
             onChanged: (bool value) {
               setState(() {
                 _generalSettings.useMileagePerKWh = value;
-                preferencesManager.setGeneralSettings(_generalSettings);
+                persistGeneralSettings();
               });
             }),
       ),
       new ListTile(
+          title: Text('Override time zone'),
+          trailing: Switch(
+              value: _generalSettings.timeZoneOverride != null
+                  ? _generalSettings.timeZoneOverride
+                  : false,
+              onChanged: (bool value) {
+                setState(() {
+                  _generalSettings.timeZoneOverride = value;
+                  persistGeneralSettings();
+                });
+              })),
+      _generalSettings.timeZoneOverride != null &&
+          _generalSettings.timeZoneOverride
+          ? new ListTile(
+        trailing: new DropdownButton(
+          value: _generalSettings.timeZone != null &&
+              _generalSettings.timeZone.isEmpty
+              ? _buildTimeZoneDropDownMenuItems()[0].value
+              : _generalSettings.timeZone,
+          items: _buildTimeZoneDropDownMenuItems(),
+          onChanged: (timezone) {
+            setState(() {
+              _generalSettings.timeZone = timezone;
+              persistGeneralSettings();
+            });
+          },
+        ),
+      )
+          : new Row(),
+      new ListTile(
         title: Text('Turn on debugging'),
         trailing: Switch(
-            value: _session.debug != null
-                ? _session.debug
-                : false,
+            value: _session.debug != null ? _session.debug : false,
             onChanged: (bool value) {
               setState(() {
                 _session.debug = value;
@@ -192,6 +221,24 @@ class _PreferencesPageState extends State<PreferencesPage> {
       padding: const EdgeInsets.symmetric(vertical: 20.0),
       children: rows,
     );
+  }
+
+  void persistGeneralSettings() {
+    preferencesManager.setGeneralSettings(_generalSettings);
+    if(_generalSettings.timeZoneOverride) {
+      _session.setTimeZoneOverride(_generalSettings.timeZone);
+    } else {
+      _session.setTimeZoneOverride(null);
+    }
+  }
+
+  List<DropdownMenuItem> _buildTimeZoneDropDownMenuItems() {
+    List<DropdownMenuItem<String>> items = new List();
+    for (String timezone in timeZones) {
+      items.add(
+          new DropdownMenuItem(value: timezone, child: new Text(timezone)));
+    }
+    return items;
   }
 
   @override

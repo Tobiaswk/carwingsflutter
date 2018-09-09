@@ -51,11 +51,15 @@ const _$CarwingsRegionEnumMap = <CarwingsRegion, dynamic>{
 GeneralSettings _$GeneralSettingsFromJson(Map<String, dynamic> json) {
   return GeneralSettings(
       useMiles: json['useMiles'] as bool,
-      useMileagePerKWh: json['useMileagePerKWh'] as bool);
+      useMileagePerKWh: json['useMileagePerKWh'] as bool,
+      timeZoneOverride: json['timeZoneOverride'] as bool,
+      timeZone: json['timeZone'] as String);
 }
 
 Map<String, dynamic> _$GeneralSettingsToJson(GeneralSettings instance) =>
     <String, dynamic>{
       'useMiles': instance.useMiles,
-      'useMileagePerKWh': instance.useMileagePerKWh
+      'useMileagePerKWh': instance.useMileagePerKWh,
+      'timeZoneOverride': instance.timeZoneOverride,
+      'timeZone': instance.timeZone
     };

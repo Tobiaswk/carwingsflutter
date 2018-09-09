@@ -31,7 +31,11 @@ class _LoginPageState extends State<LoginPage> {
 
   bool _rememberLoginSettings = false;
 
-  _LoginPageState(this._session, [this._autoLogin = false]) {
+  _LoginPageState(this._session, [this._autoLogin = false]);
+
+  @override
+  void initState() {
+    super.initState();
     preferencesManager.getLoginSettings().then((login) {
       if (login != null) {
         _usernameTextController.text = login.username;
@@ -41,6 +45,11 @@ class _LoginPageState extends State<LoginPage> {
           _rememberLoginSettings = true;
         });
         if (_autoLogin) _doLogin();
+      }
+    });
+    preferencesManager.getGeneralSettings().then((generalSettings) {
+      if(generalSettings.timeZoneOverride) {
+        _session.setTimeZoneOverride(generalSettings.timeZone);
       }
     });
   }

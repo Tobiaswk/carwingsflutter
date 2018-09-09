@@ -55,7 +55,7 @@ class _MainPageState extends State<MainPage> {
 
   _locateVehicleGoogleMaps() {
     Util.showLoadingDialog(context, ('Locating vehicle...'));
-    _session.getVehicle().requestLocation().then((location) {
+    _session.vehicle.requestLocation().then((location) {
       launch(
           'https://www.google.com/maps/search/?api=1&query=${location.latitude},${location.longitude}');
     }).catchError(() {
@@ -143,7 +143,7 @@ class _MainPageState extends State<MainPage> {
     List<ListTile> accountListTiles = new List<ListTile>();
     accountListTiles.add(new ListTile(
       leading: new ImageIcon(new AssetImage('images/sports-car.png')),
-      title: new Text(_session.getVehicle().nickname),
+      title: new Text(_session.vehicle.nickname),
       onTap: () => _openVehicleInfoPage(),
       onLongPress: () => null,
     ));
