@@ -13,7 +13,7 @@ dependencies:
   flutter_payments: ^0.1.5
   cron: ^0.2.0
   dartcarwings:
-    git: ../dartcarwings
+    git: https://gitlab.com/tobiaswkjeldsen/dartcarwings.git
   blowfish_native:
     git: https://gitlab.com/tobiaswkjeldsen/blowfish_native.git
 
