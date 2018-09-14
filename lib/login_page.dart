@@ -48,7 +48,7 @@ class _LoginPageState extends State<LoginPage> {
       }
     });
     preferencesManager.getGeneralSettings().then((generalSettings) {
-      if(generalSettings.timeZoneOverride) {
+      if (generalSettings.timeZoneOverride) {
         _session.setTimeZoneOverride(generalSettings.timeZone);
       }
     });
@@ -122,7 +122,9 @@ class _LoginPageState extends State<LoginPage> {
                 textTheme: TextTheme(body1: TextStyle(color: Colors.white)),
                 primaryColor: Colors.white,
                 accentColor: Colors.white,
-                buttonColor: Colors.white,
+                buttonColor: Util.isDarkTheme(context)
+                    ? Theme.of(context).primaryColor
+                    : Colors.white,
                 hintColor: Colors.white,
                 canvasColor: Theme.of(context).primaryColor,
                 toggleableActiveColor: Colors.white),
