@@ -58,7 +58,7 @@ class _MainPageState extends State<MainPage> {
     _session.vehicle.requestLocation().then((location) {
       launch(
           'https://www.google.com/maps/search/?api=1&query=${location.latitude},${location.longitude}');
-    }).catchError(() {
+    }).catchError((error) {
       _snackBar('Could not locate your vehicle!');
     }).whenComplete(() => Util.dismissLoadingDialog(context));
   }
@@ -87,7 +87,7 @@ class _MainPageState extends State<MainPage> {
     ));
   }
 
-  _openPreferences() {
+  _openPreferencesPage() {
     Navigator.pushNamed(context, '/preferences');
   }
 
@@ -126,7 +126,7 @@ class _MainPageState extends State<MainPage> {
           new ListTile(
             leading: const Icon(Icons.settings),
             title: const Text('Preferences'),
-            onTap: _openPreferences,
+            onTap: _openPreferencesPage,
           ),
           new ListTile(
             leading: const Icon(Icons.exit_to_app),
