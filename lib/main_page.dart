@@ -10,6 +10,7 @@ import 'package:dartcarwings/dartcarwings.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_payments/flutter_payments.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'dart:io' show Platform;
 
 class MainPage extends StatefulWidget {
   MainPage(this.session);
@@ -38,6 +39,12 @@ class _MainPageState extends State<MainPage> {
   }
 
   _donationMadeCheck() async {
+    if (Platform.isIOS) { // iOS is paid app; set as donated
+      setState(() {
+        _donated = true;
+      });
+      return;
+    }
     List<Purchase> purchases =
         await FlutterPayments.getPurchaseHistory(ProductType.InApp);
     bool donated = false;
