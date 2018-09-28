@@ -40,7 +40,7 @@ class _BatteryLatestCardState extends State<BatteryLatestCard> {
       this._battery = battery;
     });
     GeneralSettings generalSettings =
-    await preferencesManager.getGeneralSettings();
+        await preferencesManager.getGeneralSettings();
     setState(() {
       _generalSettings = generalSettings;
     });
@@ -65,6 +65,7 @@ class _BatteryLatestCardState extends State<BatteryLatestCard> {
       DateTime date,
       bool isCharging,
       String batteryPercentage,
+      String battery12thBar,
       String cruisingRangeAcOffKm,
       String cruisingRangeAcOffMiles,
       String cruisingRangeAcOnKm,
@@ -109,7 +110,7 @@ class _BatteryLatestCardState extends State<BatteryLatestCard> {
                         _isLoading
                             ? WidgetRotater(IconButton(
                                 icon: Icon(Icons.refresh),
-                                onPressed: () =>  {},
+                                onPressed: () => {},
                               ))
                             : IconButton(
                                 icon: Icon(Icons.refresh),
@@ -124,24 +125,20 @@ class _BatteryLatestCardState extends State<BatteryLatestCard> {
                           children: <Widget>[
                             isCharging ? Icon(Icons.power) : new Row(),
                             Text(
-                              '$batteryPercentage',
+                              '${_generalSettings.use12thBarNotation && battery12thBar != null ? battery12thBar : batteryPercentage}',
                               style: TextStyle(fontSize: 40.0),
                             )
                           ],
                         ),
                         Text(
-                          '${_generalSettings.useMiles
-                              ? cruisingRangeAcOffMiles
-                              : cruisingRangeAcOffKm}',
+                          '${_generalSettings.useMiles ? cruisingRangeAcOffMiles : cruisingRangeAcOffKm}',
                           style: TextStyle(fontSize: 20.0),
                         ),
                         new Text('/'),
                         new Row(
                           children: <Widget>[
                             Text(
-                              '${_generalSettings.useMiles
-                                  ? cruisingRangeAcOnMiles
-                                  : cruisingRangeAcOnKm}',
+                              '${_generalSettings.useMiles ? cruisingRangeAcOnMiles : cruisingRangeAcOnKm}',
                               style: TextStyle(fontSize: 20.0),
                             ),
                             Text(
@@ -201,6 +198,7 @@ class _BatteryLatestCardState extends State<BatteryLatestCard> {
                 _battery.timeStamp,
                 _battery.isCharging,
                 _battery.batteryPercentage,
+                _battery.battery12thBar,
                 _battery.cruisingRangeAcOffKm,
                 _battery.cruisingRangeAcOffMiles,
                 _battery.cruisingRangeAcOnKm,
@@ -213,6 +211,7 @@ class _BatteryLatestCardState extends State<BatteryLatestCard> {
             : _withValues(
                 new DateTime.now(),
                 false,
+                '-',
                 '-',
                 '-',
                 '-',

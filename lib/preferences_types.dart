@@ -19,13 +19,18 @@ class LoginSettings {
 
 @JsonSerializable()
 class GeneralSettings {
+  @JsonKey(defaultValue: false)
   bool useMiles;
+  @JsonKey(defaultValue: false)
   bool useMileagePerKWh;
+  @JsonKey(defaultValue: false)
   bool timeZoneOverride;
+  @JsonKey(defaultValue: false)
+  bool use12thBarNotation;
   String timeZone;
 
   GeneralSettings({this.useMiles = false,
-      this.useMileagePerKWh = false, this.timeZoneOverride = false, this.timeZone});
+      this.useMileagePerKWh = false, this.timeZoneOverride = false, this.use12thBarNotation = false, this.timeZone});
 
   factory GeneralSettings.fromJson(Map<String, dynamic> json) => _$GeneralSettingsFromJson(json);
 

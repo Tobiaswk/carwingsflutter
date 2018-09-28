@@ -146,9 +146,7 @@ class _PreferencesPageState extends State<PreferencesPage> {
       new ListTile(
           title: Text('Show statistics in miles'),
           trailing: Switch(
-              value: _generalSettings.useMiles != null
-                  ? _generalSettings.useMiles
-                  : false,
+              value: _generalSettings.useMiles,
               onChanged: (bool value) {
                 setState(() {
                   _generalSettings.useMiles = value;
@@ -158,9 +156,7 @@ class _PreferencesPageState extends State<PreferencesPage> {
       new ListTile(
         title: Text('Use mileage/kWh'),
         trailing: Switch(
-            value: _generalSettings.useMileagePerKWh != null
-                ? _generalSettings.useMileagePerKWh
-                : false,
+            value: _generalSettings.useMileagePerKWh,
             onChanged: (bool value) {
               setState(() {
                 _generalSettings.useMileagePerKWh = value;
@@ -169,34 +165,42 @@ class _PreferencesPageState extends State<PreferencesPage> {
             }),
       ),
       new ListTile(
+        title: Text('Use 12th bar notation (if applicable)'),
+        trailing: Switch(
+            value: _generalSettings.use12thBarNotation,
+            onChanged: (bool value) {
+              setState(() {
+                _generalSettings.use12thBarNotation = value;
+                persistGeneralSettings();
+              });
+            }),
+      ),
+      new ListTile(
           title: Text('Override time zone'),
           trailing: Switch(
-              value: _generalSettings.timeZoneOverride != null
-                  ? _generalSettings.timeZoneOverride
-                  : false,
+              value: _generalSettings.timeZoneOverride,
               onChanged: (bool value) {
                 setState(() {
                   _generalSettings.timeZoneOverride = value;
                   persistGeneralSettings();
                 });
               })),
-      _generalSettings.timeZoneOverride != null &&
-          _generalSettings.timeZoneOverride
+      _generalSettings.timeZoneOverride
           ? new ListTile(
-        trailing: new DropdownButton(
-          value: _generalSettings.timeZone != null &&
-              _generalSettings.timeZone.isEmpty
-              ? _buildTimeZoneDropDownMenuItems()[0].value
-              : _generalSettings.timeZone,
-          items: _buildTimeZoneDropDownMenuItems(),
-          onChanged: (timezone) {
-            setState(() {
-              _generalSettings.timeZone = timezone;
-              persistGeneralSettings();
-            });
-          },
-        ),
-      )
+              trailing: new DropdownButton(
+                value: _generalSettings.timeZone != null &&
+                        _generalSettings.timeZone.isEmpty
+                    ? _buildTimeZoneDropDownMenuItems()[0].value
+                    : _generalSettings.timeZone,
+                items: _buildTimeZoneDropDownMenuItems(),
+                onChanged: (timezone) {
+                  setState(() {
+                    _generalSettings.timeZone = timezone;
+                    persistGeneralSettings();
+                  });
+                },
+              ),
+            )
           : new Row(),
       new ListTile(
         title: Text('Turn on debugging'),
@@ -225,7 +229,7 @@ class _PreferencesPageState extends State<PreferencesPage> {
 
   void persistGeneralSettings() {
     preferencesManager.setGeneralSettings(_generalSettings);
-    if(_generalSettings.timeZoneOverride) {
+    if (_generalSettings.timeZoneOverride) {
       _session.setTimeZoneOverride(_generalSettings.timeZone);
     } else {
       _session.setTimeZoneOverride(null);
