@@ -59,8 +59,8 @@ class _LoginPageState extends State<LoginPage> {
 
     _session
         .login(
-            username: _usernameTextController.text,
-            password: _passwordTextController.text,
+            username: _usernameTextController.text.trim(),
+            password: _passwordTextController.text.trim(),
             blowfishEncryptCallback: (String key, String password) async {
               var encodedPassword = await BlowfishNative.encrypt(key, password);
               return encodedPassword;
