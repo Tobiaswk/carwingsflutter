@@ -28,6 +28,7 @@ class _MainPageState extends State<MainPage> {
 
   CarwingsSession _session;
 
+  var _selectedVehicleValue; // Represents the current selected vehicle by nickname
   bool _donated = false;
 
   _MainPageState(this._session);
@@ -36,10 +37,12 @@ class _MainPageState extends State<MainPage> {
   void initState() {
     super.initState();
     _donationMadeCheck();
+    _initSelectedVehicle();
   }
 
   _donationMadeCheck() async {
-    if (Platform.isIOS) { // iOS is paid app; set as donated
+    if (Platform.isIOS) {
+      // iOS is paid app; set as donated
       setState(() {
         _donated = true;
       });
@@ -60,6 +63,12 @@ class _MainPageState extends State<MainPage> {
     });
   }
 
+  _initSelectedVehicle() {
+    setState(() {
+      _selectedVehicleValue = _session.vehicle.nickname;
+    });
+  }
+
   _locateVehicleGoogleMaps() {
     Util.showLoadingDialog(context, ('Locating vehicle...'));
     _session.vehicle.requestLocation().then((location) {
@@ -70,10 +79,10 @@ class _MainPageState extends State<MainPage> {
     }).whenComplete(() => Util.dismissLoadingDialog(context));
   }
 
-  _openVehicleInfoPage() {
+  _openVehicleInfoPage(vehicle) {
     Navigator.of(context).push(new MaterialPageRoute<Null>(
       builder: (BuildContext context) {
-        return new VehiclePage(session: _session);
+        return new VehiclePage(vehicle: vehicle);
       },
     ));
   }
@@ -146,14 +155,38 @@ class _MainPageState extends State<MainPage> {
     );
   }
 
+  _handleVehicleChange(nickname) {
+    setState(() {
+      _selectedVehicleValue = nickname;
+    });
+
+    // Set selected vehicle on session by vehicle nickname
+    _session.vehicle =
+        _session.vehicles.firstWhere((v) => v.nickname == nickname);
+
+    // Push replacement page to force refresh with selected vehicle
+    Navigator.of(context).pushReplacement(new MaterialPageRoute<Null>(
+      builder: (BuildContext context) {
+        return new MainPage(_session);
+      },
+    ));
+  }
+
   Column _buildVehicleListTiles(context) {
     List<ListTile> accountListTiles = new List<ListTile>();
-    accountListTiles.add(new ListTile(
-      leading: new ImageIcon(new AssetImage('images/sports-car.png')),
-      title: new Text(_session.vehicle.nickname),
-      onTap: () => _openVehicleInfoPage(),
-      onLongPress: () => null,
-    ));
+    for (CarwingsVehicle vehicle in _session.vehicles) {
+      accountListTiles.add(new ListTile(
+        leading: new ImageIcon(new AssetImage('images/sports-car.png')),
+        trailing: new Radio(
+          value: vehicle.nickname,
+          groupValue: _selectedVehicleValue,
+          onChanged: _handleVehicleChange,
+        ),
+        title: new Text(vehicle.nickname),
+        onTap: () => _openVehicleInfoPage(vehicle),
+        onLongPress: () => null,
+      ));
+    }
     return new Column(children: accountListTiles);
   }
 

@@ -3,10 +3,10 @@ import 'package:flutter/material.dart';
 
 class _VehiclePageState extends State<VehiclePage> {
 
-  CarwingsSession _session;
+  CarwingsVehicle _vehicle;
 
 
-  _VehiclePageState(this._session);
+  _VehiclePageState(this._vehicle);
 
   @override
   Widget build(BuildContext context) {
@@ -17,15 +17,15 @@ class _VehiclePageState extends State<VehiclePage> {
         children: <Widget>[
           ListTile(
             title: const Text('Name'),
-            subtitle: Text(_session.vehicle.nickname),
+            subtitle: Text(_vehicle.nickname),
           ),
           ListTile(
             title: Text('Model'),
-            subtitle: Text(_session.vehicle.model),
+            subtitle: Text(_vehicle.model),
           ),
           ListTile(
             title: Text('VIN'),
-            subtitle: Text(_session.vehicle.vin),
+            subtitle: Text(_vehicle.vin),
           ),
         ],
       ),
@@ -34,10 +34,10 @@ class _VehiclePageState extends State<VehiclePage> {
 }
 
 class VehiclePage extends StatefulWidget {
-  VehiclePage({Key key, this.session}) : super(key: key);
+  VehiclePage({Key key, this.vehicle}) : super(key: key);
   
-  CarwingsSession session;
+  CarwingsVehicle vehicle;
 
   @override
-  _VehiclePageState createState() => new _VehiclePageState(session);
+  _VehiclePageState createState() => new _VehiclePageState(vehicle);
 }
