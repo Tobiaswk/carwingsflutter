@@ -23,6 +23,8 @@ class _StatisticsMonthlyCardState extends State<StatisticsMonthlyCard> {
   CarwingsSession _session;
   CarwingsStatsMonthly _statsMonthly;
 
+  DateTime _currentMonth = DateTime(DateTime.now().year, DateTime.now().month);
+
   bool _isUpdating = false;
 
   _StatisticsMonthlyCardState(this._session);
@@ -35,7 +37,7 @@ class _StatisticsMonthlyCardState extends State<StatisticsMonthlyCard> {
 
   _getMonthlyStatistics() async {
     CarwingsStatsMonthly statsMonthly =
-        await _session.vehicle.requestStatisticsMonthly(new DateTime.now());
+        await _session.vehicle.requestStatisticsMonthly(_currentMonth);
     setState(() {
       this._statsMonthly = statsMonthly;
     });
@@ -53,6 +55,24 @@ class _StatisticsMonthlyCardState extends State<StatisticsMonthlyCard> {
     await _getMonthlyStatistics();
     setState(() {
       _isUpdating = false;
+    });
+  }
+
+  // Present a date picker were only 1st day in each month is selectable
+  // Used for changing monthly statistics month
+  _changeStatisticsMonth() {
+    // selectableDayPredicate is here to only make 1st day in month selectable
+    // firstDate is 1 year back
+    showDatePicker(
+        context: context,
+        initialDate: _currentMonth,
+        firstDate: _currentMonth.subtract(new Duration(days: 365)),
+        lastDate: new DateTime.now(),
+        selectableDayPredicate: (date) => date.day == 1).then((date) {
+      if (date != null) {
+        _currentMonth = date;
+        _update();
+      }
     });
   }
 
@@ -87,9 +107,17 @@ class _StatisticsMonthlyCardState extends State<StatisticsMonthlyCard> {
                               style: TextStyle(fontSize: 20.0),
                             ),
                             new Padding(padding: const EdgeInsets.all(3.0)),
-                            Icon(Icons.access_time),
-                            new Padding(padding: const EdgeInsets.all(3.0)),
-                            Text(new DateFormat("MMMM").format(month)),
+                            new InkWell(
+                              onTap: _changeStatisticsMonth,
+                              child: new Row(
+                                children: <Widget>[
+                                  Icon(Icons.access_time),
+                                  new Padding(
+                                      padding: const EdgeInsets.all(3.0)),
+                                  Text(new DateFormat("MMMM").format(month)),
+                                ],
+                              ),
+                            )
                           ],
                         ),
                         _isUpdating
@@ -146,9 +174,7 @@ class _StatisticsMonthlyCardState extends State<StatisticsMonthlyCard> {
                           children: <Widget>[
                             Text('Driving efficiency'),
                             Text(
-                              '${_generalSettings.useMileagePerKWh
-                                  ? totalMileagePerKWh
-                                  : totalKWhPerMileage}',
+                              '${_generalSettings.useMileagePerKWh ? totalMileagePerKWh : totalKWhPerMileage}',
                               style: TextStyle(fontSize: 25.0),
                             )
                           ],

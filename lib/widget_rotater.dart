@@ -31,6 +31,12 @@ class _WidgetRotaterState extends State<WidgetRotater>
   }
 
   @override
+  void dispose() {
+    super.dispose();
+    animationController.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return new Container(
       alignment: Alignment.center,

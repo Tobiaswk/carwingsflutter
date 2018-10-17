@@ -19,6 +19,7 @@ class _StatisticsDailyCardState extends State<StatisticsDailyCard> {
   PreferencesManager preferencesManager = new PreferencesManager();
 
   GeneralSettings _generalSettings = new GeneralSettings();
+
   CarwingsSession _session;
   CarwingsStatsDaily _statsDaily;
 
