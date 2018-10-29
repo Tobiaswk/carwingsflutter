@@ -50,10 +50,13 @@ class _StatisticsDailyCardState extends State<StatisticsDailyCard> {
     setState(() {
       _isLoading = true;
     });
-    await _getDailyStatistics();
-    setState(() {
-      _isLoading = false;
-    });
+    try {
+      await _getDailyStatistics();
+    } finally {
+      setState(() {
+        _isLoading = false;
+      });
+    }
   }
 
   Widget _generateStars(int numberOfStars, [int maxNumberOfStars = 5]) {

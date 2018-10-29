@@ -52,10 +52,13 @@ class _StatisticsMonthlyCardState extends State<StatisticsMonthlyCard> {
     setState(() {
       _isUpdating = true;
     });
-    await _getMonthlyStatistics();
-    setState(() {
-      _isUpdating = false;
-    });
+    try {
+      await _getMonthlyStatistics();
+    } finally {
+      setState(() {
+        _isUpdating = false;
+      });
+    }
   }
 
   // Present a date picker were only 1st day in each month is selectable

@@ -54,11 +54,14 @@ class _BatteryLatestCardState extends State<BatteryLatestCard> {
     setState(() {
       _isLoading = true;
     });
-    await _getBatteryStatus(); // Requests new battery status polling
-    await _getBatteryStatusLatest(); // Kinda hacky, works for now
-    setState(() {
-      _isLoading = false;
-    });
+    try {
+      await _getBatteryStatus(); // Requests new battery status polling
+      await _getBatteryStatusLatest(); // Kinda hacky, works for now
+    } finally {
+      setState(() {
+        _isLoading = false;
+      });
+    }
   }
 
   _withValues(
