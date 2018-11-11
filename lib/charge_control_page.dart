@@ -68,6 +68,9 @@ class _ChargeControlPageState extends State<ChargeControlPage> {
           if (time != null) {
             _currentDate = new DateTime(
                 date.year, date.month, date.day, time.hour, time.minute);
+            setState(() {
+              _chargingScheduled = _currentDate;
+            });
             _requestStartCharging();
           }
         });
@@ -81,9 +84,6 @@ class _ChargeControlPageState extends State<ChargeControlPage> {
       _updateBatteryStatus();
       _snackbar('Charging was scheduled');
       preferencesManager.setChargingSchedule(_currentDate);
-      setState(() {
-        _chargingScheduled = _currentDate;
-      });
     }).catchError((error) {
       _isCharging = false;
       _snackbar('Charging was not scheduled');
