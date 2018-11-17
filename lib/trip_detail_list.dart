@@ -98,8 +98,12 @@ class _TripDetailListState extends State<TripDetailList> {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: <Widget>[
-                          Icon(Icons.arrow_forward),
-                          Text(carwingsTripDetail.number),
+                          carwingsTripDetail.number % 2 == 0
+                              ? Icon(Icons.arrow_back)
+                              : Icon(Icons.arrow_forward),
+                          Chip(
+                              label:
+                                  Text(carwingsTripDetail.number.toString())),
                           Text(carwingsTripDetail.travelDistanceMileage),
                           Text(_generalSettings.useMileagePerKWh
                               ? carwingsTripDetail.mileagePerKWh
@@ -117,8 +121,12 @@ class _TripDetailListState extends State<TripDetailList> {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: <Widget>[
-                          Icon(Icons.arrow_back),
-                          Text(carwingsTripDetail.number),
+                          carwingsTripDetail.number % 2 == 0
+                              ? Icon(Icons.arrow_back)
+                              : Icon(Icons.arrow_forward),
+                          Chip(
+                              label:
+                                  Text(carwingsTripDetail.number.toString())),
                           Text(carwingsTripDetail.travelDistanceMileage),
                           Text(_generalSettings.useMileagePerKWh
                               ? carwingsTripDetail.mileagePerKWh
