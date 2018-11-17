@@ -38,18 +38,22 @@ class MyAppState extends State<MyApp> {
       case ThemeColor.standard:
         return new ThemeData(
           primarySwatch: Colors.blue,
+          buttonColor: Colors.white
         );
       case ThemeColor.green:
         return new ThemeData(
           primarySwatch: Colors.green,
+            buttonColor: Colors.white
         );
       case ThemeColor.red:
         return new ThemeData(
           primarySwatch: Colors.red,
+            buttonColor: Colors.white
         );
       case ThemeColor.purple:
         return new ThemeData(
           primarySwatch: Colors.purple,
+            buttonColor: Colors.white
         );
       case ThemeColor.dark:
         return new ThemeData(
@@ -59,6 +63,7 @@ class MyAppState extends State<MyApp> {
     }
     return new ThemeData(
       primarySwatch: Colors.blue,
+        buttonColor: Colors.white
     );
   }
 
