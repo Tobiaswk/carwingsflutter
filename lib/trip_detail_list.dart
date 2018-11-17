@@ -104,12 +104,24 @@ class _TripDetailListState extends State<TripDetailList> {
                           Chip(
                               label:
                                   Text(carwingsTripDetail.number.toString())),
-                          Text(carwingsTripDetail.travelDistanceMileage),
-                          Text(_generalSettings.useMileagePerKWh
-                              ? carwingsTripDetail.mileagePerKWh
-                              : carwingsTripDetail.kWhPerMileage),
-                          Text(carwingsTripDetail.consumptionKWh),
-                          Text(carwingsTripDetail.CO2Reduction),
+                          Column(
+                            children: <Widget>[
+                              Text(
+                                carwingsTripDetail.travelDistanceMileage,
+                                style: TextStyle(fontSize: 18.0),
+                              ),
+                              Text(_generalSettings.useMileagePerKWh
+                                  ? carwingsTripDetail.mileagePerKWh
+                                  : carwingsTripDetail.kWhPerMileage)
+                            ],
+                          ),
+                          Column(
+                            children: <Widget>[
+                              Text(carwingsTripDetail.consumptionKWh,
+                                  style: TextStyle(fontSize: 18.0)),
+                              Text(carwingsTripDetail.CO2Reduction),
+                            ],
+                          )
                         ],
                       )
                     ],
@@ -127,12 +139,22 @@ class _TripDetailListState extends State<TripDetailList> {
                           Chip(
                               label:
                                   Text(carwingsTripDetail.number.toString())),
-                          Text(carwingsTripDetail.travelDistanceMileage),
-                          Text(_generalSettings.useMileagePerKWh
-                              ? carwingsTripDetail.mileagePerKWh
-                              : carwingsTripDetail.kWhPerMileage),
-                          Text(carwingsTripDetail.consumptionKWh),
-                          Text(carwingsTripDetail.CO2Reduction),
+                          Column(
+                            children: <Widget>[
+                              Text(carwingsTripDetail.travelDistanceMileage,
+                                  style: TextStyle(fontSize: 18.0)),
+                              Text(_generalSettings.useMileagePerKWh
+                                  ? carwingsTripDetail.mileagePerKWh
+                                  : carwingsTripDetail.kWhPerMileage)
+                            ],
+                          ),
+                          Column(
+                            children: <Widget>[
+                              Text(carwingsTripDetail.consumptionKWh,
+                                  style: TextStyle(fontSize: 18.0)),
+                              Text(carwingsTripDetail.CO2Reduction),
+                            ],
+                          )
                         ],
                       )
                     ],
