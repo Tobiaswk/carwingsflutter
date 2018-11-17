@@ -4,6 +4,7 @@ import 'package:carwingsflutter/climate_control_page.dart';
 import 'package:carwingsflutter/login_page.dart';
 import 'package:carwingsflutter/statistics_daily_card.dart';
 import 'package:carwingsflutter/statistics_monthly_card.dart';
+import 'package:carwingsflutter/trip_detail_list.dart';
 import 'package:carwingsflutter/util.dart';
 import 'package:carwingsflutter/vehicle_page.dart';
 import 'package:dartcarwings/dartcarwings.dart';
@@ -99,6 +100,14 @@ class _MainPageState extends State<MainPage> {
     Navigator.of(context).push(new MaterialPageRoute<Null>(
       builder: (BuildContext context) {
         return new ChargeControlPage(_session);
+      },
+    ));
+  }
+
+  _openTripDetailListPage() {
+    Navigator.of(context).push(new MaterialPageRoute<Null>(
+      builder: (BuildContext context) {
+        return new TripDetailList(_session);
       },
     ));
   }
@@ -222,6 +231,9 @@ class _MainPageState extends State<MainPage> {
       key: scaffoldKey,
       backgroundColor: Theme.of(context).primaryColor,
       appBar: AppBar(title: new Text('Dashboard'), actions: [
+        new IconButton(
+            icon: Icon(Icons.format_list_numbered, color: Colors.white,),
+            onPressed: _openTripDetailListPage),
         new IconButton(
             icon: new ImageIcon(AssetImage('images/aircondition.png'),
                 color: Colors.white),
