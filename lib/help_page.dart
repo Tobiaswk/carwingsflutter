@@ -48,7 +48,7 @@ class _HelpPageState extends State<HelpPage> {
                   new Text('Direct contact',
                       style: TextStyle(fontSize: 18.0)),
                   new Text(
-                      'As a last resort you are welcome to contact the lead developer of My Leaf. Please do this instead of defaulting to a harmful 1 star review.'),
+                      'As a last resort you are welcome to contact me at me@tobis.dk. Please do this instead of defaulting to a harmful 1 star review.'),
                 ],
               ))
         ],
