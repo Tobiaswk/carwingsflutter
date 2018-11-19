@@ -19,7 +19,7 @@ class _HelpPageState extends State<HelpPage> {
     });
   }
 
-  _getServerStatusWidget() {
+  _buildServerStatus() {
       return Column(children: <Widget>[
         new Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -45,7 +45,7 @@ class _HelpPageState extends State<HelpPage> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   new Padding(padding: const EdgeInsets.all(5.0)),
-                  _getServerStatusWidget(),
+                  _buildServerStatus(),
                   new Text(
                       'Having problems signing in? Follow the steps below.'),
                   new Padding(padding: const EdgeInsets.all(5.0)),
