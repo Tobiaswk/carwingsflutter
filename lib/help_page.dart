@@ -11,7 +11,7 @@ class _HelpPageState extends State<HelpPage> {
       body: new ListView(
         children: <Widget>[
           new Container(
-              padding: const EdgeInsets.fromLTRB(30.0, 15.0, 30.0, 0.0),
+              padding: const EdgeInsets.fromLTRB(30.0, 15.0, 30.0, 30.0),
               child: new Column(
                 mainAxisSize: MainAxisSize.min,
                 crossAxisAlignment: CrossAxisAlignment.start,
