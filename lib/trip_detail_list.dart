@@ -13,7 +13,7 @@ class _TripDetailListState extends State<TripDetailList> {
   DateTime _currentDate = DateTime(DateTime.now().year, DateTime.now().month);
 
   DateFormat dateFormatWeekDay = new DateFormat('EEEE');
-  DateFormat dateFormatDate = new DateFormat('MM/dd');
+  DateFormat dateFormatDate = new DateFormat('dd/MM/yy');
 
   CarwingsSession _session;
   CarwingsStatsTrips _statsTrips;
