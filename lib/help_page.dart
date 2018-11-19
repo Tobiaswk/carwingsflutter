@@ -1,9 +1,37 @@
-import 'dart:async';
-import 'package:carwingsflutter/util.dart';
+import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 class _HelpPageState extends State<HelpPage> {
+
+  String serverStatus = 'Getting status...';
+
+  @override
+  void initState() {
+    super.initState();
+    _getServerStatus();
+  }
+
+  _getServerStatus() async {
+    http.Response response =
+    await http.get("https://wkjeldsen.dk/myleaf/server_status");
+    setState(() {
+      this.serverStatus = response.body.trim();
+    });
+  }
+
+  _getServerStatusWidget() {
+      return Column(children: <Widget>[
+        new Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+          new Text('Carwings API server status', style: TextStyle(fontSize: 18.0),),
+          new Text(
+              this.serverStatus, style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold)),
+            new Divider()
+        ],)
+      ],);
+  }
+
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
@@ -17,6 +45,7 @@ class _HelpPageState extends State<HelpPage> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   new Padding(padding: const EdgeInsets.all(5.0)),
+                  _getServerStatusWidget(),
                   new Text(
                       'Having problems signing in? Follow the steps below.'),
                   new Padding(padding: const EdgeInsets.all(5.0)),
