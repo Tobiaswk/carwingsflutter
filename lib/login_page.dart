@@ -1,4 +1,5 @@
 import 'package:blowfish_native/blowfish_native.dart';
+import 'package:carwingsflutter/help_page.dart';
 import 'package:carwingsflutter/main_page.dart';
 import 'package:carwingsflutter/preferences_manager.dart';
 import 'package:carwingsflutter/util.dart';
@@ -106,6 +107,14 @@ class _LoginPageState extends State<LoginPage> {
     ));
   }
 
+  _openHelpPage() {
+    Navigator.of(context).push(new MaterialPageRoute<Null>(
+      builder: (BuildContext context) {
+        return new HelpPage();
+      },
+    ));
+  }
+
   _openPreferencesPage() {
     Navigator.pushNamed(context, '/preferences');
   }
@@ -175,7 +184,17 @@ class _LoginPageState extends State<LoginPage> {
                                   _regionSelected = region;
                                 });
                               },
-                            )
+                            ),
+                            FlatButton.icon(
+                                onPressed: _openHelpPage,
+                                icon: Icon(
+                                  Icons.help,
+                                  color: Colors.white,
+                                ),
+                                label: Text(
+                                  'Help',
+                                  style: TextStyle(color: Colors.white),
+                                ))
                           ],
                         ),
                         new Padding(padding: const EdgeInsets.all(10.0)),
