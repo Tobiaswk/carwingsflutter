@@ -5,6 +5,7 @@ import 'package:carwingsflutter/preferences_manager.dart';
 import 'package:carwingsflutter/util.dart';
 import 'package:dartcarwings/dartcarwings.dart';
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
 
 class LoginPage extends StatefulWidget {
   LoginPage(this.session, [this.autoLogin = true]);
@@ -32,6 +33,8 @@ class _LoginPageState extends State<LoginPage> {
 
   bool _rememberLoginSettings = false;
 
+  String serverStatus;
+
   _LoginPageState(this._session, [this._autoLogin = false]);
 
   @override
@@ -53,10 +56,21 @@ class _LoginPageState extends State<LoginPage> {
         _session.setTimeZoneOverride(generalSettings.timeZone);
       }
     });
+    _getServerStatus();
+  }
+
+  _getServerStatus() async {
+    http.Response response =
+    await http.get("https://wkjeldsen.dk/myleaf/server_status");
+    setState(() {
+      this.serverStatus = response.body.trim();
+    });
   }
 
   _doLogin() {
     Util.showLoadingDialog(context, 'Signing in...');
+
+    _getServerStatus();
 
     _session
         .login(
@@ -85,6 +99,12 @@ class _LoginPageState extends State<LoginPage> {
       scaffoldKey.currentState.showSnackBar(new SnackBar(
           duration: new Duration(seconds: 5),
           content: new Text('Login failed. Please try again')));
+
+      if(serverStatus != null && serverStatus.isNotEmpty) {
+        scaffoldKey.currentState.showSnackBar(new SnackBar(
+            duration: new Duration(seconds: 10),
+            content: new Text(serverStatus)));
+      }
     });
   }
 
