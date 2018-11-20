@@ -33,7 +33,7 @@ class _LoginPageState extends State<LoginPage> {
 
   bool _rememberLoginSettings = false;
 
-  String serverStatus;
+  String _serverStatus;
 
   _LoginPageState(this._session, [this._autoLogin = false]);
 
@@ -61,9 +61,9 @@ class _LoginPageState extends State<LoginPage> {
 
   _getServerStatus() async {
     http.Response response =
-    await http.get("https://wkjeldsen.dk/myleaf/server_status");
+        await http.get("https://wkjeldsen.dk/myleaf/server_status");
     setState(() {
-      this.serverStatus = response.body.trim();
+      _serverStatus = response.body.trim();
     });
   }
 
@@ -100,10 +100,10 @@ class _LoginPageState extends State<LoginPage> {
           duration: new Duration(seconds: 5),
           content: new Text('Login failed. Please try again')));
 
-      if(serverStatus != null && serverStatus.isNotEmpty) {
+      if (_serverStatus != null && _serverStatus.isNotEmpty) {
         scaffoldKey.currentState.showSnackBar(new SnackBar(
             duration: new Duration(seconds: 10),
-            content: new Text(serverStatus)));
+            content: new Text(_serverStatus)));
       }
     });
   }
