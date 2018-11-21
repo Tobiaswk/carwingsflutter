@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:io';
 import 'package:carwingsflutter/preferences_manager.dart';
 import 'package:carwingsflutter/preferences_types.dart';
 import 'package:dartcarwings/dartcarwings.dart';
@@ -12,8 +13,8 @@ class _TripDetailListState extends State<TripDetailList> {
 
   DateTime _currentDate = DateTime(DateTime.now().year, DateTime.now().month);
 
-  DateFormat dateFormatWeekDay = new DateFormat('EEEE');
-  DateFormat dateFormatDate = new DateFormat('dd/MM/yy');
+  DateFormat dateFormatWeekDay;
+  DateFormat dateFormatDate;
 
   CarwingsSession _session;
   CarwingsStatsTrips _statsTrips;
@@ -21,9 +22,20 @@ class _TripDetailListState extends State<TripDetailList> {
   _TripDetailListState(this._session);
 
   @override
-  void initState() {
-    super.initState();
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+
+    _initDateFormatting();
+
     _update();
+  }
+
+  void _initDateFormatting() {
+    dateFormatWeekDay = new DateFormat('EEEE');
+
+    Platform.localeName == 'en_US'
+        ? dateFormatDate = new DateFormat('MMM d')
+        : dateFormatDate = new DateFormat('dd/MM');
   }
 
   Future<Null> _update() async {
