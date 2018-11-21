@@ -1,4 +1,3 @@
-import 'dart:async';
 import 'dart:io';
 import 'package:carwingsflutter/preferences_manager.dart';
 import 'package:carwingsflutter/preferences_types.dart';
