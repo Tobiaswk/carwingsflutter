@@ -34,7 +34,7 @@ class _TripDetailListState extends State<TripDetailList> {
 
     Platform.localeName == 'en_US'
         ? dateFormatDate = new DateFormat('MMM d')
-        : dateFormatDate = new DateFormat('dd/MM');
+        : dateFormatDate = new DateFormat('d. MMM');
   }
 
   Future<Null> _update() async {
@@ -70,7 +70,6 @@ class _TripDetailListState extends State<TripDetailList> {
 
   @override
   Widget build(BuildContext context) {
-    DateTime currentDate;
     return Scaffold(
       appBar: AppBar(
         title: Text("Trip details"),
@@ -83,30 +82,30 @@ class _TripDetailListState extends State<TripDetailList> {
       body: _statsTrips != null
           ? ListView(
               padding: const EdgeInsets.fromLTRB(15.0, 0.0, 15.0, 15.0),
-              children: _statsTrips.trips.map((carwingsTripDetail) {
-                Column column;
-                if (currentDate == null ||
-                    currentDate.compareTo(carwingsTripDetail.date) != 0) {
-                  column = Column(
-                    children: <Widget>[
-                      new Padding(padding: const EdgeInsets.all(8.0)),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: <Widget>[
-                          Text(
-                            dateFormatWeekDay.format(carwingsTripDetail.date),
-                            style: TextStyle(fontSize: 17.0),
-                          ),
-                          Text(
-                            dateFormatDate.format(carwingsTripDetail.date),
-                            style: TextStyle(fontSize: 20.0),
-                          ),
-                        ],
-                      ),
-                      Divider(
-                        color: Colors.grey,
-                      ),
-                      Row(
+              children: _statsTrips.trips.map((carwingsTrip) {
+                return Column(
+                  children: <Widget>[
+                    new Padding(padding: const EdgeInsets.all(8.0)),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: <Widget>[
+                        Text(
+                          dateFormatWeekDay.format(carwingsTrip.date),
+                          style: TextStyle(fontSize: 17.0),
+                        ),
+                        Text(
+                          dateFormatDate.format(carwingsTrip.date),
+                          style: TextStyle(fontSize: 20.0),
+                        ),
+                      ],
+                    ),
+                    Divider(
+                      color: Colors.grey,
+                    ),
+                    Column(
+                        children:
+                            carwingsTrip.tripsDetails.map((carwingsTripDetail) {
+                      return Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: <Widget>[
                           carwingsTripDetail.number % 2 == 0
@@ -134,45 +133,35 @@ class _TripDetailListState extends State<TripDetailList> {
                             ],
                           )
                         ],
-                      )
-                    ],
-                  );
-                } else {
-                  column = Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: <Widget>[
-                          carwingsTripDetail.number % 2 == 0
-                              ? Icon(Icons.arrow_back)
-                              : Icon(Icons.arrow_forward),
-                          Chip(
-                              label:
-                                  Text(carwingsTripDetail.number.toString())),
-                          Column(
-                            children: <Widget>[
-                              Text(carwingsTripDetail.travelDistanceMileage,
-                                  style: TextStyle(fontSize: 18.0)),
-                              Text(_generalSettings.useMileagePerKWh
-                                  ? carwingsTripDetail.mileagePerKWh
-                                  : carwingsTripDetail.kWhPerMileage)
-                            ],
-                          ),
-                          Column(
-                            children: <Widget>[
-                              Text(carwingsTripDetail.consumptionKWh,
-                                  style: TextStyle(fontSize: 18.0)),
-                              Text(carwingsTripDetail.CO2Reduction),
-                            ],
-                          )
-                        ],
-                      )
-                    ],
-                  );
-                }
-                currentDate = carwingsTripDetail.date;
-                return column;
+                      );
+                    }).toList()),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: <Widget>[
+                        Text('Totals', style: TextStyle(fontSize: 18.0)),
+                        new Padding(padding: const EdgeInsets.all(8.0)),
+                        Column(
+                          children: <Widget>[
+                            Text(
+                              carwingsTrip.travelDistanceMileage,
+                              style: TextStyle(fontSize: 18.0),
+                            ),
+                            Text(_generalSettings.useMileagePerKWh
+                                ? carwingsTrip.mileagePerKWh
+                                : carwingsTrip.kWhPerMileage)
+                          ],
+                        ),
+                        Column(
+                          children: <Widget>[
+                            Text(carwingsTrip.consumptionKWh,
+                                style: TextStyle(fontSize: 18.0)),
+                            Text(carwingsTrip.CO2Reduction),
+                          ],
+                        )
+                      ],
+                    )
+                  ],
+                );
               }).toList(),
             )
           : Center(child: CircularProgressIndicator()),
