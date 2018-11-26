@@ -4,6 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class _AboutPageState extends State<AboutPage> {
+  static var _LICENSE =
+      'The MIT License\n\nCopyright (c) 2018 Tobias Westergaard Kjeldsen\n\nPermission is hereby granted, free of charge, to any person obtaining a copyof this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rightsto use, copy, modify, merge, publish, distribute, sublicense, and/or sellcopies of the Software, and to permit persons to whom the Software isfurnished to do so, subject to the following conditions:\n\nThe above copyright notice and this permission notice shall be included inall copies or substantial portions of the Software.\n\nTHE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS ORIMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THEAUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHERLIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS INTHE SOFTWARE.';
+
   Future _launchUrl(url) async {
     if (await canLaunch(url)) {
       await launch(url);
@@ -78,6 +81,14 @@ class _AboutPageState extends State<AboutPage> {
                       'https://gitlab.com/tobiaswkjeldsen/carwingsflutter');
                 },
               ),
+              new Text(
+                'License',
+                style: TextStyle(fontSize: 20.0),
+              ),
+              new Container(
+                padding: const EdgeInsets.all(15.0),
+                child: new Text(_LICENSE),
+              )
             ],
           )
         ],
