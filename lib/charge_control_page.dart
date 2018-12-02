@@ -13,6 +13,7 @@ class _ChargeControlPageState extends State<ChargeControlPage> {
 
   bool _isCharging = false;
   bool _chargeControlReady = false;
+  bool _isConnected = false;
 
   DateTime _startDate = new DateTime(new DateTime.now().year,
       new DateTime.now().month, new DateTime.now().day);
@@ -47,6 +48,7 @@ class _ChargeControlPageState extends State<ChargeControlPage> {
         setState(() {
           _isCharging = battery.isCharging;
           _chargeControlReady = true;
+          _isConnected = battery.isConnected;
         });
       }); // Kinda hacky, works for now
     });
@@ -117,6 +119,11 @@ class _ChargeControlPageState extends State<ChargeControlPage> {
                 ? 'on'
                 : 'off' : 'updating...'}',
               style: TextStyle(fontSize: 18.0),
+            ),
+            Text(
+              'Cable is ${_chargeControlReady ? _isConnected
+                  ? 'connected'
+                  : 'not connected' : 'updating...'}',
             ),
             IconButton(
               icon: Icon(Icons.access_time),
