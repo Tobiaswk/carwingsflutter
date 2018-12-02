@@ -12,8 +12,8 @@ class _ChargeControlPageState extends State<ChargeControlPage> {
   CarwingsSession _session;
 
   bool _isCharging = false;
-  bool _chargeControlReady = false;
   bool _isConnected = false;
+  bool _chargeControlReady = false;
 
   DateTime _startDate = new DateTime(new DateTime.now().year,
       new DateTime.now().month, new DateTime.now().day);
@@ -47,8 +47,8 @@ class _ChargeControlPageState extends State<ChargeControlPage> {
       _session.vehicle.requestBatteryStatusLatest().then((battery) {
         setState(() {
           _isCharging = battery.isCharging;
-          _chargeControlReady = true;
           _isConnected = battery.isConnected;
+          _chargeControlReady = true;
         });
       }); // Kinda hacky, works for now
     });
