@@ -42,15 +42,13 @@ class _ChargeControlPageState extends State<ChargeControlPage> {
     });
   }
 
-  _updateBatteryStatus() {
-    _session.vehicle.requestBatteryStatus().then((battery) {
-      _session.vehicle.requestBatteryStatusLatest().then((battery) {
-        setState(() {
-          _isCharging = battery.isCharging;
-          _isConnected = battery.isConnected;
-          _chargeControlReady = true;
-        });
-      }); // Kinda hacky, works for now
+  _updateBatteryStatus() async {
+    await _session.vehicle.requestBatteryStatus();
+    CarwingsBattery battery = await _session.vehicle.requestBatteryStatusLatest();
+    setState(() {
+      _isCharging = battery.isCharging;
+      _isConnected = battery.isConnected;
+      _chargeControlReady = true;
     });
   }
 
