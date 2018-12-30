@@ -57,8 +57,8 @@ class _BatteryLatestCardState extends State<BatteryLatestCard> {
     try {
       await _getBatteryStatusLatest(); // Present cached battery first
       await _getBatteryStatus(); // Requests new battery status polling
-      await _getBatteryStatusLatest(); // Use new cached battery
     } finally {
+      await _getBatteryStatusLatest(); // Force use new cached battery
       setState(() {
         _isLoading = false;
       });
