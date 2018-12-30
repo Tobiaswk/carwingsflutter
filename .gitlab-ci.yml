@@ -6,4 +6,4 @@ stages:
 flutterBuild:
   stage: build
   script:
-    - flutter build apk
+    - flutter build apk --debug
