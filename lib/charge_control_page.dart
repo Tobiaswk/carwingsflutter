@@ -43,13 +43,16 @@ class _ChargeControlPageState extends State<ChargeControlPage> {
   }
 
   _updateBatteryStatus() async {
-    await _session.vehicle.requestBatteryStatus();
-    CarwingsBattery battery = await _session.vehicle.requestBatteryStatusLatest();
-    setState(() {
-      _isCharging = battery.isCharging;
-      _isConnected = battery.isConnected;
-      _chargeControlReady = true;
-    });
+    try {
+      await _session.vehicle.requestBatteryStatus();
+    } finally {
+      CarwingsBattery battery = await _session.vehicle.requestBatteryStatusLatest();
+      setState(() {
+        _isCharging = battery.isCharging;
+        _isConnected = battery.isConnected;
+        _chargeControlReady = true;
+      });
+    }
   }
 
   _chargingSchedule([now = false]) {
