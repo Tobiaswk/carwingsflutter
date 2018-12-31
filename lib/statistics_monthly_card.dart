@@ -80,7 +80,7 @@ class _StatisticsMonthlyCardState extends State<StatisticsMonthlyCard> {
   }
 
   _withValues(
-    DateTime month,
+    DateTime date,
     String electricCostScale,
     String mileageUnit,
     String totalNumberOfTrips,
@@ -117,7 +117,9 @@ class _StatisticsMonthlyCardState extends State<StatisticsMonthlyCard> {
                                   Icon(Icons.access_time),
                                   new Padding(
                                       padding: const EdgeInsets.all(3.0)),
-                                  Text(new DateFormat("MMMM").format(month)),
+                                  Text(date != null
+                                      ? new DateFormat("MMMM").format(date)
+                                      : '-'),
                                 ],
                               ),
                             )
@@ -194,7 +196,7 @@ class _StatisticsMonthlyCardState extends State<StatisticsMonthlyCard> {
         padding: const EdgeInsets.fromLTRB(15.0, 20.0, 15.0, 15.0),
         child: _statsMonthly != null
             ? _withValues(
-                _statsMonthly.month,
+                _statsMonthly.dateTime,
                 _statsMonthly.electricCostScale,
                 _statsMonthly.mileageUnit,
                 _statsMonthly.totalNumberOfTrips,
@@ -205,7 +207,7 @@ class _StatisticsMonthlyCardState extends State<StatisticsMonthlyCard> {
                 _statsMonthly.totalCO2Reduction,
               )
             : _withValues(
-                new DateTime.now(),
+                null,
                 'kWh/km',
                 'km',
                 '-',

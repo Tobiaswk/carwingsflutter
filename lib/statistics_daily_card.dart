@@ -111,13 +111,15 @@ class _StatisticsDailyCardState extends State<StatisticsDailyCard> {
                             new Padding(padding: const EdgeInsets.all(3.0)),
                             Icon(Icons.access_time),
                             new Padding(padding: const EdgeInsets.all(3.0)),
-                            Text(new DateFormat("EEEE").format(date)),
+                            Text(date != null
+                                ? new DateFormat("EEEE").format(date)
+                                : '-'),
                           ],
                         ),
                         _isLoading
                             ? WidgetRotater(IconButton(
                                 icon: Icon(Icons.refresh),
-                                onPressed: () =>  {},
+                                onPressed: () => {},
                               ))
                             : IconButton(
                                 icon: Icon(Icons.refresh),
@@ -133,9 +135,7 @@ class _StatisticsDailyCardState extends State<StatisticsDailyCard> {
                           children: <Widget>[
                             Text('Driving efficiency'),
                             Text(
-                              '${_generalSettings.useMileagePerKWh
-                                  ? mileagePerKWh
-                                  : KWhPerMileage}',
+                              '${_generalSettings.useMileagePerKWh ? mileagePerKWh : KWhPerMileage}',
                               style: TextStyle(fontSize: 25.0),
                             )
                           ],
@@ -235,7 +235,7 @@ class _StatisticsDailyCardState extends State<StatisticsDailyCard> {
         padding: const EdgeInsets.fromLTRB(15.0, 20.0, 15.0, 0.0),
         child: _statsDaily != null
             ? _withValues(
-                _statsDaily.date,
+                _statsDaily.dateTime,
                 _statsDaily.electricCostScale,
                 _statsDaily.mileagePerKWh,
                 _statsDaily.KWhPerMileage,
@@ -248,7 +248,7 @@ class _StatisticsDailyCardState extends State<StatisticsDailyCard> {
                 _statsDaily.auxLevel,
               )
             : _withValues(
-                new DateTime.now(),
+                null,
                 'kWh/km',
                 '-',
                 '-',

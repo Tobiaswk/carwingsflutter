@@ -108,7 +108,9 @@ class _BatteryLatestCardState extends State<BatteryLatestCard> {
                             new Padding(padding: const EdgeInsets.all(3.0)),
                             Icon(Icons.access_time),
                             new Padding(padding: const EdgeInsets.all(3.0)),
-                            Text(new DateFormat("EEEE H:mm").format(date)),
+                            Text(date != null
+                                ? new DateFormat("EEEE H:mm").format(date)
+                                : '-'),
                           ],
                         ),
                         _isLoading
@@ -199,7 +201,7 @@ class _BatteryLatestCardState extends State<BatteryLatestCard> {
         padding: const EdgeInsets.fromLTRB(15.0, 20.0, 15.0, 0.0),
         child: _battery != null
             ? _withValues(
-                _battery.timeStamp,
+                _battery.dateTime,
                 _battery.isCharging,
                 _battery.batteryPercentage,
                 _battery.battery12thBar,
@@ -213,7 +215,7 @@ class _BatteryLatestCardState extends State<BatteryLatestCard> {
                 _battery.chargingkWLevelText,
                 _battery.chargingRemainingText)
             : _withValues(
-                new DateTime.now(),
+                null,
                 false,
                 '-',
                 '-',
