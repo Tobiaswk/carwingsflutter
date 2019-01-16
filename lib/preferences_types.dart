@@ -12,7 +12,8 @@ class LoginSettings {
 
   LoginSettings({this.username, this.password, this.region});
 
-  factory LoginSettings.fromJson(Map<String, dynamic> json) => _$LoginSettingsFromJson(json);
+  factory LoginSettings.fromJson(Map<String, dynamic> json) =>
+      _$LoginSettingsFromJson(json);
 
   Map<String, dynamic> toJson() => _$LoginSettingsToJson(this);
 }
@@ -27,17 +28,25 @@ class GeneralSettings {
   bool timeZoneOverride;
   @JsonKey(defaultValue: false)
   bool use12thBarNotation;
+  @JsonKey(defaultValue: true)
+  bool showCO2;
   String timeZone;
 
-  GeneralSettings({this.useMiles = false,
-      this.useMileagePerKWh = false, this.timeZoneOverride = false, this.use12thBarNotation = false, this.timeZone});
+  GeneralSettings(
+      {this.useMiles = false,
+      this.useMileagePerKWh = false,
+      this.timeZoneOverride = false,
+      this.use12thBarNotation = false,
+      this.showCO2 = true,
+      this.timeZone});
 
-  factory GeneralSettings.fromJson(Map<String, dynamic> json) => _$GeneralSettingsFromJson(json);
+  factory GeneralSettings.fromJson(Map<String, dynamic> json) =>
+      _$GeneralSettingsFromJson(json);
 
   Map<String, dynamic> toJson() => _$GeneralSettingsToJson(this);
 }
 
-enum ThemeColor {standard, green, red, purple, dark}
+enum ThemeColor { standard, green, red, purple, dark }
 
 class Setting {
   Setting({

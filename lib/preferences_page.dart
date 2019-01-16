@@ -154,6 +154,16 @@ class _PreferencesPageState extends State<PreferencesPage> {
                 });
               })),
       new ListTile(
+          title: Text('Show CO2 reductions'),
+          trailing: Switch(
+              value: _generalSettings.showCO2,
+              onChanged: (bool value) {
+                setState(() {
+                  _generalSettings.showCO2 = value;
+                  persistGeneralSettings();
+                });
+              })),
+      new ListTile(
         title: Text('Use mileage/kWh'),
         trailing: Switch(
             value: _generalSettings.useMileagePerKWh,

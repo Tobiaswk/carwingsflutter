@@ -129,7 +129,9 @@ class _TripDetailListState extends State<TripDetailList> {
                             children: <Widget>[
                               Text(carwingsTripDetail.consumptionKWh,
                                   style: TextStyle(fontSize: 18.0)),
-                              Text(carwingsTripDetail.CO2Reduction),
+                              _generalSettings.showCO2
+                                  ? Text(carwingsTripDetail.CO2Reduction)
+                                  : Column(),
                             ],
                           )
                         ],
@@ -155,7 +157,9 @@ class _TripDetailListState extends State<TripDetailList> {
                           children: <Widget>[
                             Text(carwingsTrip.consumptionKWh,
                                 style: TextStyle(fontSize: 18.0)),
-                            Text(carwingsTrip.CO2Reduction),
+                            _generalSettings.showCO2
+                                ? Text(carwingsTrip.CO2Reduction)
+                                : Column(),
                           ],
                         )
                       ],

@@ -54,6 +54,7 @@ GeneralSettings _$GeneralSettingsFromJson(Map<String, dynamic> json) {
       useMileagePerKWh: json['useMileagePerKWh'] as bool ?? false,
       timeZoneOverride: json['timeZoneOverride'] as bool ?? false,
       use12thBarNotation: json['use12thBarNotation'] as bool ?? false,
+      showCO2: json['showCO2'] as bool ?? true,
       timeZone: json['timeZone'] as String);
 }
 
@@ -63,5 +64,6 @@ Map<String, dynamic> _$GeneralSettingsToJson(GeneralSettings instance) =>
       'useMileagePerKWh': instance.useMileagePerKWh,
       'timeZoneOverride': instance.timeZoneOverride,
       'use12thBarNotation': instance.use12thBarNotation,
+      'showCO2': instance.showCO2,
       'timeZone': instance.timeZone
     };
