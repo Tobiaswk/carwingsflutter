@@ -8,5 +8,7 @@ You can ask your vehicle for the latest data, see current battery and charging s
 
 My Leaf is free 🎉 and open source ✌️ It takes effort to continually maintain and improve. Therefore donations are more than welcome! 😎 You can do it directly in-app!
 
+My Leaf uses [dartcarwings](https://gitlab.com/tobiaswkjeldsen/dartcarwings) for communicating with the Nissan Carwings API.
+
 Join the testing and feedback community at;
 https://plus.google.com/communities/116772939554254023683
