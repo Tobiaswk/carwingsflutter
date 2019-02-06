@@ -72,7 +72,7 @@ class _TripDetailListState extends State<TripDetailList> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Trip details"),
+        title: Text("Trip Details"),
         actions: <Widget>[
           new IconButton(
               icon: new Icon(Icons.calendar_today, color: Colors.white),

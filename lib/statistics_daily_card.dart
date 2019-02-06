@@ -168,7 +168,6 @@ class _StatisticsDailyCardState extends State<StatisticsDailyCard> {
                         new Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
-                            Text('Rating'),
                             _generateStars(int.parse(accelerationLevel))
                           ],
                         )
@@ -193,7 +192,6 @@ class _StatisticsDailyCardState extends State<StatisticsDailyCard> {
                         new Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
-                            Text('Rating'),
                             _generateStars(int.parse(regenerativeLevel))
                           ],
                         )
@@ -219,7 +217,6 @@ class _StatisticsDailyCardState extends State<StatisticsDailyCard> {
                         new Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
-                            Text('Rating'),
                             _generateStars(int.parse(auxLevel))
                           ],
                         )
