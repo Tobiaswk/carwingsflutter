@@ -10,6 +10,7 @@ class _ClimateControlPageState extends State<ClimateControlPage> {
 
   bool _climateControlIsReady = false;
   bool _climateControlOn = false;
+  CarwingsCabinTemperature _cabinTemperature;
 
   DateTime _startDate =
       DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day);
@@ -28,11 +29,16 @@ class _ClimateControlPageState extends State<ClimateControlPage> {
         _climateControlOn = hvac.isRunning;
         _climateControlIsReady = true;
       });
-      _session.vehicle.requestClimateControlScheduleGet().then((date) {
+    });
+    _session.vehicle.requestClimateControlScheduleGet().then((date) {
         setState(() {
           _climateControlScheduled = date;
         });
       });
+    _session.vehicle.requestCabinTemperature().then((cabinTemperature) {
+       setState(() {
+          _cabinTemperature = cabinTemperature;
+       });
     });
   }
 
@@ -131,6 +137,7 @@ class _ClimateControlPageState extends State<ClimateControlPage> {
                 : 'updating...'}',
               style: TextStyle(fontSize: 18.0),
             ),
+            Text('Cabin temperature is ${ _cabinTemperature != null ? '${_cabinTemperature.temperature}°' : 'updating...' }'),
             IconButton(
               icon: Icon(Icons.access_time),
               iconSize: 200.0,
