@@ -20,7 +20,6 @@ class _ClimateControlPageState extends State<ClimateControlPage> {
 
   _ClimateControlPageState(this._session);
 
-
   @override
   void initState() {
     super.initState();
@@ -29,16 +28,16 @@ class _ClimateControlPageState extends State<ClimateControlPage> {
         _climateControlOn = hvac.isRunning;
         _climateControlIsReady = true;
       });
-    });
-    _session.vehicle.requestClimateControlScheduleGet().then((date) {
+      _session.vehicle.requestClimateControlScheduleGet().then((date) {
         setState(() {
           _climateControlScheduled = date;
         });
+        _session.vehicle.requestCabinTemperature().then((cabinTemperature) {
+          setState(() {
+            _cabinTemperature = cabinTemperature;
+          });
+        });
       });
-    _session.vehicle.requestCabinTemperature().then((cabinTemperature) {
-       setState(() {
-          _cabinTemperature = cabinTemperature;
-       });
     });
   }
 
@@ -81,10 +80,11 @@ class _ClimateControlPageState extends State<ClimateControlPage> {
       _climateControlScheduledCancel();
     } else {
       showDatePicker(
-          context: context,
-          initialDate: _currentDate,
-          firstDate: _startDate,
-          lastDate: DateTime.now().add(Duration(days: 30))).then((date) {
+              context: context,
+              initialDate: _currentDate,
+              firstDate: _startDate,
+              lastDate: DateTime.now().add(Duration(days: 30)))
+          .then((date) {
         if (date != null) {
           showTimePicker(context: context, initialTime: TimeOfDay.now())
               .then((time) {
@@ -137,7 +137,8 @@ class _ClimateControlPageState extends State<ClimateControlPage> {
                 : 'updating...'}',
               style: TextStyle(fontSize: 18.0),
             ),
-            Text('Cabin temperature is ${ _cabinTemperature != null ? '${_cabinTemperature.temperature}°' : 'updating...' }'),
+            Text(
+                'Cabin temperature is ${ _cabinTemperature != null ? '${_cabinTemperature.temperature}°' : 'updating...' }'),
             IconButton(
               icon: Icon(Icons.access_time),
               iconSize: 200.0,
