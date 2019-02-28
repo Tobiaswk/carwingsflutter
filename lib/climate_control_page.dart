@@ -46,7 +46,7 @@ class _ClimateControlPageState extends State<ClimateControlPage> {
       Util.showLoadingDialog(context);
       _climateControlOn = !_climateControlOn;
       if (_climateControlOn) {
-        _session.vehicle.requestClimateControlOn().then((_) {
+        _session.vehicle.requestClimateControlSchedule(DateTime.now()).then((_) {
           _snackbar('Climate Control was turned on');
         }).catchError((error) {
           _climateControlOn = !_climateControlOn;
