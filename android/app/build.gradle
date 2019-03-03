@@ -32,7 +32,7 @@ android {
         targetSdkVersion 27
         versionCode 91
 
-        versionName "1.5.4"
+        versionName "1.5.5"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
 

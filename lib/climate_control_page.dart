@@ -32,7 +32,7 @@ class _ClimateControlPageState extends State<ClimateControlPage> {
         setState(() {
           _climateControlScheduled = date;
         });
-        if(_session.modelYear >= 18) {
+        if(!_session.isFirstGeneration) {
           _session.vehicle.requestCabinTemperature().then((cabinTemperature) {
             setState(() {
               _cabinTemperature = cabinTemperature;
@@ -139,7 +139,7 @@ class _ClimateControlPageState extends State<ClimateControlPage> {
               'Climate Control is ${_climateControlIsReady ? _climateControlOn ? 'on' : 'off' : 'updating...'}',
               style: TextStyle(fontSize: 18.0),
             ),
-            _session.modelYear >= 18
+            !_session.isFirstGeneration
                 ? Text(
                     'Cabin temperature is ${_cabinTemperature != null ? '${_cabinTemperature.temperature}°' : 'updating...'}')
                 : Column(),
