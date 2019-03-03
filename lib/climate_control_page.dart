@@ -32,11 +32,13 @@ class _ClimateControlPageState extends State<ClimateControlPage> {
         setState(() {
           _climateControlScheduled = date;
         });
-        _session.vehicle.requestCabinTemperature().then((cabinTemperature) {
-          setState(() {
-            _cabinTemperature = cabinTemperature;
+        if(_session.modelYear >= 18) {
+          _session.vehicle.requestCabinTemperature().then((cabinTemperature) {
+            setState(() {
+              _cabinTemperature = cabinTemperature;
+            });
           });
-        });
+        }
       });
     });
   }
@@ -46,7 +48,9 @@ class _ClimateControlPageState extends State<ClimateControlPage> {
       Util.showLoadingDialog(context);
       _climateControlOn = !_climateControlOn;
       if (_climateControlOn) {
-        _session.vehicle.requestClimateControlSchedule(DateTime.now()).then((_) {
+        _session.vehicle
+            .requestClimateControlSchedule(DateTime.now())
+            .then((_) {
           _snackbar('Climate Control was turned on');
         }).catchError((error) {
           _climateControlOn = !_climateControlOn;
@@ -132,13 +136,13 @@ class _ClimateControlPageState extends State<ClimateControlPage> {
               onPressed: _climateControlToggle,
             ),
             Text(
-              'Climate Control is ${_climateControlIsReady
-                ? _climateControlOn ? 'on' : 'off'
-                : 'updating...'}',
+              'Climate Control is ${_climateControlIsReady ? _climateControlOn ? 'on' : 'off' : 'updating...'}',
               style: TextStyle(fontSize: 18.0),
             ),
-            Text(
-                'Cabin temperature is ${ _cabinTemperature != null ? '${_cabinTemperature.temperature}°' : 'updating...' }'),
+            _session.modelYear >= 18
+                ? Text(
+                    'Cabin temperature is ${_cabinTemperature != null ? '${_cabinTemperature.temperature}°' : 'updating...'}')
+                : Column(),
             IconButton(
               icon: Icon(Icons.access_time),
               iconSize: 200.0,
@@ -149,9 +153,7 @@ class _ClimateControlPageState extends State<ClimateControlPage> {
             ),
             Text(
               _climateControlScheduled != null
-                  ? 'At ${ DateFormat('HH:mm \'this\' EEEE')
-                  .format(
-                  _climateControlScheduled)}'
+                  ? 'At ${DateFormat('HH:mm \'this\' EEEE').format(_climateControlScheduled)}'
                   : 'Not scheduled',
               style: TextStyle(fontSize: 18.0),
             ),
