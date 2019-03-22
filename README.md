@@ -10,7 +10,7 @@ My Leaf is free 🎉 and open source ✌️ It takes effort to continually maint
 
 My Leaf uses [dartcarwings](https://gitlab.com/tobiaswkjeldsen/dartcarwings) for communicating with the Nissan Carwings API.
 
-My Leaf is available on [Google Play](https://play.google.com/store/apps/details?id=dk.kjeldsen.carwingsflutter) and the [App Store](https://itunes.apple.com/us/app/my-leaf-for-nissan-ev/id1436701776).
+My Leaf is available on [Google Play](https://play.google.com/store/apps/details?id=dk.kjeldsen.carwingsflutter), [App Store](https://itunes.apple.com/us/app/my-leaf-for-nissan-ev/id1436701776) and [F-Droid](https://f-droid.org/en/packages/dk.kjeldsen.carwingsflutter/).
 
 Join the testing and feedback community at;
 https://groups.google.com/forum/#!forum/my-leaf
