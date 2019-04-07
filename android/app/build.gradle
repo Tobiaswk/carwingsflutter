@@ -30,9 +30,9 @@ android {
         applicationId "dk.kjeldsen.carwingsflutter"
         minSdkVersion 16
         targetSdkVersion 27
-        versionCode 91
+        versionCode 92
 
-        versionName "1.5.5"
+        versionName "1.5.6"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
 
@@ -56,6 +56,8 @@ flutter {
 }
 
 dependencies {
+    implementation 'com.squareup.okhttp3:okhttp:3.14.0'
+    implementation 'joda-time:joda-time:2.10.1'
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.1'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1'

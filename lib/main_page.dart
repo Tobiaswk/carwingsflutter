@@ -2,6 +2,7 @@ import 'package:carwingsflutter/battery_latest_card.dart';
 import 'package:carwingsflutter/charge_control_page.dart';
 import 'package:carwingsflutter/climate_control_page.dart';
 import 'package:carwingsflutter/login_page.dart';
+import 'package:carwingsflutter/preferences_page.dart';
 import 'package:carwingsflutter/statistics_daily_card.dart';
 import 'package:carwingsflutter/statistics_monthly_card.dart';
 import 'package:carwingsflutter/trip_detail_list.dart';
@@ -25,7 +26,7 @@ class MainPage extends StatefulWidget {
 class _MainPageState extends State<MainPage> {
   final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
 
-  static final String SKU_DONATE = 'donate';
+  static final String SKU_DONATE = 'donate2';
 
   CarwingsSession _session;
 
@@ -59,6 +60,7 @@ class _MainPageState extends State<MainPage> {
         }
       }
     }
+    await preferencesManager.setDonated(donated);
     setState(() {
       _donated = donated;
     });
@@ -216,7 +218,7 @@ class _MainPageState extends State<MainPage> {
         }
       },
       leading: const Icon(Icons.monetization_on),
-      title: Text('Donate'),
+      title: Text('Donate + widgets'),
     );
   }
 

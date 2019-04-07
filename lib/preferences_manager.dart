@@ -5,6 +5,7 @@ import 'package:dartcarwings/dartcarwings.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class PreferencesManager {
+  static final PREF_DONATED = 'donated';
   static final PREF_THEME = 'theme';
   static final PREF_LOGIN = 'login';
   static final PREF_POLL_INTERVAL = 'pollingInterval';
@@ -13,6 +14,11 @@ class PreferencesManager {
 
   Future<SharedPreferences> getPreferences() async {
     return SharedPreferences.getInstance();
+  }
+
+  Future<Null> setDonated(bool donated) async {
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    sharedPreferences.setBool(PREF_DONATED, donated);
   }
 
   Future<int> getTheme() async {
