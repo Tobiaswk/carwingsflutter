@@ -29,8 +29,6 @@ public abstract class ConfigWidgetActivity extends ListActivity {
 
         setTitle("Choose vehicle");
 
-        //setContentView(android.R.layout.simple_list_item_1);
-
         if(getDonated(getBaseContext())) {
             new GetVehiclesTask(this).execute(getBaseContext());
         } else {

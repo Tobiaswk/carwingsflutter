@@ -13,6 +13,7 @@ import javax.crypto.spec.SecretKeySpec;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.concurrent.TimeUnit;
 
 public class CarwingsSession {
 
@@ -26,7 +27,7 @@ public class CarwingsSession {
     // Extracted from the NissanConnect EV app
     final String initialAppStrings = "geORNtsZe5I4lRGjG9GZiA";
 
-    final OkHttpClient client = new OkHttpClient();
+    final OkHttpClient client;
 
     String username;
     String password;
@@ -38,6 +39,14 @@ public class CarwingsSession {
 
     Vehicle vehicle;
     List<Vehicle> vehicles = new ArrayList<>();
+
+    public CarwingsSession() {
+        client = new OkHttpClient.Builder()
+                .connectTimeout(30L, TimeUnit.SECONDS)
+                .readTimeout(30L, TimeUnit.SECONDS)
+                .writeTimeout(30L, TimeUnit.SECONDS)
+                .build();
+    }
 
     private JSONObject requestWithRetry(String endpoint, Map<String, String> params) throws Exception {
         JSONObject response = request(endpoint, params);
