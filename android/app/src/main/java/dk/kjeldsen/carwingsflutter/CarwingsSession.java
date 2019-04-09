@@ -114,7 +114,7 @@ public class CarwingsSession {
         dcmId = response.getJSONObject("vehicle").getJSONObject("profile").getString("dcmId");
         timeZone = response.getJSONObject("CustomerInfo").getString("Timezone");
 
-        if (response.get("VehicleInfoList") != null) {
+        if (response.has("VehicleInfoList")) {
             JSONArray jsonArray = response.getJSONObject("VehicleInfoList").getJSONArray("vehicleInfo");
             for (int i = 0; i < jsonArray.length(); i++) {
                 Vehicle vehicle = new Vehicle();
