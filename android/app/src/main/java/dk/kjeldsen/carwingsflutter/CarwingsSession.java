@@ -60,9 +60,6 @@ public class CarwingsSession {
     }
 
     private JSONObject request(String endpoint, Map<String, String> params) throws IOException, JSONException {
-        final MediaType JSON
-                = MediaType.get("application/json");
-
         params.put("initial_app_strings", initialAppStrings);
 
         if (vehicle != null && vehicle.customSessionID != null) {
@@ -172,18 +169,18 @@ public class CarwingsSession {
     }
 
     public boolean climateControlOn(String vehicleNickname) throws Exception {
-        return findVehicleByNickName(vehicleNickname).climateControlOn();
+        return findVehicleByNickname(vehicleNickname).climateControlOn();
     }
 
     public boolean climateControlOff(String vehicleNickname) throws Exception {
-        return findVehicleByNickName(vehicleNickname).climateControlOff();
+        return findVehicleByNickname(vehicleNickname).climateControlOff();
     }
 
     public boolean chargingControlOn(String vehicleNickname) throws Exception {
-        return findVehicleByNickName(vehicleNickname).chargingControlOn();
+        return findVehicleByNickname(vehicleNickname).chargingControlOn();
     }
 
-    private Vehicle findVehicleByNickName(String vehicleNickname) {
+    private Vehicle findVehicleByNickname(String vehicleNickname) {
         for (Vehicle vehicle : vehicles) {
             if(vehicle.nickname.equals(vehicleNickname)) {
                 return vehicle;

@@ -13,7 +13,6 @@ import android.support.annotation.Nullable;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
@@ -89,8 +88,7 @@ public abstract class ConfigWidgetActivity extends ListActivity {
             listView.setTextFilterEnabled(true);
 
             listView.setOnItemClickListener((parent, view, position, id) -> {
-                // When clicked, show a toast with the TextView text
-                String vehicleNickName = (String) ((TextView) view).getText();
+                String vehicleNickname = (String) ((TextView) view).getText();
 
                 int appWidgetId = AppWidgetManager.INVALID_APPWIDGET_ID;
 
@@ -105,22 +103,21 @@ public abstract class ConfigWidgetActivity extends ListActivity {
                     listActivity.finish();
                 }
 
-                setPreferencesWidget(appWidgetId, vehicleNickName, listActivity.getBaseContext());
-                //PreferencesManager.setClimateControlWidgetVehicleNickname(appWidgetId, vehicleNickName, listActivity.getBaseContext());
+                setPreferencesWidget(appWidgetId, vehicleNickname, listActivity.getBaseContext());
 
                 Intent resultValue = new Intent();
 
-                //Pass the original appWidgetId//
+                //Pass the original appWidgetId
                 resultValue.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId);
 
-                //Set the results from the ‘Configure’ Activity//
+                //Set the results from the ‘Configure’ Activity
                 setResult(RESULT_OK, resultValue);
 
-                //Finish the Activity//
+                //Finish the Activity
                 finish();
             });
         }
     }
 
-    public abstract void setPreferencesWidget(int appWidgetId, String vehicleNickName, Context context);
+    public abstract void setPreferencesWidget(int appWidgetId, String vehicleNickname, Context context);
 }
