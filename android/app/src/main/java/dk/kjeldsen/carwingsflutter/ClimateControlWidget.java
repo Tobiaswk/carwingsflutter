@@ -82,7 +82,7 @@ public class ClimateControlWidget extends AppWidgetProvider {
         }
 
         public void onPostExecute(Void v) {
-            remoteViews.setTextViewText(R.id.climateControlButton, "Climate " + (climateToggleStatus.get(appWidgetId) ? "On" : "Off"));
+            remoteViews.setTextViewText(R.id.controlButton, "Climate " + (climateToggleStatus.get(appWidgetId) ? "On" : "Off"));
 
             appWidgetManager.updateAppWidget(appWidgetId, remoteViews);
         }
@@ -96,8 +96,8 @@ public class ClimateControlWidget extends AppWidgetProvider {
             int appWidgetId = appWidgetIds[i];
 
             remoteViews = new RemoteViews(context.getPackageName(), R.layout.control_widget);
-            remoteViews.setTextViewText(R.id.climateControlButton, "Climate off");
-            remoteViews.setOnClickPendingIntent(R.id.climateControlButton, getPendingSelfIntent(context, getAction(CLIMATE_CONTROL_TOGGLE_CLICKED, appWidgetId)));
+            remoteViews.setTextViewText(R.id.controlButton, "Climate off");
+            remoteViews.setOnClickPendingIntent(R.id.controlButton, getPendingSelfIntent(context, getAction(CLIMATE_CONTROL_TOGGLE_CLICKED, appWidgetId)));
 
             appWidgetManager.updateAppWidget(appWidgetId, remoteViews);
         }
@@ -122,7 +122,8 @@ public class ClimateControlWidget extends AppWidgetProvider {
                 RemoteViews remoteViews;
 
                 remoteViews = new RemoteViews(context.getPackageName(), R.layout.control_widget);
-                remoteViews.setTextViewText(R.id.climateControlButton, "Climate Off");
+                remoteViews.setTextViewText(R.id.controlButton, "Climate Off");
+                remoteViews.setOnClickPendingIntent(R.id.controlButton, getPendingSelfIntent(context, getAction(CLIMATE_CONTROL_TOGGLE_CLICKED, appWidgetId)));
 
                 appWidgetManager.updateAppWidget(appWidgetId, remoteViews);
             }
@@ -131,7 +132,8 @@ public class ClimateControlWidget extends AppWidgetProvider {
                 RemoteViews remoteViews;
 
                 remoteViews = new RemoteViews(context.getPackageName(), R.layout.control_widget);
-                remoteViews.setTextViewText(R.id.climateControlButton, "Working...");
+                remoteViews.setTextViewText(R.id.controlButton, "Working...");
+                remoteViews.setOnClickPendingIntent(R.id.controlButton, getPendingSelfIntent(context, getAction(CLIMATE_CONTROL_TOGGLE_CLICKED, appWidgetId)));
 
                 appWidgetManager.updateAppWidget(appWidgetId, remoteViews);
 

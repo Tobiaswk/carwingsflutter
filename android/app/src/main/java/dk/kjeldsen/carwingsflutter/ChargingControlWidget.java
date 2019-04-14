@@ -51,7 +51,7 @@ public class ChargingControlWidget extends AppWidgetProvider {
         }
 
         public void onPostExecute(Void v) {
-            remoteViews.setTextViewText(R.id.climateControlButton, "Charging start");
+            remoteViews.setTextViewText(R.id.controlButton, "Charging start");
 
             appWidgetManager.updateAppWidget(appWidgetId, remoteViews);
         }
@@ -65,8 +65,8 @@ public class ChargingControlWidget extends AppWidgetProvider {
             int appWidgetId = appWidgetIds[i];
 
             remoteViews = new RemoteViews(context.getPackageName(), R.layout.control_widget);
-            remoteViews.setTextViewText(R.id.climateControlButton, "Charging start");
-            remoteViews.setOnClickPendingIntent(R.id.climateControlButton, getPendingSelfIntent(context, getAction(CHARGING_CONTROL_TOGGLE_CLICKED, appWidgetId)));
+            remoteViews.setTextViewText(R.id.controlButton, "Charging start");
+            remoteViews.setOnClickPendingIntent(R.id.controlButton, getPendingSelfIntent(context, getAction(CHARGING_CONTROL_TOGGLE_CLICKED, appWidgetId)));
 
             appWidgetManager.updateAppWidget(appWidgetId, remoteViews);
         }
@@ -89,7 +89,8 @@ public class ChargingControlWidget extends AppWidgetProvider {
                 RemoteViews remoteViews;
 
                 remoteViews = new RemoteViews(context.getPackageName(), R.layout.control_widget);
-                remoteViews.setTextViewText(R.id.climateControlButton, "Working...");
+                remoteViews.setTextViewText(R.id.controlButton, "Working...");
+                remoteViews.setOnClickPendingIntent(R.id.controlButton, getPendingSelfIntent(context, getAction(CHARGING_CONTROL_TOGGLE_CLICKED, appWidgetId)));
 
                 appWidgetManager.updateAppWidget(appWidgetId, remoteViews);
 
