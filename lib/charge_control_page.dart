@@ -17,12 +17,15 @@ class _ChargeControlPageState extends State<ChargeControlPage> {
 
   DateTime _startDate = new DateTime(new DateTime.now().year,
       new DateTime.now().month, new DateTime.now().day);
-  DateTime _currentDate = new DateTime(new DateTime.now().year,
-      new DateTime.now().month, new DateTime.now().day);
+  DateTime _currentDate = new DateTime(
+      new DateTime.now().year,
+      new DateTime.now().month,
+      new DateTime.now().day,
+      new DateTime.now().hour,
+      new DateTime.now().add(Duration(seconds: 5)).minute);
   DateTime _chargingScheduled;
 
   _ChargeControlPageState(this._session);
-
 
   @override
   void initState() {
@@ -35,7 +38,7 @@ class _ChargeControlPageState extends State<ChargeControlPage> {
     preferencesManager.getChargingSchedule().then((chargingSchedule) {
       setState(() {
         // Charging is "expired"
-        if(chargingSchedule.isAfter(DateTime.now())) {
+        if (chargingSchedule.isAfter(DateTime.now())) {
           _chargingScheduled = chargingSchedule;
         }
       });
@@ -46,7 +49,8 @@ class _ChargeControlPageState extends State<ChargeControlPage> {
     try {
       await _session.vehicle.requestBatteryStatus();
     } finally {
-      CarwingsBattery battery = await _session.vehicle.requestBatteryStatusLatest();
+      CarwingsBattery battery =
+          await _session.vehicle.requestBatteryStatusLatest();
       setState(() {
         _isCharging = battery.isCharging;
         _isConnected = battery.isConnected;
@@ -61,10 +65,11 @@ class _ChargeControlPageState extends State<ChargeControlPage> {
       return;
     }
     showDatePicker(
-        context: context,
-        initialDate: _currentDate,
-        firstDate: _startDate,
-        lastDate: new DateTime.now().add(new Duration(days: 30))).then((date) {
+            context: context,
+            initialDate: _currentDate,
+            firstDate: _startDate,
+            lastDate: new DateTime.now().add(new Duration(days: 30)))
+        .then((date) {
       if (date != null) {
         showTimePicker(context: context, initialTime: TimeOfDay.now())
             .then((time) {
@@ -116,15 +121,11 @@ class _ChargeControlPageState extends State<ChargeControlPage> {
               onPressed: () => _chargingSchedule(true),
             ),
             Text(
-              'Charging is ${_chargeControlReady ? _isCharging
-                ? 'on'
-                : 'off' : 'updating...'}',
+              'Charging is ${_chargeControlReady ? _isCharging ? 'on' : 'off' : 'updating...'}',
               style: TextStyle(fontSize: 18.0),
             ),
             Text(
-              'Cable is ${_chargeControlReady ? _isConnected
-                  ? 'connected'
-                  : 'not connected' : 'updating...'}',
+              'Cable is ${_chargeControlReady ? _isConnected ? 'connected' : 'not connected' : 'updating...'}',
             ),
             IconButton(
               icon: Icon(Icons.access_time),
@@ -136,9 +137,7 @@ class _ChargeControlPageState extends State<ChargeControlPage> {
             ),
             Text(
               _chargingScheduled != null
-                  ? 'At ${ DateFormat('HH:mm \'this\' EEEE')
-                  .format(
-                  _chargingScheduled)}'
+                  ? 'At ${DateFormat('HH:mm \'this\' EEEE').format(_chargingScheduled)}'
                   : 'Not scheduled',
               style: TextStyle(fontSize: 18.0),
             ),
