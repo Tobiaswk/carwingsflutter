@@ -54,13 +54,11 @@ public class ClimateControlWidget extends ControlWidget {
 
                 boolean toggle = climateToggleStatus.get(appWidgetId);
                 if(climateToggleStatus.get(appWidgetId)) {
-                    if(carwingsSession.climateControlOff(vehicleName)) {
-                        toggle = false;
-                    }
+                    carwingsSession.climateControlOff(vehicleName);
+                    toggle = false;
                 } else {
-                    if (carwingsSession.climateControlOn(vehicleName)) {
-                        toggle = true;
-                    }
+                    carwingsSession.climateControlOn(vehicleName);
+                    toggle = true;
 
                     // Set Climate Control widget to off after preheat for 15 minutes
                     PendingIntent pendingIntent = getPendingSelfIntent(contexts[0], CLIMATE_CONTROL_CLEAR, appWidgetId);
