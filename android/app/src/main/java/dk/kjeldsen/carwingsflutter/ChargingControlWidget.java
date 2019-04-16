@@ -1,8 +1,6 @@
 package dk.kjeldsen.carwingsflutter;
 
-import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
-import android.appwidget.AppWidgetProvider;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
@@ -14,24 +12,22 @@ import org.json.JSONObject;
 // https://stackoverflow.com/questions/14798073/button-click-event-for-android-widget
 // https://stackoverflow.com/questions/17380168/update-android-widget-using-async-task-with-an-image-from-the-internet
 // https://stackoverflow.com/questions/18545773/android-update-widget-from-broadcast-receiver
-public class ChargingControlWidget extends AppWidgetProvider {
+public class ChargingControlWidget extends ControlWidget {
 
     private static final String CHARGING_CONTROL_TOGGLE_CLICKED = "chargingToggleClicked";
 
-    public class ChargingControlToggleTask extends AsyncTask<Context, Void, Void> {
+    public class ChargingControlToggleTask extends AsyncTask<Context, Void, Context> {
 
-        private RemoteViews remoteViews;
         private AppWidgetManager appWidgetManager;
         private int appWidgetId;
 
-        public ChargingControlToggleTask(RemoteViews remoteViews, AppWidgetManager appWidgetManager, int widgetId) {
-            this.remoteViews = remoteViews;
+        public ChargingControlToggleTask(AppWidgetManager appWidgetManager, int widgetId) {
             this.appWidgetManager = appWidgetManager;
             this.appWidgetId = widgetId;
         }
 
         @Override
-        protected Void doInBackground(Context... contexts) {
+        protected Context doInBackground(Context... contexts) {
             CarwingsSession carwingsSession = new CarwingsSession();
             try {
                 JSONObject loginSettings = PreferencesManager.getLoginSettings(contexts[0]);
@@ -50,8 +46,8 @@ public class ChargingControlWidget extends AppWidgetProvider {
             return null;
         }
 
-        public void onPostExecute(Void v) {
-            remoteViews.setTextViewText(R.id.controlButton, "Charging start");
+        public void onPostExecute(Context context) {
+            RemoteViews remoteViews = getRemoteViews(context, "Charging start", CHARGING_CONTROL_TOGGLE_CLICKED, appWidgetId);
 
             appWidgetManager.updateAppWidget(appWidgetId, remoteViews);
         }
@@ -59,19 +55,14 @@ public class ChargingControlWidget extends AppWidgetProvider {
 
     @Override
     public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
-        RemoteViews remoteViews;
-
         for (int i = 0; i < appWidgetIds.length; i++) {
             int appWidgetId = appWidgetIds[i];
 
-            remoteViews = new RemoteViews(context.getPackageName(), R.layout.control_widget);
-            remoteViews.setTextViewText(R.id.controlButton, "Charging start");
-            remoteViews.setOnClickPendingIntent(R.id.controlButton, getPendingSelfIntent(context, getAction(CHARGING_CONTROL_TOGGLE_CLICKED, appWidgetId)));
+            RemoteViews remoteViews = getRemoteViews(context, "Charging start", CHARGING_CONTROL_TOGGLE_CLICKED, appWidgetId);;
 
             appWidgetManager.updateAppWidget(appWidgetId, remoteViews);
         }
     }
-
 
     @Override
     public void onReceive(Context context, Intent intent) {
@@ -86,26 +77,13 @@ public class ChargingControlWidget extends AppWidgetProvider {
             int appWidgetId = appWidgetIds[i];
 
             if (getAction(CHARGING_CONTROL_TOGGLE_CLICKED, appWidgetId).equals(intent.getAction())) {
-                RemoteViews remoteViews;
-
-                remoteViews = new RemoteViews(context.getPackageName(), R.layout.control_widget);
-                remoteViews.setTextViewText(R.id.controlButton, "Working...");
-                remoteViews.setOnClickPendingIntent(R.id.controlButton, getPendingSelfIntent(context, getAction(CHARGING_CONTROL_TOGGLE_CLICKED, appWidgetId)));
+                RemoteViews remoteViews = getRemoteViews(context, "Working...", CHARGING_CONTROL_TOGGLE_CLICKED, appWidgetId);
 
                 appWidgetManager.updateAppWidget(appWidgetId, remoteViews);
 
-                new ChargingControlToggleTask(remoteViews, appWidgetManager, appWidgetId).execute(context);
+                new ChargingControlToggleTask(appWidgetManager, appWidgetId).execute(context);
             }
         }
     }
 
-    private String getAction(String action, int appWidgetId) {
-        return action + appWidgetId;
-    }
-
-    protected PendingIntent getPendingSelfIntent(Context context, String action) {
-        Intent intent = new Intent(context, getClass());
-        intent.setAction(action);
-        return PendingIntent.getBroadcast(context, 0, intent, 0);
-    }
 }

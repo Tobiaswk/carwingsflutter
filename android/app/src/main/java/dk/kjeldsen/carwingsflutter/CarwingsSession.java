@@ -223,7 +223,7 @@ public class CarwingsSession {
                 put("DCMID", session.dcmId);
                 put("VIN", vin);
                 put("tz", session.timeZone);
-                put("ExecuteTime", new SimpleDateFormat("yyyy-MM-dd HH:mm").format(new DateTime().withZone(DateTimeZone.UTC).toLocalDateTime().toDate()));
+                put("ExecuteTime", new SimpleDateFormat("yyyy-MM-dd HH:mm").format(new DateTime().plusSeconds(5).withZone(DateTimeZone.UTC).toLocalDateTime().toDate()));
             }})) == 200;
         }
     }
