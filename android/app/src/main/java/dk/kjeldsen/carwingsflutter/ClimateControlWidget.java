@@ -52,7 +52,7 @@ public class ClimateControlWidget extends ControlWidget {
                     climateToggleStatus.put(appWidgetId, false);
                 }
 
-                boolean toggle = climateToggleStatus.get(appWidgetId);
+                boolean toggle;
                 if(climateToggleStatus.get(appWidgetId)) {
                     carwingsSession.climateControlOff(vehicleName);
                     toggle = false;
