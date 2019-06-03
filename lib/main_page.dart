@@ -144,13 +144,11 @@ class _MainPageState extends State<MainPage> {
             ],
           ))),
           _buildVehicleListTiles(context),
-          !_session.isFirstGeneration
-              ? new ListTile(
-                  leading: const Icon(Icons.map),
-                  title: const Text('Locate my vehicle'),
-                  onTap: () => _locateVehicleGoogleMaps(),
-                )
-              : new Column(),
+          new ListTile(
+            leading: const Icon(Icons.map),
+            title: const Text('Locate my vehicle'),
+            onTap: () => _locateVehicleGoogleMaps(),
+          ),
           const Divider(),
           new ListTile(
             leading: const Icon(Icons.settings),
