@@ -144,11 +144,13 @@ class _MainPageState extends State<MainPage> {
             ],
           ))),
           _buildVehicleListTiles(context),
-          new ListTile(
-            leading: const Icon(Icons.map),
-            title: const Text('Locate my vehicle'),
-            onTap: () => _locateVehicleGoogleMaps(),
-          ),
+          !_session.isFirstGeneration
+              ? new ListTile(
+                  leading: const Icon(Icons.map),
+                  title: const Text('Locate my vehicle'),
+                  onTap: () => _locateVehicleGoogleMaps(),
+                )
+              : new Column(),
           const Divider(),
           new ListTile(
             leading: const Icon(Icons.settings),
@@ -234,7 +236,10 @@ class _MainPageState extends State<MainPage> {
       backgroundColor: Theme.of(context).primaryColor,
       appBar: AppBar(title: new Text('Dashboard'), actions: [
         new IconButton(
-            icon: Icon(Icons.format_list_numbered, color: Colors.white,),
+            icon: Icon(
+              Icons.format_list_numbered,
+              color: Colors.white,
+            ),
             onPressed: _openTripDetailListPage),
         new IconButton(
             icon: new ImageIcon(AssetImage('images/aircondition.png'),
