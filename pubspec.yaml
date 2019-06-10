@@ -7,9 +7,9 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  shared_preferences: ^0.5.2
-  json_annotation: ^2.2.0
-  url_launcher: ^5.0.2
+  shared_preferences: ^0.5.3+1
+  json_annotation: ^2.4.0
+  url_launcher: ^5.0.3
   flutter_payments:
     git: https://github.com/Tobiaswk/flutter_payments.git
   dartcarwings:
@@ -24,7 +24,7 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  json_serializable: ^2.2.1 #  flutter packages pub run build_runner build
+  json_serializable: ^3.0.0 #  flutter packages pub run build_runner build
   build_runner: ^1.0.0
 
 
