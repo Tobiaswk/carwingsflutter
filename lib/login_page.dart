@@ -182,11 +182,19 @@ class _LoginPageState extends State<LoginPage> {
                         TextFormField(
                           controller: _usernameTextController,
                           autofocus: false,
-                          decoration: InputDecoration(labelText: 'Username'),
+                          decoration: InputDecoration(
+                              labelText: 'Username',
+                              enabledBorder: UnderlineInputBorder(
+                                borderSide: BorderSide(color: Colors.white),
+                              )),
                         ),
                         TextFormField(
                           controller: _passwordTextController,
-                          decoration: InputDecoration(labelText: 'Password'),
+                          decoration: InputDecoration(
+                              labelText: 'Password',
+                              enabledBorder: UnderlineInputBorder(
+                                borderSide: BorderSide(color: Colors.white),
+                              )),
                           obscureText: true,
                         ),
                         new Row(
