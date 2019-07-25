@@ -17,7 +17,7 @@ import java.util.concurrent.TimeUnit;
 
 public class CarwingsSession {
 
-    final String baseUrl = "https://gdcportalgw.its-mo.com/api_v190228_NE/gdc/";
+    final String baseUrl = "https://gdcportalgw.its-mo.com/api_v190426_NE/gdc/";
 
     // Result of the call to InitialApp.php, which appears to
     // always be the same.  It'll probably break at some point but
@@ -25,7 +25,7 @@ public class CarwingsSession {
     final String blowfishKey = "uyI5Dj9g8VCOFDnBRUbr3g";
 
     // Extracted from the NissanConnect EV app
-    final String initialAppStrings = "geORNtsZe5I4lRGjG9GZiA";
+    final String initialAppStrings = "9s5rfKVuMrT03RtzajWNcA";
 
     final OkHttpClient client;
 
@@ -60,7 +60,7 @@ public class CarwingsSession {
     }
 
     private JSONObject request(String endpoint, Map<String, String> params) throws IOException, JSONException {
-        params.put("initial_app_strings", initialAppStrings);
+        params.put("initial_app_str", initialAppStrings);
 
         if (vehicle != null && vehicle.customSessionID != null) {
             params.put("custom_sessionid", vehicle.customSessionID);
@@ -91,7 +91,7 @@ public class CarwingsSession {
         this.password = password;
         this.region = getRegion(region);
 
-        String basePrm = (String) request("InitialApp.php", new HashMap() {{
+        String basePrm = (String) request("InitialApp_v2.php", new HashMap() {{
             put("RegionCode", CarwingsSession.this.region);
             put("lg", "en-US");
         }}).get("baseprm");
