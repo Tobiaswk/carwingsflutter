@@ -1,14 +1,8 @@
-import 'package:carwingsflutter/battery_latest_card.dart';
-import 'package:carwingsflutter/charge_control_page.dart';
-import 'package:carwingsflutter/climate_control_page.dart';
 import 'package:carwingsflutter/login_page.dart';
 import 'package:carwingsflutter/preferences_page.dart';
-import 'package:carwingsflutter/statistics_daily_card.dart';
-import 'package:carwingsflutter/statistics_monthly_card.dart';
-import 'package:carwingsflutter/trip_detail_list.dart';
+import 'package:carwingsflutter/session.dart';
 import 'package:carwingsflutter/util.dart';
-import 'package:carwingsflutter/vehicle_page.dart';
-import 'package:dartcarwings/dartcarwings.dart';
+import 'package:carwingsflutter/widget_delegator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_payments/flutter_payments.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -17,7 +11,7 @@ import 'dart:io' show Platform;
 class MainPage extends StatefulWidget {
   MainPage(this.session);
 
-  final CarwingsSession session;
+  final Session session;
 
   @override
   _MainPageState createState() => _MainPageState(session);
@@ -28,7 +22,7 @@ class _MainPageState extends State<MainPage> {
 
   static final String SKU_DONATE = 'donate2';
 
-  CarwingsSession _session;
+  Session _session;
 
   var _selectedVehicleValue; // Represents the current selected vehicle by nickname
   bool _donated = false;
@@ -68,24 +62,33 @@ class _MainPageState extends State<MainPage> {
 
   _initSelectedVehicle() {
     setState(() {
-      _selectedVehicleValue = _session.vehicle.nickname;
+      _selectedVehicleValue = _session.getVehicle().nickname;
     });
   }
 
-  _locateVehicleGoogleMaps() {
-    Util.showLoadingDialog(context, ('Locating vehicle...'));
-    _session.vehicle.requestLocation().then((location) {
+  _locateVehicleGoogleMaps() async {
+    Util.showLoadingDialog(context, 'Locating vehicle...');
+    try {
+      var location;
+      if (_session.isNorthAmerica()) {
+        location = await _session.nissanConnectNa.vehicle
+            .requestLocation(new DateTime.now());
+      } else {
+        location = await _session.carwings.vehicle.requestLocation();
+      }
       launch(
           'https://www.google.com/maps/search/?api=1&query=${location.latitude},${location.longitude}');
-    }).catchError((error) {
+    } catch (error) {
       _snackBar('Could not locate your vehicle!');
-    }).whenComplete(() => Util.dismissLoadingDialog(context));
+    } finally {
+      Util.dismissLoadingDialog(context);
+    }
   }
 
   _openVehicleInfoPage(vehicle) {
     Navigator.of(context).push(new MaterialPageRoute<Null>(
       builder: (BuildContext context) {
-        return new VehiclePage(vehicle: vehicle);
+        return WidgetDelegator.vehiclePage(_session);
       },
     ));
   }
@@ -93,7 +96,7 @@ class _MainPageState extends State<MainPage> {
   _openClimateControlPage() {
     Navigator.of(context).push(new MaterialPageRoute<Null>(
       builder: (BuildContext context) {
-        return new ClimateControlPage(_session);
+        return WidgetDelegator.climateControlPage(_session);
       },
     ));
   }
@@ -101,7 +104,7 @@ class _MainPageState extends State<MainPage> {
   _openChargingPage() {
     Navigator.of(context).push(new MaterialPageRoute<Null>(
       builder: (BuildContext context) {
-        return new ChargeControlPage(_session);
+        return WidgetDelegator.chargingControlPage(_session);
       },
     ));
   }
@@ -109,7 +112,7 @@ class _MainPageState extends State<MainPage> {
   _openTripDetailListPage() {
     Navigator.of(context).push(new MaterialPageRoute<Null>(
       builder: (BuildContext context) {
-        return new TripDetailList(_session);
+        return WidgetDelegator.tripDetailsPage(_session);
       },
     ));
   }
@@ -147,7 +150,7 @@ class _MainPageState extends State<MainPage> {
           new ListTile(
             leading: const Icon(Icons.map),
             title: const Text('Locate my vehicle'),
-            onTap: () => _locateVehicleGoogleMaps(),
+            onTap: _locateVehicleGoogleMaps,
           ),
           const Divider(),
           new ListTile(
@@ -172,8 +175,7 @@ class _MainPageState extends State<MainPage> {
     });
 
     // Set selected vehicle on session by vehicle nickname
-    _session.vehicle =
-        _session.vehicles.firstWhere((v) => v.nickname == nickname);
+    _session.changeVehicle(nickname);
 
     // Push replacement page to force refresh with selected vehicle
     Navigator.of(context).pushReplacement(new MaterialPageRoute<Null>(
@@ -185,7 +187,8 @@ class _MainPageState extends State<MainPage> {
 
   Column _buildVehicleListTiles(context) {
     List<ListTile> accountListTiles = new List<ListTile>();
-    for (CarwingsVehicle vehicle in _session.vehicles) {
+    var vehicles = _session.getVehicles();
+    for (dynamic vehicle in vehicles) {
       accountListTiles.add(new ListTile(
         leading: new ImageIcon(new AssetImage('images/sports-car.png')),
         trailing: new Radio(
@@ -249,15 +252,9 @@ class _MainPageState extends State<MainPage> {
       ]),
       body: ListView(
         children: <Widget>[
-          new BatteryLatestCard(
-            _session,
-          ),
-          new StatisticsDailyCard(
-            _session,
-          ),
-          new StatisticsMonthlyCard(
-            _session,
-          ),
+          WidgetDelegator.batteryLatestCard(_session),
+          WidgetDelegator.statisticsDailyCard(_session),
+          WidgetDelegator.statisticsMonthlyCard(_session),
         ],
       ),
       drawer: _buildDrawer(context),

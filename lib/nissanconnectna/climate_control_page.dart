@@ -1,16 +1,16 @@
+import 'package:carwingsflutter/session.dart';
 import 'package:carwingsflutter/util.dart';
-import 'package:dartcarwings/dartcarwings.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 class _ClimateControlPageState extends State<ClimateControlPage> {
   final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
 
-  CarwingsSession _session;
+  Session _session;
 
-  bool _climateControlIsReady = false;
+  bool _climateControlIsReady = true;
   bool _climateControlOn = false;
-  CarwingsCabinTemperature _cabinTemperature;
+  String _cabinTemperature;
 
   DateTime _startDate =
       DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day);
@@ -23,23 +23,13 @@ class _ClimateControlPageState extends State<ClimateControlPage> {
   @override
   void initState() {
     super.initState();
-    _session.vehicle.requestHVACStatus().then((hvac) {
+    _session.nissanConnectNa.vehicle.requestClimateControlScheduled().then((date) {
       setState(() {
-        _climateControlOn = hvac.isRunning;
-        _climateControlIsReady = true;
+        _climateControlScheduled = date;
       });
-      _session.vehicle.requestClimateControlScheduleGet().then((date) {
-        setState(() {
-          _climateControlScheduled = date;
-        });
-        if(!_session.isFirstGeneration) {
-          _session.vehicle.requestCabinTemperature().then((cabinTemperature) {
-            setState(() {
-              _cabinTemperature = cabinTemperature;
-            });
-          });
-        }
-      });
+    });
+    setState(() {
+      _cabinTemperature = _session.nissanConnectNa.vehicle.incTemperature;
     });
   }
 
@@ -48,8 +38,8 @@ class _ClimateControlPageState extends State<ClimateControlPage> {
       Util.showLoadingDialog(context);
       _climateControlOn = !_climateControlOn;
       if (_climateControlOn) {
-        _session.vehicle
-            .requestClimateControlSchedule(DateTime.now().add(Duration(seconds: 5)))
+        _session.nissanConnectNa.vehicle
+            .requestClimateControlOn(DateTime.now().add(Duration(seconds: 5)))
             .then((_) {
           _snackbar('Climate Control was turned on');
         }).catchError((error) {
@@ -57,7 +47,7 @@ class _ClimateControlPageState extends State<ClimateControlPage> {
           _snackbar('Climate Control failed to turn on');
         }).whenComplete(() => Util.dismissLoadingDialog(context));
       } else {
-        _session.vehicle.requestClimateControlOff().then((_) {
+        _session.nissanConnectNa.vehicle.requestClimateControlOff().then((_) {
           _snackbar('Climate Control was turned off');
         }).catchError((error) {
           _climateControlOn = !_climateControlOn;
@@ -69,7 +59,7 @@ class _ClimateControlPageState extends State<ClimateControlPage> {
 
   _climateControlScheduledCancel() {
     Util.showLoadingDialog(context);
-    _session.vehicle.requestClimateControlScheduleCancel().then((_) {
+    _session.nissanConnectNa.vehicle.requestClimateControlScheduledCancel().then((_) {
       _snackbar('Scheduled Climate Control was canceled');
       setState(() {
         _climateControlScheduled = null;
@@ -96,8 +86,8 @@ class _ClimateControlPageState extends State<ClimateControlPage> {
               _currentDate = DateTime(
                   date.year, date.month, date.day, time.hour, time.minute);
               Util.showLoadingDialog(context);
-              _session.vehicle
-                  .requestClimateControlSchedule(_currentDate)
+              _session.nissanConnectNa.vehicle
+                  .requestClimateControlOn(_currentDate)
                   .then((_) {
                 setState(() {
                   _climateControlScheduled = _currentDate;
@@ -139,10 +129,8 @@ class _ClimateControlPageState extends State<ClimateControlPage> {
               'Climate Control is ${_climateControlIsReady ? _climateControlOn ? 'on' : 'off' : 'updating...'}',
               style: TextStyle(fontSize: 18.0),
             ),
-            !_session.isFirstGeneration
-                ? Text(
-                    'Cabin temperature is ${_cabinTemperature != null ? '${_cabinTemperature.temperature}°' : 'updating...'}')
-                : Column(),
+            Text(
+                'Cabin temperature is ${_cabinTemperature != null ? '${_cabinTemperature}°' : 'updating...'}'),
             IconButton(
               icon: Icon(Icons.access_time),
               iconSize: 200.0,
@@ -167,7 +155,7 @@ class _ClimateControlPageState extends State<ClimateControlPage> {
 class ClimateControlPage extends StatefulWidget {
   ClimateControlPage(this.session);
 
-  CarwingsSession session;
+  Session session;
 
   @override
   _ClimateControlPageState createState() => _ClimateControlPageState(session);

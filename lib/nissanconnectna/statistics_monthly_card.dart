@@ -1,14 +1,15 @@
 import 'package:carwingsflutter/preferences_manager.dart';
 import 'package:carwingsflutter/preferences_types.dart';
+import 'package:carwingsflutter/session.dart';
 import 'package:carwingsflutter/widget_rotater.dart';
-import 'package:dartcarwings/dartcarwings.dart';
+import 'package:dartnissanconnectna/dartnissanconnectna.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 class StatisticsMonthlyCard extends StatefulWidget {
   StatisticsMonthlyCard(this.session);
 
-  final CarwingsSession session;
+  final Session session;
 
   @override
   _StatisticsMonthlyCardState createState() =>
@@ -20,12 +21,10 @@ class _StatisticsMonthlyCardState extends State<StatisticsMonthlyCard> {
 
   GeneralSettings _generalSettings = new GeneralSettings();
 
-  CarwingsSession _session;
-  CarwingsStatsMonthly _statsMonthly;
+  Session _session;
+  NissanConnectStats _stats;
 
-  DateTime _currentMonth = DateTime(DateTime.now().year, DateTime.now().month);
-
-  bool _isUpdating = false;
+  bool _isLoading = false;
 
   _StatisticsMonthlyCardState(this._session);
 
@@ -35,11 +34,11 @@ class _StatisticsMonthlyCardState extends State<StatisticsMonthlyCard> {
     _update();
   }
 
-  _getMonthlyStatistics() async {
-    CarwingsStatsMonthly statsMonthly =
-        await _session.vehicle.requestStatisticsMonthly(_currentMonth);
+  _getDailyStatistics() async {
+    NissanConnectStats statsDaily = await _session.nissanConnectNa.vehicle
+        .requestMonthlyStatistics(new DateTime.now());
     setState(() {
-      this._statsMonthly = statsMonthly;
+      this._stats = statsDaily;
     });
     GeneralSettings generalSettings =
         await preferencesManager.getGeneralSettings();
@@ -50,46 +49,28 @@ class _StatisticsMonthlyCardState extends State<StatisticsMonthlyCard> {
 
   _update() async {
     setState(() {
-      _isUpdating = true;
+      _isLoading = true;
     });
     try {
-      await _getMonthlyStatistics();
+      await _getDailyStatistics();
     } finally {
       setState(() {
-        _isUpdating = false;
+        _isLoading = false;
       });
     }
   }
 
-  // Present a date picker were only 1st day in each month is selectable
-  // Used for changing monthly statistics month
-  _changeStatisticsMonth() {
-    // selectableDayPredicate is here to only make 1st day in month selectable
-    // firstDate is 1 year back
-    showDatePicker(
-        context: context,
-        initialDate: _currentMonth,
-        firstDate: _currentMonth.subtract(new Duration(days: 365)),
-        lastDate: new DateTime.now(),
-        selectableDayPredicate: (date) => date.day == 1).then((date) {
-      if (date != null) {
-        _currentMonth = date;
-        _update();
-      }
-    });
-  }
-
   _withValues(
-    DateTime date,
-    String electricCostScale,
-    String mileageUnit,
-    String totalNumberOfTrips,
-    String totalKWhPerMileage,
-    String totalMileagePerKWh,
-    String totalConsumptionKWh,
-    String totalTravelDistanceMileage,
-    String totalCO2Reduction,
-  ) {
+      DateTime date,
+      String kWhPerKilometers,
+      String kWhPerMiles,
+      String kilometersPerKWh,
+      String milesPerKWh,
+      String travelDistanceKilometers,
+      String travelDistanceMiles,
+      String kWhUsed,
+      Duration travelTime,
+      String co2ReductionKg) {
     return new Material(
         borderRadius: new BorderRadius.all(new Radius.circular(4.0)),
         elevation: 2.0,
@@ -110,22 +91,14 @@ class _StatisticsMonthlyCardState extends State<StatisticsMonthlyCard> {
                               style: TextStyle(fontSize: 20.0),
                             ),
                             new Padding(padding: const EdgeInsets.all(3.0)),
-                            new InkWell(
-                              onTap: _changeStatisticsMonth,
-                              child: new Row(
-                                children: <Widget>[
-                                  Icon(Icons.access_time),
-                                  new Padding(
-                                      padding: const EdgeInsets.all(3.0)),
-                                  Text(date != null
-                                      ? new DateFormat("MMMM").format(date)
-                                      : '-'),
-                                ],
-                              ),
-                            )
+                            Icon(Icons.access_time),
+                            new Padding(padding: const EdgeInsets.all(3.0)),
+                            Text(date != null
+                                ? new DateFormat("MMMM").format(date)
+                                : '-'),
                           ],
                         ),
-                        _isUpdating
+                        _isLoading
                             ? WidgetRotater(IconButton(
                                 icon: Icon(Icons.refresh),
                                 onPressed: () => {},
@@ -142,9 +115,9 @@ class _StatisticsMonthlyCardState extends State<StatisticsMonthlyCard> {
                         new Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
-                            Text('Trips'),
+                            Text('Driving efficiency'),
                             Text(
-                              '$totalNumberOfTrips',
+                              '${_generalSettings.useMileagePerKWh ? _generalSettings.useMiles ? milesPerKWh : kilometersPerKWh : _generalSettings.useMiles ? kWhPerMiles : kWhPerKilometers}',
                               style: TextStyle(fontSize: 25.0),
                             )
                           ],
@@ -152,21 +125,11 @@ class _StatisticsMonthlyCardState extends State<StatisticsMonthlyCard> {
                         new Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
-                            Text('Distance driven'),
-                            Text(
-                              '$totalTravelDistanceMileage',
-                              style: TextStyle(fontSize: 25.0),
-                            ),
-                          ],
-                        ),
-                        new Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: <Widget>[
                             Text('Consumption'),
                             Text(
-                              '$totalConsumptionKWh',
+                              kWhUsed,
                               style: TextStyle(fontSize: 25.0),
-                            ),
+                            )
                           ],
                         )
                       ],
@@ -177,15 +140,39 @@ class _StatisticsMonthlyCardState extends State<StatisticsMonthlyCard> {
                         new Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
-                            Text('Driving efficiency'),
+                            Text('Distance'),
                             Text(
-                              '${_generalSettings.useMileagePerKWh ? totalMileagePerKWh : totalKWhPerMileage}',
+                              _generalSettings.useMiles
+                                  ? travelDistanceMiles
+                                  : travelDistanceKilometers,
                               style: TextStyle(fontSize: 25.0),
                             )
                           ],
                         ),
+                        new Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                            Text('Travel time'),
+                            Text(
+                              '${travelTime.inHours == 0 ? '-' : '${travelTime.inHours} hrs'}',
+                              style: TextStyle(fontSize: 25.0),
+                            )
+                          ],
+                        ),
+                        _generalSettings.showCO2
+                            ? new Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: <Widget>[
+                                  Text('CO2 savings'),
+                                  Text(
+                                    co2ReductionKg,
+                                    style: TextStyle(fontSize: 25.0),
+                                  )
+                                ],
+                              )
+                            : new Column(),
                       ],
-                    )
+                    ),
                   ],
                 ))));
   }
@@ -193,28 +180,30 @@ class _StatisticsMonthlyCardState extends State<StatisticsMonthlyCard> {
   @override
   Widget build(BuildContext context) {
     return new Container(
-        padding: const EdgeInsets.fromLTRB(15.0, 20.0, 15.0, 15.0),
-        child: _statsMonthly != null
+        padding: const EdgeInsets.fromLTRB(15.0, 20.0, 15.0, 0.0),
+        child: _stats != null
             ? _withValues(
-                _statsMonthly.dateTime,
-                _statsMonthly.electricCostScale,
-                _statsMonthly.mileageUnit,
-                _statsMonthly.totalNumberOfTrips,
-                _statsMonthly.totalkWhPerMileage,
-                _statsMonthly.totalMileagePerKWh,
-                _statsMonthly.totalConsumptionKWh,
-                _statsMonthly.totalTravelDistanceMileage,
-                _statsMonthly.totalCO2Reduction,
+                _stats.date,
+                _stats.kWhPerKilometers,
+                _stats.kWhPerMiles,
+                _stats.kilometersPerKWh,
+                _stats.milesPerKWh,
+                _stats.travelDistanceKilometers,
+                _stats.travelDistanceMiles,
+                _stats.kWhUsed,
+                _stats.travelTime,
+                _stats.co2ReductionKg,
               )
             : _withValues(
                 null,
-                'kWh/km',
-                'km',
                 '-',
                 '-',
                 '-',
                 '-',
                 '-',
+                '-',
+                '-',
+                new Duration(minutes: 0),
                 '-',
               ));
   }

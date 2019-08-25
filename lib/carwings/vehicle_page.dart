@@ -1,12 +1,12 @@
-import 'package:dartcarwings/dartcarwings.dart';
+import 'package:carwingsflutter/session.dart';
 import 'package:flutter/material.dart';
 
 class _VehiclePageState extends State<VehiclePage> {
 
-  CarwingsVehicle _vehicle;
+  Session _session;
 
 
-  _VehiclePageState(this._vehicle);
+  _VehiclePageState(this._session);
 
   @override
   Widget build(BuildContext context) {
@@ -17,15 +17,15 @@ class _VehiclePageState extends State<VehiclePage> {
         children: <Widget>[
           ListTile(
             title: const Text('Name'),
-            subtitle: Text(_vehicle.nickname),
+            subtitle: Text(_session.carwings.vehicle.nickname),
           ),
           ListTile(
             title: Text('Model'),
-            subtitle: Text(_vehicle.model),
+            subtitle: Text(_session.carwings.vehicle.model),
           ),
           ListTile(
             title: Text('VIN'),
-            subtitle: Text(_vehicle.vin),
+            subtitle: Text(_session.carwings.vehicle.vin),
           ),
         ],
       ),
@@ -34,10 +34,10 @@ class _VehiclePageState extends State<VehiclePage> {
 }
 
 class VehiclePage extends StatefulWidget {
-  VehiclePage({Key key, this.vehicle}) : super(key: key);
+  VehiclePage(this.session);
   
-  CarwingsVehicle vehicle;
+  Session session;
 
   @override
-  _VehiclePageState createState() => new _VehiclePageState(vehicle);
+  _VehiclePageState createState() => new _VehiclePageState(session);
 }

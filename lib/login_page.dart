@@ -2,6 +2,7 @@ import 'package:blowfish_native/blowfish_native.dart';
 import 'package:carwingsflutter/help_page.dart';
 import 'package:carwingsflutter/main_page.dart';
 import 'package:carwingsflutter/preferences_manager.dart';
+import 'package:carwingsflutter/session.dart';
 import 'package:carwingsflutter/util.dart';
 import 'package:dartcarwings/dartcarwings.dart';
 import 'package:flutter/material.dart';
@@ -10,7 +11,7 @@ import 'package:http/http.dart' as http;
 class LoginPage extends StatefulWidget {
   LoginPage(this.session, [this.autoLogin = true]);
 
-  CarwingsSession session;
+  Session session;
   bool autoLogin;
 
   @override
@@ -22,7 +23,7 @@ class _LoginPageState extends State<LoginPage> {
 
   PreferencesManager preferencesManager = new PreferencesManager();
 
-  CarwingsSession _session;
+  Session _session;
 
   bool _autoLogin;
 
@@ -53,7 +54,7 @@ class _LoginPageState extends State<LoginPage> {
     });
     preferencesManager.getGeneralSettings().then((generalSettings) {
       if (generalSettings.timeZoneOverride) {
-        _session.setTimeZoneOverride(generalSettings.timeZone);
+        _session.carwings.setTimeZoneOverride(generalSettings.timeZone);
       }
     });
     _getServerStatus();
@@ -72,10 +73,13 @@ class _LoginPageState extends State<LoginPage> {
 
     _getServerStatus();
 
+    var username = _usernameTextController.text.trim();
+    var password = _passwordTextController.text.trim();
+
     _session
         .login(
-            username: _usernameTextController.text.trim(),
-            password: _passwordTextController.text.trim(),
+            username: username,
+            password: password,
             blowfishEncryptCallback: (String key, String password) async {
               var encodedPassword = await BlowfishNative.encrypt(key, password);
               return encodedPassword;
@@ -89,7 +93,7 @@ class _LoginPageState extends State<LoginPage> {
 
       if (_rememberLoginSettings) {
         preferencesManager.setLoginSettings(
-            _session.username, _session.password, _regionSelected);
+            username, password, _regionSelected);
       } else {
         preferencesManager.clearLoginSettings();
       }

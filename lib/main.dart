@@ -2,7 +2,7 @@ import 'package:carwingsflutter/login_page.dart';
 import 'package:carwingsflutter/preferences_page.dart';
 import 'package:carwingsflutter/preferences_manager.dart';
 import 'package:carwingsflutter/preferences_types.dart';
-import 'package:dartcarwings/dartcarwings.dart';
+import 'package:carwingsflutter/session.dart';
 import 'package:flutter/material.dart';
 
 void main() => runApp(new MyApp());
@@ -15,7 +15,7 @@ class MyAppState extends State<MyApp> {
 
   var preferencesManager = new PreferencesManager();
 
-  CarwingsSession _session = new CarwingsSession();
+  Session _session = new Session();
 
   MyAppState() {
     preferencesManager.getTheme().then((themeColor){

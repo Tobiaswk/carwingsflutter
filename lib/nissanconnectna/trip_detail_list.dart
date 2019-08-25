@@ -1,7 +1,8 @@
 import 'dart:io';
 import 'package:carwingsflutter/preferences_manager.dart';
 import 'package:carwingsflutter/preferences_types.dart';
-import 'package:dartcarwings/dartcarwings.dart';
+import 'package:carwingsflutter/session.dart';
+import 'package:dartnissanconnectna/dartnissanconnectna.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
@@ -15,8 +16,8 @@ class _TripDetailListState extends State<TripDetailList> {
   DateFormat dateFormatWeekDay;
   DateFormat dateFormatDate;
 
-  CarwingsSession _session;
-  CarwingsStatsTrips _statsTrips;
+  Session _session;
+  NissanConnectTrips _statsTrips;
 
   _TripDetailListState(this._session);
 
@@ -41,10 +42,10 @@ class _TripDetailListState extends State<TripDetailList> {
     setState(() {
       _statsTrips = null;
     });
-    CarwingsStatsTrips carwingsStatsTrips =
-        await _session.vehicle.requestStatisticsMonthlyTrips(_currentDate);
+    NissanConnectTrips sStatsTrips =
+        await _session.nissanConnectNa.vehicle.requestMonthlyStatisticsTrips(_currentDate);
     setState(() {
-      _statsTrips = carwingsStatsTrips;
+      _statsTrips = sStatsTrips;
     });
     GeneralSettings generalSettings =
         await preferencesManager.getGeneralSettings();
@@ -104,33 +105,34 @@ class _TripDetailListState extends State<TripDetailList> {
                     ),
                     Column(
                         children:
-                            carwingsTrip.tripsDetails.map((carwingsTripDetail) {
+                            carwingsTrip.tripDetails.map((carwingsTripDetail) {
                       return Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: <Widget>[
-                          carwingsTripDetail.number % 2 == 0
+                          carwingsTripDetail.tripId % 2 == 0
                               ? Icon(Icons.arrow_back)
                               : Icon(Icons.arrow_forward),
                           Chip(
                               label:
-                                  Text(carwingsTripDetail.number.toString())),
+                                  Text(carwingsTripDetail.tripId.toString())),
                           Column(
                             children: <Widget>[
                               Text(
-                                carwingsTripDetail.travelDistanceMileage,
+                                _generalSettings.useMiles ?  carwingsTripDetail.travelDistanceKilometers :
+                                carwingsTripDetail.travelDistanceKilometers,
                                 style: TextStyle(fontSize: 18.0),
                               ),
                               Text(_generalSettings.useMileagePerKWh
-                                  ? carwingsTripDetail.mileagePerKWh
-                                  : carwingsTripDetail.kWhPerMileage)
+                                  ? _generalSettings.useMiles ? carwingsTripDetail.milesPerKWh : carwingsTripDetail.kilometersPerKWh
+                                  : _generalSettings.useMiles ? carwingsTripDetail.kWhPerMiles : carwingsTripDetail.kWhPerKilometers)
                             ],
                           ),
                           Column(
                             children: <Widget>[
-                              Text(carwingsTripDetail.consumptionKWh,
+                              Text(carwingsTripDetail.kWhUsed,
                                   style: TextStyle(fontSize: 18.0)),
                               _generalSettings.showCO2
-                                  ? Text(carwingsTripDetail.CO2Reduction)
+                                  ? Text(carwingsTripDetail.co2ReductionKg)
                                   : Column(),
                             ],
                           )
@@ -145,20 +147,20 @@ class _TripDetailListState extends State<TripDetailList> {
                         Column(
                           children: <Widget>[
                             Text(
-                              carwingsTrip.travelDistanceMileage,
+                              _generalSettings.useMiles ? carwingsTrip.travelDistanceMiles : carwingsTrip.travelDistanceKilometers,
                               style: TextStyle(fontSize: 18.0),
                             ),
                             Text(_generalSettings.useMileagePerKWh
-                                ? carwingsTrip.mileagePerKWh
-                                : carwingsTrip.kWhPerMileage)
+                                ? _generalSettings.useMiles ? carwingsTrip.milesPerKWh : carwingsTrip.kilometersPerKWh
+                                : _generalSettings.useMiles ? carwingsTrip.kWhPerMiles : carwingsTrip.kWhPerKilometers)
                           ],
                         ),
                         Column(
                           children: <Widget>[
-                            Text(carwingsTrip.consumptionKWh,
+                            Text(carwingsTrip.kWhUsed,
                                 style: TextStyle(fontSize: 18.0)),
                             _generalSettings.showCO2
-                                ? Text(carwingsTrip.CO2Reduction)
+                                ? Text(carwingsTrip.co2reductionKg)
                                 : Column(),
                           ],
                         )
@@ -176,7 +178,7 @@ class _TripDetailListState extends State<TripDetailList> {
 class TripDetailList extends StatefulWidget {
   TripDetailList(this.session);
 
-  final CarwingsSession session;
+  final Session session;
 
   @override
   _TripDetailListState createState() => new _TripDetailListState(session);

@@ -1,17 +1,17 @@
-import 'package:dartcarwings/dartcarwings.dart';
+import 'package:carwingsflutter/session.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 class _DebugPageState extends State<DebugPage> {
   final GlobalKey<ScaffoldState> scaffoldKey = new GlobalKey<ScaffoldState>();
 
-  CarwingsSession _session;
+  Session _session;
 
   _DebugPageState(this._session);
 
   _copyAll() {
     String text = '';
-    _session.debugLog.forEach((logEntry) => text+=logEntry+'\n\n');
+    _session.nissanConnectNa.debugLog.forEach((logEntry) => text+=logEntry+'\n\n');
     Clipboard.setData(new ClipboardData(text: text));
     scaffoldKey.currentState.showSnackBar(new SnackBar(
       content: new Text("All copied to Clipboard"),
@@ -27,7 +27,7 @@ class _DebugPageState extends State<DebugPage> {
       ]),
       body: new ListView(
         padding: new EdgeInsets.symmetric(vertical: 15.0, horizontal: 15.0),
-        children: _session.debugLog.reversed.map((String logEntry) {
+        children: _session.nissanConnectNa.debugLog.reversed.map((String logEntry) {
           return Column(
             children: <Widget>[
               new InkWell(
@@ -51,7 +51,7 @@ class _DebugPageState extends State<DebugPage> {
 class DebugPage extends StatefulWidget {
   DebugPage(this.session);
 
-  CarwingsSession session;
+  Session session;
 
   @override
   _DebugPageState createState() => new _DebugPageState(session);

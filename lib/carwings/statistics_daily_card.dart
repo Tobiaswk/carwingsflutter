@@ -1,5 +1,6 @@
 import 'package:carwingsflutter/preferences_manager.dart';
 import 'package:carwingsflutter/preferences_types.dart';
+import 'package:carwingsflutter/session.dart';
 import 'package:carwingsflutter/widget_rotater.dart';
 import 'package:dartcarwings/dartcarwings.dart';
 import 'package:flutter/material.dart';
@@ -8,7 +9,7 @@ import 'package:intl/intl.dart';
 class StatisticsDailyCard extends StatefulWidget {
   StatisticsDailyCard(this.session);
 
-  final CarwingsSession session;
+  final Session session;
 
   @override
   _StatisticsDailyCardState createState() =>
@@ -20,7 +21,7 @@ class _StatisticsDailyCardState extends State<StatisticsDailyCard> {
 
   GeneralSettings _generalSettings = new GeneralSettings();
 
-  CarwingsSession _session;
+  Session _session;
   CarwingsStatsDaily _statsDaily;
 
   bool _isLoading = false;
@@ -35,7 +36,7 @@ class _StatisticsDailyCardState extends State<StatisticsDailyCard> {
 
   _getDailyStatistics() async {
     CarwingsStatsDaily statsDaily =
-        await _session.vehicle.requestStatisticsDaily();
+        await _session.carwings.vehicle.requestStatisticsDaily();
     setState(() {
       this._statsDaily = statsDaily;
     });

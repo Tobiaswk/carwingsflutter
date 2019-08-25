@@ -1,4 +1,5 @@
 import 'package:carwingsflutter/preferences_manager.dart';
+import 'package:carwingsflutter/session.dart';
 import 'package:carwingsflutter/util.dart';
 import 'package:dartcarwings/dartcarwings.dart';
 import 'package:flutter/material.dart';
@@ -9,7 +10,7 @@ class _ChargeControlPageState extends State<ChargeControlPage> {
 
   PreferencesManager preferencesManager = new PreferencesManager();
 
-  CarwingsSession _session;
+  Session _session;
 
   bool _isCharging = false;
   bool _isConnected = false;
@@ -47,10 +48,10 @@ class _ChargeControlPageState extends State<ChargeControlPage> {
 
   _updateBatteryStatus() async {
     try {
-      await _session.vehicle.requestBatteryStatus();
+      await _session.carwings.vehicle.requestBatteryStatus();
     } finally {
       CarwingsBattery battery =
-          await _session.vehicle.requestBatteryStatusLatest();
+          await _session.carwings.vehicle.requestBatteryStatusLatest();
       setState(() {
         _isCharging = battery.isCharging;
         _isConnected = battery.isConnected;
@@ -88,7 +89,7 @@ class _ChargeControlPageState extends State<ChargeControlPage> {
 
   void _requestStartCharging() {
     Util.showLoadingDialog(context);
-    _session.vehicle.requestChargingStart(_currentDate).then((_) {
+    _session.carwings.vehicle.requestChargingStart(_currentDate).then((_) {
       _updateBatteryStatus();
       _snackbar('Charging was scheduled');
       preferencesManager.setChargingSchedule(_currentDate);
@@ -151,7 +152,7 @@ class _ChargeControlPageState extends State<ChargeControlPage> {
 class ChargeControlPage extends StatefulWidget {
   ChargeControlPage(this.session);
 
-  CarwingsSession session;
+  Session session;
 
   @override
   _ChargeControlPageState createState() => new _ChargeControlPageState(session);

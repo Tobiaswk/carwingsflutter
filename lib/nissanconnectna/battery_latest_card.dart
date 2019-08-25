@@ -1,15 +1,16 @@
 import 'package:carwingsflutter/preferences_manager.dart';
 import 'package:carwingsflutter/preferences_types.dart';
+import 'package:carwingsflutter/session.dart';
 import 'package:carwingsflutter/util.dart';
 import 'package:carwingsflutter/widget_rotater.dart';
-import 'package:dartcarwings/dartcarwings.dart';
+import 'package:dartnissanconnectna/dartnissanconnectna.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 class BatteryLatestCard extends StatefulWidget {
   BatteryLatestCard(this.session);
 
-  final CarwingsSession session;
+  final Session session;
 
   @override
   _BatteryLatestCardState createState() => new _BatteryLatestCardState(session);
@@ -20,8 +21,8 @@ class _BatteryLatestCardState extends State<BatteryLatestCard> {
 
   GeneralSettings _generalSettings = new GeneralSettings();
 
-  CarwingsSession _session;
-  CarwingsBattery _battery;
+  Session _session;
+  NissanConnectBattery _battery;
 
   bool _isLoading = false;
 
@@ -33,9 +34,9 @@ class _BatteryLatestCardState extends State<BatteryLatestCard> {
     _update();
   }
 
-  _getBatteryStatusLatest() async {
-    CarwingsBattery battery =
-        await _session.vehicle.requestBatteryStatusLatest();
+  _getBatteryStatus() async {
+    NissanConnectBattery battery =
+        await _session.nissanConnectNa.vehicle.requestBatteryStatus();
     setState(() {
       this._battery = battery;
     });
@@ -46,19 +47,13 @@ class _BatteryLatestCardState extends State<BatteryLatestCard> {
     });
   }
 
-  _getBatteryStatus() async {
-    await _session.vehicle.requestBatteryStatus();
-  }
-
   _update() async {
     setState(() {
       _isLoading = true;
     });
     try {
-      await _getBatteryStatusLatest(); // Present cached battery first
-      await _getBatteryStatus(); // Requests new battery status polling
+      await _getBatteryStatus();
     } finally {
-      await _getBatteryStatusLatest(); // Force use new cached battery
       setState(() {
         _isLoading = false;
       });

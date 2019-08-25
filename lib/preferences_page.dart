@@ -1,7 +1,7 @@
 import 'package:carwingsflutter/about_page.dart';
-import 'package:carwingsflutter/debug_page.dart';
 import 'package:carwingsflutter/preferences_manager.dart';
-import 'package:dartcarwings/dartcarwings.dart';
+import 'package:carwingsflutter/session.dart';
+import 'package:carwingsflutter/widget_delegator.dart';
 import 'package:flutter/material.dart';
 import 'preferences_types.dart';
 import 'time_zones.dart';
@@ -13,7 +13,7 @@ class PreferencesPage extends StatefulWidget {
 
   final Setting configuration;
   final ValueChanged<Setting> updater;
-  final CarwingsSession session;
+  final Session session;
 
   @override
   _PreferencesPageState createState() => new _PreferencesPageState(session);
@@ -21,7 +21,7 @@ class PreferencesPage extends StatefulWidget {
 
 class _PreferencesPageState extends State<PreferencesPage> {
   GeneralSettings _generalSettings = new GeneralSettings();
-  CarwingsSession _session;
+  Session _session;
 
   _PreferencesPageState(this._session);
 
@@ -52,9 +52,7 @@ class _PreferencesPageState extends State<PreferencesPage> {
   _openDebugPage() {
     Navigator.of(context).push(new MaterialPageRoute<Null>(
       builder: (BuildContext context) {
-        return new DebugPage(
-          _session,
-        );
+        return WidgetDelegator.debugPage(_session);
       },
     ));
   }
@@ -215,10 +213,11 @@ class _PreferencesPageState extends State<PreferencesPage> {
       new ListTile(
         title: Text('Turn on debugging'),
         trailing: Switch(
-            value: _session.debug != null ? _session.debug : false,
+            value: _session.carwings.debug != null ? _session.carwings.debug : false,
             onChanged: (bool value) {
               setState(() {
-                _session.debug = value;
+                _session.carwings.debug = value;
+                _session.nissanConnectNa.debug = value;
               });
             }),
       ),
@@ -240,9 +239,9 @@ class _PreferencesPageState extends State<PreferencesPage> {
   void persistGeneralSettings() {
     preferencesManager.setGeneralSettings(_generalSettings);
     if (_generalSettings.timeZoneOverride) {
-      _session.setTimeZoneOverride(_generalSettings.timeZone);
+      _session.carwings.setTimeZoneOverride(_generalSettings.timeZone);
     } else {
-      _session.setTimeZoneOverride(null);
+      _session.carwings.setTimeZoneOverride(null);
     }
   }
 
