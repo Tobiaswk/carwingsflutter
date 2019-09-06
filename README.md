@@ -8,7 +8,7 @@ You can ask your vehicle for the latest data, see current battery and charging s
 
 My Leaf is free 🎉 and open source ✌️ It takes effort to continually maintain and improve. Therefore donations are more than welcome! 😎 You can do it directly in-app!
 
-My Leaf uses [dartcarwings](https://gitlab.com/tobiaswkjeldsen/dartcarwings) and [nissanconnectna](https://gitlab.com/tobiaswkjeldsen/dartnissanconnectna) for communicating with the Nissan's NissanConnect API's.
+My Leaf uses [dartcarwings](https://gitlab.com/tobiaswkjeldsen/dartcarwings) and [dartnissanconnectna](https://gitlab.com/tobiaswkjeldsen/dartnissanconnectna) for communicating with the Nissan's NissanConnect API's.
 
 My Leaf is available on [Google Play](https://play.google.com/store/apps/details?id=dk.kjeldsen.carwingsflutter), [App Store](https://itunes.apple.com/us/app/my-leaf-for-nissan-ev/id1436701776) and [F-Droid](https://f-droid.org/en/packages/dk.kjeldsen.carwingsflutter/).
 
