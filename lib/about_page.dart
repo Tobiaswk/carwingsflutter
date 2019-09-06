@@ -64,6 +64,14 @@ class _AboutPageState extends State<AboutPage> {
                 },
               ),
               new ListTile(
+                title: const Text('dartnissanconnectna library'),
+                subtitle: const Text(
+                    'https://gitlab.com/tobiaswkjeldsen/dartnissanconnectna'),
+                onTap: () {
+                  _launchUrl('https://gitlab.com/tobiaswkjeldsen/dartnissanconnectna');
+                },
+              ),
+              new ListTile(
                 title: const Text('blowfish_native library'),
                 subtitle: const Text(
                     'https://gitlab.com/tobiaswkjeldsen/blowfish_native'),
