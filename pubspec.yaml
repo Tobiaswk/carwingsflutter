@@ -13,9 +13,9 @@ dependencies:
   flutter_payments:
     git: https://github.com/Tobiaswk/flutter_payments.git
   dartcarwings:
-    path: ../dartcarwings
+    git: https://gitlab.com/tobiaswkjeldsen/dartcarwings.git
   dartnissanconnectna:
-      path: ../dartnissanconnectna
+    git: https://gitlab.com/tobiaswkjeldsen/dartnissanconnectna.git
   blowfish_native:
     git: https://gitlab.com/tobiaswkjeldsen/blowfish_native.git
 
