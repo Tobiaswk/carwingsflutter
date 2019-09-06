@@ -118,7 +118,7 @@ class _TripDetailListState extends State<TripDetailList> {
                           Column(
                             children: <Widget>[
                               Text(
-                                _generalSettings.useMiles ?  carwingsTripDetail.travelDistanceKilometers :
+                                _generalSettings.useMiles ?  carwingsTripDetail.travelDistanceMiles :
                                 carwingsTripDetail.travelDistanceKilometers,
                                 style: TextStyle(fontSize: 18.0),
                               ),
