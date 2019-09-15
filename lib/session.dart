@@ -10,6 +10,8 @@ class Session {
 
   CarwingsRegion region;
 
+  bool isCanada() => region == CarwingsRegion.Canada;
+
   bool isNorthAmerica() =>
       region == CarwingsRegion.USA || region == CarwingsRegion.Canada;
 
@@ -36,7 +38,11 @@ class Session {
           String key, String password)}) async {
     this.region = region;
     if (isNorthAmerica()) {
-      await nissanConnectNa.login(username: username, password: password);
+      if(isCanada()) {
+        await nissanConnectNa.login(username: username, password: password, countryCode: 'CA');
+      } else {
+        await nissanConnectNa.login(username: username, password: password);
+      }
     } else {
       await carwings.login(
           username: username,
