@@ -187,6 +187,8 @@ var timeZones = [
   "Australia/Victoria",
   "Australia/West",
   "Australia/Yancowinna",
+  "Pacific/Auckland",
+  "Pacific/Chatham",
   "Canada/Atlantic",
   "Canada/Central",
   "Canada/Eastern",
