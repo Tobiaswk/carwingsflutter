@@ -43,7 +43,7 @@ public class ChargingControlWidget extends ControlWidget {
             } catch (Exception e) {
                 e.printStackTrace();
             }
-            return null;
+            return contexts[0];
         }
 
         public void onPostExecute(Context context) {
