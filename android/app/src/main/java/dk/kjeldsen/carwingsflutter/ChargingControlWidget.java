@@ -41,7 +41,7 @@ public class ChargingControlWidget extends ControlWidget {
 
                 carwingsSession.chargingControlOn(vehicleName);
             } catch (Exception e) {
-                e.printStackTrace();
+                return contexts[0];
             }
             return contexts[0];
         }

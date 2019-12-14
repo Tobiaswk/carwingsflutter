@@ -68,12 +68,10 @@ public class ClimateControlWidget extends ControlWidget {
                 }
 
                 climateToggleStatus.put(appWidgetId, toggle);
-
-                return contexts[0];
             } catch (Exception e) {
-                e.printStackTrace();
+                return contexts[0];
             }
-            return null;
+            return contexts[0];
         }
 
         public void onPostExecute(Context context) {
