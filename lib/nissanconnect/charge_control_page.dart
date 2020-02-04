@@ -1,6 +1,6 @@
 import 'package:carwingsflutter/session.dart';
 import 'package:carwingsflutter/util.dart';
-import 'package:dartnissanconnectna/dartnissanconnectna.dart';
+import 'package:dartnissanconnect/dartnissanconnect.dart';
 import 'package:flutter/material.dart';
 
 class _ChargeControlPageState extends State<ChargeControlPage> {
@@ -24,7 +24,7 @@ class _ChargeControlPageState extends State<ChargeControlPage> {
 
   _updateBatteryStatus() async {
     NissanConnectBattery battery =
-        await _session.nissanConnectNa.vehicle.requestBatteryStatus();
+        await _session.nissanConnect.vehicle.requestBatteryStatus();
     setState(() {
       _isCharging = battery.isCharging;
       _isConnected = battery.isConnected;
@@ -34,7 +34,7 @@ class _ChargeControlPageState extends State<ChargeControlPage> {
 
   void _requestStartCharging() {
     Util.showLoadingDialog(context);
-    _session.nissanConnectNa.vehicle.requestChargingStart().then((_) {
+    _session.nissanConnect.vehicle.requestChargingStart().then((_) {
       _updateBatteryStatus();
       _snackbar('Charging request issued');
     }).catchError((error) {

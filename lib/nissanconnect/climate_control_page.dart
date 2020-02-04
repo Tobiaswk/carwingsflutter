@@ -8,9 +8,10 @@ class _ClimateControlPageState extends State<ClimateControlPage> {
 
   Session _session;
 
-  bool _climateControlIsReady = true;
+  bool _climateControlIsReady = false;
   bool _climateControlOn = false;
-  String _cabinTemperature;
+  double _cabinTemperature;
+  double _desiredTemperature = 20.0;
 
   DateTime _startDate =
       DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day);
@@ -23,15 +24,17 @@ class _ClimateControlPageState extends State<ClimateControlPage> {
   @override
   void initState() {
     super.initState();
-    _session.nissanConnectNa.vehicle
-        .requestClimateControlScheduled()
-        .then((date) {
-      setState(() {
-        _climateControlScheduled = date;
+    _session.nissanConnect.vehicle
+        .requestClimateControlStatusRefresh()
+        .then((_) {
+      _session.nissanConnect.vehicle.requestClimateControlStatus().then((hvac) {
+        setState(() {
+          _climateControlScheduled = hvac.climateScheduled;
+          _cabinTemperature = hvac.cabinTemperature;
+          _climateControlOn = hvac.isRunning;
+          _climateControlIsReady = true;
+        });
       });
-    });
-    setState(() {
-      _cabinTemperature = _session.nissanConnectNa.vehicle.incTemperature;
     });
   }
 
@@ -40,8 +43,8 @@ class _ClimateControlPageState extends State<ClimateControlPage> {
       Util.showLoadingDialog(context);
       _climateControlOn = !_climateControlOn;
       if (_climateControlOn) {
-        _session.nissanConnectNa.vehicle
-            .requestClimateControlOn(DateTime.now().add(Duration(seconds: 5)))
+        _session.nissanConnect.vehicle
+            .requestClimateControlOn(DateTime.now(), 21)
             .then((_) {
           _snackbar('Climate Control was turned on');
         }).catchError((error) {
@@ -49,7 +52,7 @@ class _ClimateControlPageState extends State<ClimateControlPage> {
           _snackbar('Climate Control failed to turn on');
         }).whenComplete(() => Util.dismissLoadingDialog(context));
       } else {
-        _session.nissanConnectNa.vehicle.requestClimateControlOff().then((_) {
+        _session.nissanConnect.vehicle.requestClimateControlOff().then((_) {
           _snackbar('Climate Control was turned off');
         }).catchError((error) {
           _climateControlOn = !_climateControlOn;
@@ -61,7 +64,7 @@ class _ClimateControlPageState extends State<ClimateControlPage> {
 
   _climateControlScheduledCancel() {
     Util.showLoadingDialog(context);
-    _session.nissanConnectNa.vehicle
+    _session.nissanConnect.vehicle
         .requestClimateControlScheduledCancel()
         .then((_) {
       _snackbar('Scheduled Climate Control was canceled');
@@ -90,8 +93,8 @@ class _ClimateControlPageState extends State<ClimateControlPage> {
               _currentDate = DateTime(
                   date.year, date.month, date.day, time.hour, time.minute);
               Util.showLoadingDialog(context);
-              _session.nissanConnectNa.vehicle
-                  .requestClimateControlOn(_currentDate)
+              _session.nissanConnect.vehicle
+                  .requestClimateControlOn(_currentDate, 21)
                   .then((_) {
                 setState(() {
                   _climateControlScheduled = _currentDate;

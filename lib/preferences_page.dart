@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 import 'preferences_types.dart';
 import 'time_zones.dart';
 
-var preferencesManager = new PreferencesManager();
+var preferencesManager = PreferencesManager();
 
 class PreferencesPage extends StatefulWidget {
   const PreferencesPage(this.configuration, this.updater, this.session);
@@ -16,11 +16,11 @@ class PreferencesPage extends StatefulWidget {
   final Session session;
 
   @override
-  _PreferencesPageState createState() => new _PreferencesPageState(session);
+  _PreferencesPageState createState() => _PreferencesPageState(session);
 }
 
 class _PreferencesPageState extends State<PreferencesPage> {
-  GeneralSettings _generalSettings = new GeneralSettings();
+  GeneralSettings _generalSettings = GeneralSettings();
   Session _session;
 
   _PreferencesPageState(this._session);
@@ -42,15 +42,15 @@ class _PreferencesPageState extends State<PreferencesPage> {
   }
 
   _openAboutPage() {
-    Navigator.of(context).push(new MaterialPageRoute<Null>(
+    Navigator.of(context).push(MaterialPageRoute<Null>(
       builder: (BuildContext context) {
-        return new AboutPage();
+        return AboutPage();
       },
     ));
   }
 
   _openDebugPage() {
-    Navigator.of(context).push(new MaterialPageRoute<Null>(
+    Navigator.of(context).push(MaterialPageRoute<Null>(
       builder: (BuildContext context) {
         return WidgetDelegator.debugPage(_session);
       },
@@ -60,12 +60,12 @@ class _PreferencesPageState extends State<PreferencesPage> {
   void _changeTheme() {
     showDialog<bool>(
       context: context,
-      child: new SimpleDialog(title: const Text("Color preference"), children: [
-        new ListTile(
-            title: new Text("Standard"),
-            subtitle: new Container(
-              decoration: new BoxDecoration(
-                border: new Border.all(
+      child: SimpleDialog(title: const Text("Color preference"), children: [
+        ListTile(
+            title: Text("Standard"),
+            subtitle: Container(
+              decoration: BoxDecoration(
+                border: Border.all(
                   color: Colors.blue,
                   width: 20.0,
                 ),
@@ -74,11 +74,11 @@ class _PreferencesPageState extends State<PreferencesPage> {
             onTap: () {
               _handleThemeChanged(ThemeColor.standard);
             }),
-        new ListTile(
-            title: new Text("Green"),
-            subtitle: new Container(
-              decoration: new BoxDecoration(
-                border: new Border.all(
+        ListTile(
+            title: Text("Green"),
+            subtitle: Container(
+              decoration: BoxDecoration(
+                border: Border.all(
                   color: Colors.green,
                   width: 20.0,
                 ),
@@ -87,11 +87,11 @@ class _PreferencesPageState extends State<PreferencesPage> {
             onTap: () {
               _handleThemeChanged(ThemeColor.green);
             }),
-        new ListTile(
-            title: new Text("Red"),
-            subtitle: new Container(
-              decoration: new BoxDecoration(
-                border: new Border.all(
+        ListTile(
+            title: Text("Red"),
+            subtitle: Container(
+              decoration: BoxDecoration(
+                border: Border.all(
                   color: Colors.red,
                   width: 20.0,
                 ),
@@ -100,11 +100,11 @@ class _PreferencesPageState extends State<PreferencesPage> {
             onTap: () {
               _handleThemeChanged(ThemeColor.red);
             }),
-        new ListTile(
-            title: new Text("Purple"),
-            subtitle: new Container(
-              decoration: new BoxDecoration(
-                border: new Border.all(
+        ListTile(
+            title: Text("Purple"),
+            subtitle: Container(
+              decoration: BoxDecoration(
+                border: Border.all(
                   color: Colors.purple,
                   width: 20.0,
                 ),
@@ -113,11 +113,11 @@ class _PreferencesPageState extends State<PreferencesPage> {
             onTap: () {
               _handleThemeChanged(ThemeColor.purple);
             }),
-        new ListTile(
-            title: new Text("Dark"),
-            subtitle: new Container(
-              decoration: new BoxDecoration(
-                border: new Border.all(
+        ListTile(
+            title: Text("Dark"),
+            subtitle: Container(
+              decoration: BoxDecoration(
+                border: Border.all(
                   color: Colors.black87,
                   width: 20.0,
                 ),
@@ -136,12 +136,12 @@ class _PreferencesPageState extends State<PreferencesPage> {
 
   Widget buildSettingsPane(BuildContext context) {
     final List<Widget> rows = <Widget>[
-      new ListTile(
-        leading: new Icon(Icons.color_lens),
+      ListTile(
+        leading: Icon(Icons.color_lens),
         title: const Text('Color preference'),
         onTap: _changeTheme,
       ),
-      new ListTile(
+      ListTile(
           title: Text('Show statistics in miles'),
           trailing: Switch(
               value: _generalSettings.useMiles,
@@ -151,7 +151,7 @@ class _PreferencesPageState extends State<PreferencesPage> {
                   persistGeneralSettings();
                 });
               })),
-      new ListTile(
+      ListTile(
           title: Text('Show CO2 reductions'),
           trailing: Switch(
               value: _generalSettings.showCO2,
@@ -161,7 +161,7 @@ class _PreferencesPageState extends State<PreferencesPage> {
                   persistGeneralSettings();
                 });
               })),
-      new ListTile(
+      ListTile(
         title: Text('Use mileage/kWh'),
         trailing: Switch(
             value: _generalSettings.useMileagePerKWh,
@@ -172,7 +172,7 @@ class _PreferencesPageState extends State<PreferencesPage> {
               });
             }),
       ),
-      new ListTile(
+      ListTile(
         title: Text('Use 12th bar notation (if applicable)'),
         trailing: Switch(
             value: _generalSettings.use12thBarNotation,
@@ -183,7 +183,7 @@ class _PreferencesPageState extends State<PreferencesPage> {
               });
             }),
       ),
-      new ListTile(
+      ListTile(
           title: Text('Override time zone'),
           trailing: Switch(
               value: _generalSettings.timeZoneOverride,
@@ -194,8 +194,8 @@ class _PreferencesPageState extends State<PreferencesPage> {
                 });
               })),
       _generalSettings.timeZoneOverride
-          ? new ListTile(
-              trailing: new DropdownButton(
+          ? ListTile(
+              trailing: DropdownButton(
                 value: _generalSettings.timeZone != null &&
                         _generalSettings.timeZone.isEmpty
                     ? _buildTimeZoneDropDownMenuItems()[0].value
@@ -209,28 +209,31 @@ class _PreferencesPageState extends State<PreferencesPage> {
                 },
               ),
             )
-          : new Row(),
-      new ListTile(
+          : Row(),
+      ListTile(
         title: Text('Turn on debugging'),
         trailing: Switch(
-            value: _session.carwings.debug != null ? _session.carwings.debug : false,
+            value: _session.carwings.debug != null
+                ? _session.carwings.debug
+                : false,
             onChanged: (bool value) {
               setState(() {
                 _session.carwings.debug = value;
                 _session.nissanConnectNa.debug = value;
+                _session.nissanConnect.debug = value;
               });
             }),
       ),
-      new ListTile(
-          leading: new Icon(Icons.info),
-          title: new Text("Debug log"),
+      ListTile(
+          leading: Icon(Icons.info),
+          title: Text("Debug log"),
           onTap: _openDebugPage),
-      new ListTile(
-          leading: new Icon(Icons.info),
-          title: new Text("About"),
+      ListTile(
+          leading: Icon(Icons.info),
+          title: Text("About"),
           onTap: _openAboutPage),
     ];
-    return new ListView(
+    return ListView(
       padding: const EdgeInsets.symmetric(vertical: 20.0),
       children: rows,
     );
@@ -246,18 +249,17 @@ class _PreferencesPageState extends State<PreferencesPage> {
   }
 
   List<DropdownMenuItem> _buildTimeZoneDropDownMenuItems() {
-    List<DropdownMenuItem<String>> items = new List();
+    List<DropdownMenuItem<String>> items = List();
     for (String timezone in timeZones) {
-      items.add(
-          new DropdownMenuItem(value: timezone, child: new Text(timezone)));
+      items.add(DropdownMenuItem(value: timezone, child: Text(timezone)));
     }
     return items;
   }
 
   @override
   Widget build(BuildContext context) {
-    return new Scaffold(
-        appBar: new AppBar(title: const Text('Preferences')),
+    return Scaffold(
+        appBar: AppBar(title: const Text('Preferences')),
         body: buildSettingsPane(context));
   }
 }

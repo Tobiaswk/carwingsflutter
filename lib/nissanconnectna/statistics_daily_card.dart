@@ -12,14 +12,13 @@ class StatisticsDailyCard extends StatefulWidget {
   final Session session;
 
   @override
-  _StatisticsDailyCardState createState() =>
-      new _StatisticsDailyCardState(session);
+  _StatisticsDailyCardState createState() => _StatisticsDailyCardState(session);
 }
 
 class _StatisticsDailyCardState extends State<StatisticsDailyCard> {
-  PreferencesManager preferencesManager = new PreferencesManager();
+  PreferencesManager preferencesManager = PreferencesManager();
 
-  GeneralSettings _generalSettings = new GeneralSettings();
+  GeneralSettings _generalSettings = GeneralSettings();
 
   Session _session;
   NissanConnectStats _stats;
@@ -36,7 +35,7 @@ class _StatisticsDailyCardState extends State<StatisticsDailyCard> {
 
   _getDailyStatistics() async {
     NissanConnectStats statsDaily = await _session.nissanConnectNa.vehicle
-        .requestDailyStatistics(new DateTime(
+        .requestDailyStatistics(DateTime(
             DateTime.now().year, DateTime.now().month, DateTime.now().day));
     setState(() {
       this._stats = statsDaily;
@@ -72,30 +71,30 @@ class _StatisticsDailyCardState extends State<StatisticsDailyCard> {
       String kWhUsed,
       Duration travelTime,
       String co2ReductionKg) {
-    return new Material(
-        borderRadius: new BorderRadius.all(new Radius.circular(4.0)),
+    return Material(
+        borderRadius: BorderRadius.all(Radius.circular(4.0)),
         elevation: 2.0,
         type: MaterialType.card,
-        child: new InkWell(
-            child: new Container(
-                decoration: new BoxDecoration(),
+        child: InkWell(
+            child: Container(
+                decoration: BoxDecoration(),
                 padding: const EdgeInsets.fromLTRB(15.0, 0.0, 15.0, 10.0),
-                child: new Column(
+                child: Column(
                   children: <Widget>[
-                    new Row(
+                    Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: <Widget>[
-                        new Row(
+                        Row(
                           children: <Widget>[
                             Text(
                               'Daily Statistics',
                               style: TextStyle(fontSize: 20.0),
                             ),
-                            new Padding(padding: const EdgeInsets.all(3.0)),
+                            Padding(padding: const EdgeInsets.all(3.0)),
                             Icon(Icons.access_time),
-                            new Padding(padding: const EdgeInsets.all(3.0)),
+                            Padding(padding: const EdgeInsets.all(3.0)),
                             Text(date != null
-                                ? new DateFormat("EEEE").format(date)
+                                ? DateFormat("EEEE").format(date)
                                 : '-'),
                           ],
                         ),
@@ -110,10 +109,10 @@ class _StatisticsDailyCardState extends State<StatisticsDailyCard> {
                               ),
                       ],
                     ),
-                    new Row(
+                    Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: <Widget>[
-                        new Column(
+                        Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
                             Text('Driving efficiency'),
@@ -123,7 +122,7 @@ class _StatisticsDailyCardState extends State<StatisticsDailyCard> {
                             )
                           ],
                         ),
-                        new Column(
+                        Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
                             Text('Consumption'),
@@ -135,11 +134,11 @@ class _StatisticsDailyCardState extends State<StatisticsDailyCard> {
                         )
                       ],
                     ),
-                    new Row(
+                    Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       crossAxisAlignment: CrossAxisAlignment.end,
                       children: <Widget>[
-                        new Column(
+                        Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
                             Text('Distance'),
@@ -151,7 +150,7 @@ class _StatisticsDailyCardState extends State<StatisticsDailyCard> {
                             )
                           ],
                         ),
-                        new Column(
+                        Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
                             Text('Travel time'),
@@ -162,7 +161,7 @@ class _StatisticsDailyCardState extends State<StatisticsDailyCard> {
                           ],
                         ),
                         _generalSettings.showCO2
-                            ? new Column(
+                            ? Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: <Widget>[
                                   Text('CO2 savings'),
@@ -172,7 +171,7 @@ class _StatisticsDailyCardState extends State<StatisticsDailyCard> {
                                   )
                                 ],
                               )
-                            : new Column(),
+                            : Column(),
                       ],
                     ),
                   ],
@@ -181,7 +180,7 @@ class _StatisticsDailyCardState extends State<StatisticsDailyCard> {
 
   @override
   Widget build(BuildContext context) {
-    return new Container(
+    return Container(
         padding: const EdgeInsets.fromLTRB(15.0, 20.0, 15.0, 0.0),
         child: _stats != null
             ? _withValues(
@@ -205,7 +204,7 @@ class _StatisticsDailyCardState extends State<StatisticsDailyCard> {
                 '-',
                 '-',
                 '-',
-                new Duration(minutes: 0),
+                Duration(minutes: 0),
                 '-',
               ));
   }

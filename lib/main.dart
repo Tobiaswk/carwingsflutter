@@ -5,25 +5,26 @@ import 'package:carwingsflutter/preferences_types.dart';
 import 'package:carwingsflutter/session.dart';
 import 'package:flutter/material.dart';
 
-void main() => runApp(new MyApp());
+void main() => runApp(MyApp());
+
 class MyApp extends StatefulWidget {
   @override
-  MyAppState createState() => new MyAppState();
+  MyAppState createState() => MyAppState();
 }
 
 class MyAppState extends State<MyApp> {
+  var preferencesManager = PreferencesManager();
 
-  var preferencesManager = new PreferencesManager();
-
-  Session _session = new Session();
+  Session _session = Session();
 
   MyAppState() {
-    preferencesManager.getTheme().then((themeColor){
-      configurationUpdater(_configuration.copyWith(theme: ThemeColor.values[themeColor]));
+    preferencesManager.getTheme().then((themeColor) {
+      configurationUpdater(
+          _configuration.copyWith(theme: ThemeColor.values[themeColor]));
     });
   }
 
-  Setting _configuration = new Setting(
+  Setting _configuration = Setting(
     theme: ThemeColor.standard,
   );
 
@@ -34,47 +35,37 @@ class MyAppState extends State<MyApp> {
   }
 
   ThemeData get theme {
-    switch(_configuration.theme) {
+    switch (_configuration.theme) {
       case ThemeColor.standard:
-        return new ThemeData(
-          primarySwatch: Colors.blue,
-          buttonColor: Colors.white
-        );
+        return ThemeData(primarySwatch: Colors.blue, buttonColor: Colors.white);
       case ThemeColor.green:
-        return new ThemeData(
-          primarySwatch: Colors.green,
-            buttonColor: Colors.white
-        );
+        return ThemeData(
+            primarySwatch: Colors.green, buttonColor: Colors.white);
       case ThemeColor.red:
-        return new ThemeData(
-          primarySwatch: Colors.red,
-            buttonColor: Colors.white
-        );
+        return ThemeData(primarySwatch: Colors.red, buttonColor: Colors.white);
       case ThemeColor.purple:
-        return new ThemeData(
-          primarySwatch: Colors.purple,
-            buttonColor: Colors.white
-        );
+        return ThemeData(
+            primarySwatch: Colors.purple, buttonColor: Colors.white);
       case ThemeColor.dark:
-        return new ThemeData(
+        return ThemeData(
           brightness: Brightness.dark,
           primarySwatch: Colors.grey,
         );
     }
-    return new ThemeData(
-      primarySwatch: Colors.blue,
-        buttonColor: Colors.white
-    );
+    return ThemeData(primarySwatch: Colors.blue, buttonColor: Colors.white);
   }
 
   @override
   Widget build(BuildContext context) {
-    return new MaterialApp(
+    return MaterialApp(
       title: 'My Leaf',
       theme: theme,
-      home: new LoginPage(_session,),
+      home: LoginPage(
+        _session,
+      ),
       routes: <String, WidgetBuilder>{
-        '/preferences': (BuildContext context) => new PreferencesPage(_configuration, configurationUpdater, _session)
+        '/preferences': (BuildContext context) =>
+            PreferencesPage(_configuration, configurationUpdater, _session)
       },
     );
   }

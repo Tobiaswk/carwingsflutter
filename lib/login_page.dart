@@ -15,24 +15,22 @@ class LoginPage extends StatefulWidget {
   bool autoLogin;
 
   @override
-  _LoginPageState createState() => new _LoginPageState(session, autoLogin);
+  _LoginPageState createState() => _LoginPageState(session, autoLogin);
 }
 
 class _LoginPageState extends State<LoginPage> {
-  final GlobalKey<ScaffoldState> scaffoldKey = new GlobalKey<ScaffoldState>();
+  final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
 
-  PreferencesManager preferencesManager = new PreferencesManager();
+  PreferencesManager preferencesManager = PreferencesManager();
 
   Session _session;
 
   bool _autoLogin;
-
-  TextEditingController _usernameTextController = new TextEditingController();
-  TextEditingController _passwordTextController = new TextEditingController();
-
   CarwingsRegion _regionSelected = CarwingsRegion.Europe;
-
   bool _rememberLoginSettings = false;
+
+  TextEditingController _usernameTextController = TextEditingController();
+  TextEditingController _passwordTextController = TextEditingController();
 
   String _serverStatus;
 
@@ -100,41 +98,39 @@ class _LoginPageState extends State<LoginPage> {
     }).catchError((error) {
       Util.dismissLoadingDialog(context);
 
-      scaffoldKey.currentState.showSnackBar(new SnackBar(
-          duration: new Duration(seconds: 5),
-          content: new Text('Login failed. Please try again')));
+      scaffoldKey.currentState.showSnackBar(SnackBar(
+          duration: Duration(seconds: 5),
+          content: Text('Login failed. Please try again')));
 
       if (_serverStatus != null && _serverStatus.isNotEmpty) {
-        scaffoldKey.currentState.showSnackBar(new SnackBar(
-            duration: new Duration(seconds: 10),
-            content: new Text(_serverStatus)));
+        scaffoldKey.currentState.showSnackBar(SnackBar(
+            duration: Duration(seconds: 10), content: Text(_serverStatus)));
       }
     });
   }
 
   List<DropdownMenuItem<CarwingsRegion>> _buildRegionAndGetDropDownMenuItems() {
-    List<DropdownMenuItem<CarwingsRegion>> items = new List();
+    List<DropdownMenuItem<CarwingsRegion>> items = List();
     for (CarwingsRegion region in CarwingsRegion.values) {
-      items.add(new DropdownMenuItem(
+      items.add(DropdownMenuItem(
           value: region,
-          child:
-              new Text(region.toString().replaceAll('CarwingsRegion\.', ''))));
+          child: Text(region.toString().replaceAll('CarwingsRegion\.', ''))));
     }
     return items;
   }
 
   _openMainPage() {
-    Navigator.of(context).pushReplacement(new MaterialPageRoute<Null>(
+    Navigator.of(context).pushReplacement(MaterialPageRoute<Null>(
       builder: (BuildContext context) {
-        return new MainPage(_session);
+        return MainPage(_session);
       },
     ));
   }
 
   _openHelpPage() {
-    Navigator.of(context).push(new MaterialPageRoute<Null>(
+    Navigator.of(context).push(MaterialPageRoute<Null>(
       builder: (BuildContext context) {
-        return new HelpPage();
+        return HelpPage();
       },
     ));
   }
@@ -145,7 +141,7 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
-    return new Scaffold(
+    return Scaffold(
         backgroundColor: Theme.of(context).primaryColor,
         key: scaffoldKey,
         body: Theme(
@@ -161,9 +157,9 @@ class _LoginPageState extends State<LoginPage> {
                 hintColor: Colors.white,
                 canvasColor: Theme.of(context).primaryColor,
                 toggleableActiveColor: Colors.white),
-            child: new Container(
+            child: Container(
               padding: const EdgeInsets.fromLTRB(30.0, 20.0, 30.0, 0.0),
-              child: new Column(
+              child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
                     GestureDetector(
@@ -174,14 +170,18 @@ class _LoginPageState extends State<LoginPage> {
                       ),
                       onLongPress: _openPreferencesPage,
                     ),
-                    new Padding(padding: const EdgeInsets.all(10.0)),
-                    new Column(
+                    Padding(padding: const EdgeInsets.all(10.0)),
+                    Column(
                       mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.end,
+                      crossAxisAlignment: CrossAxisAlignment.center,
                       children: <Widget>[
                         Text(
-                          'Enter your You+Nissan, also known as NissanConnect, credentials below',
+                          'My Leaf greets you welcome!',
                           style: TextStyle(fontSize: 18.0, color: Colors.white),
+                        ),
+                        Text(
+                          'Ready your NissanConnect credentials',
+                          style: TextStyle(fontSize: 15.0, color: Colors.white),
                         ),
                         TextFormField(
                           controller: _usernameTextController,
@@ -201,14 +201,15 @@ class _LoginPageState extends State<LoginPage> {
                               )),
                           obscureText: true,
                         ),
-                        new Row(
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
                           children: <Widget>[
                             Text(
                               'Region',
                               style: TextStyle(color: Colors.white),
                             ),
-                            new Padding(padding: const EdgeInsets.all(10.0)),
-                            new DropdownButton(
+                            Padding(padding: const EdgeInsets.all(10.0)),
+                            DropdownButton(
                               value: _regionSelected,
                               items: _buildRegionAndGetDropDownMenuItems(),
                               onChanged: (region) {
@@ -229,12 +230,11 @@ class _LoginPageState extends State<LoginPage> {
                                 ))
                           ],
                         ),
-                        new Padding(padding: const EdgeInsets.all(10.0)),
-                        new Row(
+                        Row(
                           mainAxisAlignment: MainAxisAlignment.end,
                           children: <Widget>[
                             Text(
-                              'Remember credentials',
+                              'Remember',
                               style: TextStyle(color: Colors.white),
                             ),
                             Switch(
@@ -245,7 +245,7 @@ class _LoginPageState extends State<LoginPage> {
                                   });
                                 }),
                             RaisedButton(
-                                child: new Text("Sign in"), onPressed: _doLogin)
+                                child: Text("Sign in"), onPressed: _doLogin)
                           ],
                         )
                       ],

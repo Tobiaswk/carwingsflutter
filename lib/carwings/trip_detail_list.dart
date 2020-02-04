@@ -7,9 +7,9 @@ import 'dart:io';
 import 'package:intl/intl.dart';
 
 class _TripDetailListState extends State<TripDetailList> {
-  PreferencesManager preferencesManager = new PreferencesManager();
+  PreferencesManager preferencesManager = PreferencesManager();
 
-  GeneralSettings _generalSettings = new GeneralSettings();
+  GeneralSettings _generalSettings = GeneralSettings();
 
   DateTime _currentDate = DateTime(DateTime.now().year, DateTime.now().month);
 
@@ -31,19 +31,19 @@ class _TripDetailListState extends State<TripDetailList> {
   }
 
   void _initDateFormatting() {
-    dateFormatWeekDay = new DateFormat('EEEE');
+    dateFormatWeekDay = DateFormat('EEEE');
 
     Platform.localeName == 'en_US'
-        ? dateFormatDate = new DateFormat('MMM d')
-        : dateFormatDate = new DateFormat('d. MMM');
+        ? dateFormatDate = DateFormat('MMM d')
+        : dateFormatDate = DateFormat('d. MMM');
   }
 
   Future<Null> _update() async {
     setState(() {
       _statsTrips = null;
     });
-    CarwingsStatsTrips carwingsStatsTrips =
-        await _session.carwings.vehicle.requestStatisticsMonthlyTrips(_currentDate);
+    CarwingsStatsTrips carwingsStatsTrips = await _session.carwings.vehicle
+        .requestStatisticsMonthlyTrips(_currentDate);
     setState(() {
       _statsTrips = carwingsStatsTrips;
     });
@@ -58,11 +58,11 @@ class _TripDetailListState extends State<TripDetailList> {
     showDatePicker(
         context: context,
         initialDate: _currentDate,
-        firstDate: _currentDate.subtract(new Duration(days: 90)),
-        lastDate: new DateTime.now(),
+        firstDate: _currentDate.subtract(Duration(days: 90)),
+        lastDate: DateTime.now(),
         selectableDayPredicate: (date) => date.day == 1).then((date) {
       if (date != null) {
-        _currentDate = new DateTime(date.year, date.month, date.day);
+        _currentDate = DateTime(date.year, date.month, date.day);
 
         _update();
       }
@@ -75,8 +75,8 @@ class _TripDetailListState extends State<TripDetailList> {
       appBar: AppBar(
         title: Text("Trip Details"),
         actions: <Widget>[
-          new IconButton(
-              icon: new Icon(Icons.calendar_today, color: Colors.white),
+          IconButton(
+              icon: Icon(Icons.calendar_today, color: Colors.white),
               onPressed: _pickDate),
         ],
       ),
@@ -86,7 +86,7 @@ class _TripDetailListState extends State<TripDetailList> {
               children: _statsTrips.trips.map((carwingsTrip) {
                 return Column(
                   children: <Widget>[
-                    new Padding(padding: const EdgeInsets.all(8.0)),
+                    Padding(padding: const EdgeInsets.all(8.0)),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: <Widget>[
@@ -142,7 +142,7 @@ class _TripDetailListState extends State<TripDetailList> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: <Widget>[
                         Text('Totals', style: TextStyle(fontSize: 18.0)),
-                        new Padding(padding: const EdgeInsets.all(8.0)),
+                        Padding(padding: const EdgeInsets.all(8.0)),
                         Column(
                           children: <Widget>[
                             Text(
@@ -180,5 +180,5 @@ class TripDetailList extends StatefulWidget {
   final Session session;
 
   @override
-  _TripDetailListState createState() => new _TripDetailListState(session);
+  _TripDetailListState createState() => _TripDetailListState(session);
 }

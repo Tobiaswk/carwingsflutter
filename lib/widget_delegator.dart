@@ -1,78 +1,140 @@
 import 'package:carwingsflutter/carwings/debug_page.dart' as carwings;
 import 'package:carwingsflutter/nissanconnectna/debug_page.dart'
-    as nissanconnect;
+    as nissanconnectna;
+import 'package:carwingsflutter/nissanconnect/debug_page.dart' as nissanconnect;
 import 'package:carwingsflutter/carwings/vehicle_page.dart' as carwings;
 import 'package:carwingsflutter/nissanconnectna/vehicle_page.dart'
+    as nissanconnectna;
+import 'package:carwingsflutter/nissanconnect/vehicle_page.dart'
     as nissanconnect;
-import 'package:carwingsflutter/carwings/battery_latest_card.dart'
-as carwings;
+import 'package:carwingsflutter/carwings/battery_latest_card.dart' as carwings;
 import 'package:carwingsflutter/nissanconnectna/battery_latest_card.dart'
-as nissanconnect;
+    as nissanconnectna;
+import 'package:carwingsflutter/nissanconnect/battery_latest_card.dart'
+    as nissanconnect;
 import 'package:carwingsflutter/carwings/statistics_daily_card.dart'
     as carwings;
 import 'package:carwingsflutter/nissanconnectna/statistics_daily_card.dart'
+    as nissanconnectna;
+import 'package:carwingsflutter/nissanconnect/statistics_daily_card.dart'
     as nissanconnect;
 import 'package:carwingsflutter/carwings/statistics_monthly_card.dart'
     as carwings;
 import 'package:carwingsflutter/nissanconnectna/statistics_monthly_card.dart'
+    as nissanconnectna;
+import 'package:carwingsflutter/nissanconnect/statistics_monthly_card.dart'
     as nissanconnect;
-import 'package:carwingsflutter/carwings/trip_detail_list.dart'
-as carwings;
+import 'package:carwingsflutter/carwings/trip_detail_list.dart' as carwings;
 import 'package:carwingsflutter/nissanconnectna/trip_detail_list.dart'
-as nissanconnect;
+    as nissanconnectna;
+import 'package:carwingsflutter/nissanconnect/trip_detail_list.dart'
+    as nissanconnect;
 import 'package:carwingsflutter/carwings/climate_control_page.dart' as carwings;
 import 'package:carwingsflutter/nissanconnectna/climate_control_page.dart'
-as nissanconnect;
+    as nissanconnectna;
+import 'package:carwingsflutter/nissanconnect/climate_control_page.dart'
+    as nissanconnect;
 import 'package:carwingsflutter/carwings/charge_control_page.dart' as carwings;
 import 'package:carwingsflutter/nissanconnectna/charge_control_page.dart'
-as nissanconnect;
+    as nissanconnectna;
+import 'package:carwingsflutter/nissanconnect/charge_control_page.dart'
+    as nissanconnect;
 import 'package:carwingsflutter/session.dart';
 
 class WidgetDelegator {
   static debugPage(Session session) {
-    return session.isNorthAmerica()
-        ? new nissanconnect.DebugPage(session)
-        : new carwings.DebugPage(session);
+    switch (session.getAPIType()) {
+      case API_TYPE.CARWINGS:
+        return carwings.DebugPage(session);
+      case API_TYPE.NISSANCONNECTNA:
+        return nissanconnectna.DebugPage(session);
+      case API_TYPE.NISSANCONNECT:
+        return nissanconnect.DebugPage(session);
+        break;
+    }
   }
 
   static vehiclePage(Session session) {
-    return session.isNorthAmerica()
-        ? new nissanconnect.VehiclePage(session)
-        : new carwings.VehiclePage(session);
+    switch (session.getAPIType()) {
+      case API_TYPE.CARWINGS:
+        return carwings.VehiclePage(session);
+      case API_TYPE.NISSANCONNECTNA:
+        return nissanconnectna.VehiclePage(session);
+      case API_TYPE.NISSANCONNECT:
+        return nissanconnect.VehiclePage(session);
+        break;
+    }
   }
+
   static statisticsDailyCard(Session session) {
-    return session.isNorthAmerica()
-        ? new nissanconnect.StatisticsDailyCard(session)
-        : new carwings.StatisticsDailyCard(session);
+    switch (session.getAPIType()) {
+      case API_TYPE.CARWINGS:
+        return carwings.StatisticsDailyCard(session);
+      case API_TYPE.NISSANCONNECTNA:
+        return nissanconnectna.StatisticsDailyCard(session);
+      case API_TYPE.NISSANCONNECT:
+        return nissanconnect.StatisticsDailyCard(session);
+        break;
+    }
   }
 
   static batteryLatestCard(Session session) {
-    return session.isNorthAmerica()
-        ? new nissanconnect.BatteryLatestCard(session)
-        : new carwings.BatteryLatestCard(session);
+    switch (session.getAPIType()) {
+      case API_TYPE.CARWINGS:
+        return carwings.BatteryLatestCard(session);
+      case API_TYPE.NISSANCONNECTNA:
+        return nissanconnectna.BatteryLatestCard(session);
+      case API_TYPE.NISSANCONNECT:
+        return nissanconnect.BatteryLatestCard(session);
+        break;
+    }
   }
 
   static statisticsMonthlyCard(Session session) {
-    return session.isNorthAmerica()
-        ? new nissanconnect.StatisticsMonthlyCard(session)
-        : new carwings.StatisticsMonthlyCard(session);
+    switch (session.getAPIType()) {
+      case API_TYPE.CARWINGS:
+        return carwings.StatisticsMonthlyCard(session);
+      case API_TYPE.NISSANCONNECTNA:
+        return nissanconnectna.StatisticsMonthlyCard(session);
+      case API_TYPE.NISSANCONNECT:
+        return nissanconnect.StatisticsMonthlyCard(session);
+        break;
+    }
   }
 
   static tripDetailsPage(Session session) {
-    return session.isNorthAmerica()
-        ? new nissanconnect.TripDetailList(session)
-        : new carwings.TripDetailList(session);
+    switch (session.getAPIType()) {
+      case API_TYPE.CARWINGS:
+        return carwings.TripDetailList(session);
+      case API_TYPE.NISSANCONNECTNA:
+        return nissanconnectna.TripDetailList(session);
+      case API_TYPE.NISSANCONNECT:
+        return nissanconnect.TripDetailList(session);
+        break;
+    }
   }
 
   static climateControlPage(Session session) {
-    return session.isNorthAmerica()
-        ? new nissanconnect.ClimateControlPage(session)
-        : new carwings.ClimateControlPage(session);
+    switch (session.getAPIType()) {
+      case API_TYPE.CARWINGS:
+        return carwings.ClimateControlPage(session);
+      case API_TYPE.NISSANCONNECTNA:
+        return nissanconnectna.ClimateControlPage(session);
+      case API_TYPE.NISSANCONNECT:
+        return nissanconnect.ClimateControlPage(session);
+        break;
+    }
   }
 
   static chargingControlPage(Session session) {
-    return session.isNorthAmerica()
-        ? new nissanconnect.ChargeControlPage(session)
-        : new carwings.ChargeControlPage(session);
+    switch (session.getAPIType()) {
+      case API_TYPE.CARWINGS:
+        return carwings.ChargeControlPage(session);
+      case API_TYPE.NISSANCONNECTNA:
+        return nissanconnectna.ChargeControlPage(session);
+      case API_TYPE.NISSANCONNECT:
+        return nissanconnect.ChargeControlPage(session);
+        break;
+    }
   }
 }

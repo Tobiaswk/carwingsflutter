@@ -6,9 +6,9 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 class _ChargeControlPageState extends State<ChargeControlPage> {
-  final GlobalKey<ScaffoldState> scaffoldKey = new GlobalKey<ScaffoldState>();
+  final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
 
-  PreferencesManager preferencesManager = new PreferencesManager();
+  PreferencesManager preferencesManager = PreferencesManager();
 
   Session _session;
 
@@ -16,14 +16,14 @@ class _ChargeControlPageState extends State<ChargeControlPage> {
   bool _isConnected = false;
   bool _chargeControlReady = false;
 
-  DateTime _startDate = new DateTime(new DateTime.now().year,
-      new DateTime.now().month, new DateTime.now().day);
-  DateTime _currentDate = new DateTime(
-      new DateTime.now().year,
-      new DateTime.now().month,
-      new DateTime.now().day,
-      new DateTime.now().hour,
-      new DateTime.now().add(Duration(seconds: 5)).minute);
+  DateTime _startDate =
+      DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day);
+  DateTime _currentDate = DateTime(
+      DateTime.now().year,
+      DateTime.now().month,
+      DateTime.now().day,
+      DateTime.now().hour,
+      DateTime.now().add(Duration(seconds: 5)).minute);
   DateTime _chargingScheduled;
 
   _ChargeControlPageState(this._session);
@@ -69,13 +69,13 @@ class _ChargeControlPageState extends State<ChargeControlPage> {
             context: context,
             initialDate: _currentDate,
             firstDate: _startDate,
-            lastDate: new DateTime.now().add(new Duration(days: 30)))
+            lastDate: DateTime.now().add(Duration(days: 30)))
         .then((date) {
       if (date != null) {
         showTimePicker(context: context, initialTime: TimeOfDay.now())
             .then((time) {
           if (time != null) {
-            _currentDate = new DateTime(
+            _currentDate = DateTime(
                 date.year, date.month, date.day, time.hour, time.minute);
             setState(() {
               _chargingScheduled = _currentDate;
@@ -100,17 +100,17 @@ class _ChargeControlPageState extends State<ChargeControlPage> {
   }
 
   _snackbar(message) {
-    scaffoldKey.currentState.showSnackBar(new SnackBar(
-        duration: new Duration(seconds: 5), content: new Text(message)));
+    scaffoldKey.currentState.showSnackBar(
+        SnackBar(duration: Duration(seconds: 5), content: Text(message)));
   }
 
   @override
   Widget build(BuildContext context) {
-    return new Scaffold(
+    return Scaffold(
       key: scaffoldKey,
-      appBar: new AppBar(title: new Text("Charging")),
+      appBar: AppBar(title: Text("Charging")),
       body: Center(
-        child: new Column(
+        child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             IconButton(
@@ -155,5 +155,5 @@ class ChargeControlPage extends StatefulWidget {
   Session session;
 
   @override
-  _ChargeControlPageState createState() => new _ChargeControlPageState(session);
+  _ChargeControlPageState createState() => _ChargeControlPageState(session);
 }

@@ -1,9 +1,10 @@
-import 'dart:io';
 import 'package:carwingsflutter/preferences_manager.dart';
 import 'package:carwingsflutter/preferences_types.dart';
 import 'package:carwingsflutter/session.dart';
-import 'package:dartnissanconnectna/dartnissanconnectna.dart';
+import 'package:dartcarwings/dartcarwings.dart';
+import 'package:dartnissanconnect/dartnissanconnect.dart';
 import 'package:flutter/material.dart';
+import 'dart:io';
 import 'package:intl/intl.dart';
 
 class _TripDetailListState extends State<TripDetailList> {
@@ -17,7 +18,8 @@ class _TripDetailListState extends State<TripDetailList> {
   DateFormat dateFormatDate;
 
   Session _session;
-  NissanConnectTrips _statsTrips;
+  List<NissanConnectStats> _statsTrips;
+  int tripCounter = 1;
 
   _TripDetailListState(this._session);
 
@@ -42,10 +44,11 @@ class _TripDetailListState extends State<TripDetailList> {
     setState(() {
       _statsTrips = null;
     });
-    NissanConnectTrips sStatsTrips = await _session.nissanConnectNa.vehicle
-        .requestMonthlyStatisticsTrips(_currentDate);
+    List<NissanConnectStats> carwingsStatsTrips = await _session
+        .nissanConnect.vehicle
+        .requestMonthlyTripsStatistics(_currentDate);
     setState(() {
-      _statsTrips = sStatsTrips;
+      _statsTrips = carwingsStatsTrips;
     });
     GeneralSettings generalSettings =
         await preferencesManager.getGeneralSettings();
@@ -55,6 +58,7 @@ class _TripDetailListState extends State<TripDetailList> {
   }
 
   void _pickDate() {
+    tripCounter = 1;
     showDatePicker(
         context: context,
         initialDate: _currentDate,
@@ -83,7 +87,8 @@ class _TripDetailListState extends State<TripDetailList> {
       body: _statsTrips != null
           ? ListView(
               padding: const EdgeInsets.fromLTRB(15.0, 0.0, 15.0, 15.0),
-              children: _statsTrips.trips.map((carwingsTrip) {
+              children:
+                  _statsTrips.where((trip) => trip.tripsNumber > 0).map((trip) {
                 return Column(
                   children: <Widget>[
                     Padding(padding: const EdgeInsets.all(8.0)),
@@ -91,11 +96,11 @@ class _TripDetailListState extends State<TripDetailList> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: <Widget>[
                         Text(
-                          dateFormatWeekDay.format(carwingsTrip.date),
+                          dateFormatWeekDay.format(trip.date),
                           style: TextStyle(fontSize: 17.0),
                         ),
                         Text(
-                          dateFormatDate.format(carwingsTrip.date),
+                          dateFormatDate.format(trip.date),
                           style: TextStyle(fontSize: 20.0),
                         ),
                       ],
@@ -103,81 +108,55 @@ class _TripDetailListState extends State<TripDetailList> {
                     Divider(
                       color: Colors.grey,
                     ),
-                    Column(
-                        children:
-                            carwingsTrip.tripDetails.map((carwingsTripDetail) {
-                      return Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: <Widget>[
-                          carwingsTripDetail.tripId % 2 == 0
-                              ? Icon(Icons.arrow_back)
-                              : Icon(Icons.arrow_forward),
-                          Chip(
-                              label:
-                                  Text(carwingsTripDetail.tripId.toString())),
-                          Column(
-                            children: <Widget>[
-                              Text(
-                                _generalSettings.useMiles
-                                    ? carwingsTripDetail.travelDistanceMiles
-                                    : carwingsTripDetail
-                                        .travelDistanceKilometers,
-                                style: TextStyle(fontSize: 18.0),
-                              ),
-                              Text(_generalSettings.useMileagePerKWh
-                                  ? _generalSettings.useMiles
-                                      ? carwingsTripDetail.milesPerKWh
-                                      : carwingsTripDetail.kilometersPerKWh
-                                  : _generalSettings.useMiles
-                                      ? carwingsTripDetail.kWhPerMiles
-                                      : carwingsTripDetail.kWhPerKilometers)
-                            ],
-                          ),
-                          Column(
-                            children: <Widget>[
-                              Text(carwingsTripDetail.kWhUsed,
-                                  style: TextStyle(fontSize: 18.0)),
-                              _generalSettings.showCO2
-                                  ? Text(carwingsTripDetail.co2ReductionKg)
-                                  : Column(),
-                            ],
-                          )
-                        ],
-                      );
-                    }).toList()),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: <Widget>[
-                        Text('Totals', style: TextStyle(fontSize: 18.0)),
-                        Padding(padding: const EdgeInsets.all(8.0)),
+                        Chip(
+                          label: Text((tripCounter++).toString()),
+                        ),
                         Column(
                           children: <Widget>[
-                            Text(
-                              _generalSettings.useMiles
-                                  ? carwingsTrip.travelDistanceMiles
-                                  : carwingsTrip.travelDistanceKilometers,
-                              style: TextStyle(fontSize: 18.0),
-                            ),
-                            Text(_generalSettings.useMileagePerKWh
-                                ? _generalSettings.useMiles
-                                    ? carwingsTrip.milesPerKWh
-                                    : carwingsTrip.kilometersPerKWh
-                                : _generalSettings.useMiles
-                                    ? carwingsTrip.kWhPerMiles
-                                    : carwingsTrip.kWhPerKilometers)
+                            Icon(Icons.compare_arrows),
+                            Padding(padding: const EdgeInsets.all(2.0)),
+                            Text('${trip.tripsNumber} trips')
+                          ],
+                        ),
+                        Row(
+                          children: <Widget>[
+                            Icon(Icons.timer),
+                            Padding(padding: const EdgeInsets.all(2.0)),
+                            Text('${trip.travelTime.inMinutes.toString()} min')
                           ],
                         ),
                         Column(
                           children: <Widget>[
-                            Text(carwingsTrip.kWhUsed,
-                                style: TextStyle(fontSize: 18.0)),
-                            _generalSettings.showCO2
-                                ? Text(carwingsTrip.co2reductionKg)
-                                : Column(),
+                            Text(
+                              _generalSettings.useMiles
+                                  ? trip.travelDistanceMiles
+                                  : trip.travelDistanceKilometers,
+                              style: TextStyle(fontSize: 18.0),
+                            ),
+                            Text(_generalSettings.useMileagePerKWh
+                                ? _generalSettings.useMiles
+                                    ? trip.milesPerKWh
+                                    : trip.kilometersPerKWh
+                                : _generalSettings.useMiles
+                                    ? trip.kWhPerMiles
+                                    : trip.kWhPerKilometers)
                           ],
-                        )
+                        ),
+                        Column(
+                          children: <Widget>[
+                            Text('- ${trip.kWhUsed}',
+                                style: TextStyle(fontSize: 18.0)),
+                            Text(
+                              '+ ${trip.kWhGained}',
+                            )
+                          ],
+                        ),
                       ],
-                    )
+                    ),
+                    Padding(padding: const EdgeInsets.all(8.0)),
                   ],
                 );
               }).toList(),

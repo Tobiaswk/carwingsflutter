@@ -1,9 +1,11 @@
+import 'dart:io';
+
 import 'package:carwingsflutter/preferences_manager.dart';
 import 'package:carwingsflutter/preferences_types.dart';
 import 'package:carwingsflutter/session.dart';
 import 'package:carwingsflutter/util.dart';
 import 'package:carwingsflutter/widget_rotater.dart';
-import 'package:dartnissanconnectna/dartnissanconnectna.dart';
+import 'package:dartnissanconnect/dartnissanconnect.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
@@ -35,8 +37,13 @@ class _BatteryLatestCardState extends State<BatteryLatestCard> {
   }
 
   _getBatteryStatus() async {
+    await _session.nissanConnect.vehicle.requestBatteryStatusRefresh();
+    await Future.delayed(Duration(minutes: 1));
+  }
+
+  _getBatteryStatusLatest() async {
     NissanConnectBattery battery =
-        await _session.nissanConnectNa.vehicle.requestBatteryStatus();
+        await _session.nissanConnect.vehicle.requestBatteryStatus();
     setState(() {
       this._battery = battery;
     });
@@ -52,7 +59,9 @@ class _BatteryLatestCardState extends State<BatteryLatestCard> {
       _isLoading = true;
     });
     try {
+      await _getBatteryStatusLatest();
       await _getBatteryStatus();
+      await _getBatteryStatusLatest();
     } finally {
       setState(() {
         _isLoading = false;
@@ -204,9 +213,9 @@ class _BatteryLatestCardState extends State<BatteryLatestCard> {
                 _battery.cruisingRangeAcOffMiles,
                 _battery.cruisingRangeAcOnKm,
                 _battery.cruisingRangeAcOnMiles,
-                _battery.timeToFullTrickle,
-                _battery.timeToFullL2,
-                _battery.timeToFullL2_6kw,
+                _battery.timeToFullSlow,
+                _battery.timeToFullNormal,
+                _battery.timeToFullFast,
                 _battery.chargingkWLevelText,
                 _battery.chargingRemainingText)
             : _withValues(

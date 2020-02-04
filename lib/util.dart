@@ -6,12 +6,12 @@ class Util {
         barrierDismissible: false,
         context: context,
         builder: (_) => AlertDialog(
-              content: new Row(
+              content: Row(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  new CircularProgressIndicator(),
-                  new Padding(padding: const EdgeInsets.all(10.0)),
-                  new Text(loadingText),
+                  CircularProgressIndicator(),
+                  Padding(padding: const EdgeInsets.all(10.0)),
+                  Text(loadingText),
                 ],
               ),
             ));
@@ -21,7 +21,9 @@ class Util {
     Navigator.of(context).pop();
   }
 
-  static Color primaryColor(context) => isDarkTheme(context) ? Colors.white : Theme.of(context).primaryColor;
+  static Color primaryColor(context) =>
+      isDarkTheme(context) ? Colors.white : Theme.of(context).primaryColor;
 
-  static bool isDarkTheme(context) => Theme.of(context).brightness == Brightness.dark;
+  static bool isDarkTheme(context) =>
+      Theme.of(context).brightness == Brightness.dark;
 }

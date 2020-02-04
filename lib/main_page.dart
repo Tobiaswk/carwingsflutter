@@ -70,11 +70,18 @@ class _MainPageState extends State<MainPage> {
     Util.showLoadingDialog(context, 'Locating vehicle...');
     try {
       var location;
-      if (_session.isNorthAmerica()) {
-        location = await _session.nissanConnectNa.vehicle
-            .requestLocation(new DateTime.now());
-      } else {
-        location = await _session.carwings.vehicle.requestLocation();
+      switch (_session.getAPIType()) {
+        case API_TYPE.CARWINGS:
+          location = await _session.carwings.vehicle.requestLocation();
+          break;
+        case API_TYPE.NISSANCONNECTNA:
+          location = await _session.nissanConnectNa.vehicle
+              .requestLocation(DateTime.now());
+          break;
+        case API_TYPE.NISSANCONNECT:
+          await _session.nissanConnect.vehicle.requestLocationRefresh();
+          location = await _session.nissanConnect.vehicle.requestLocation();
+          break;
       }
       launch(
           'https://www.google.com/maps/search/?api=1&query=${location.latitude},${location.longitude}');
@@ -86,7 +93,7 @@ class _MainPageState extends State<MainPage> {
   }
 
   _openVehicleInfoPage(vehicle) {
-    Navigator.of(context).push(new MaterialPageRoute<Null>(
+    Navigator.of(context).push(MaterialPageRoute<Null>(
       builder: (BuildContext context) {
         return WidgetDelegator.vehiclePage(_session);
       },
@@ -94,7 +101,7 @@ class _MainPageState extends State<MainPage> {
   }
 
   _openClimateControlPage() {
-    Navigator.of(context).push(new MaterialPageRoute<Null>(
+    Navigator.of(context).push(MaterialPageRoute<Null>(
       builder: (BuildContext context) {
         return WidgetDelegator.climateControlPage(_session);
       },
@@ -102,7 +109,7 @@ class _MainPageState extends State<MainPage> {
   }
 
   _openChargingPage() {
-    Navigator.of(context).push(new MaterialPageRoute<Null>(
+    Navigator.of(context).push(MaterialPageRoute<Null>(
       builder: (BuildContext context) {
         return WidgetDelegator.chargingControlPage(_session);
       },
@@ -110,7 +117,7 @@ class _MainPageState extends State<MainPage> {
   }
 
   _openTripDetailListPage() {
-    Navigator.of(context).push(new MaterialPageRoute<Null>(
+    Navigator.of(context).push(MaterialPageRoute<Null>(
       builder: (BuildContext context) {
         return WidgetDelegator.tripDetailsPage(_session);
       },
@@ -122,43 +129,43 @@ class _MainPageState extends State<MainPage> {
   }
 
   _signOut() {
-    Navigator.of(context).pushReplacement(new MaterialPageRoute<Null>(
+    Navigator.of(context).pushReplacement(MaterialPageRoute<Null>(
       builder: (BuildContext context) {
-        return new LoginPage(_session, false);
+        return LoginPage(_session, false);
       },
     ));
   }
 
   Widget _buildDrawer(BuildContext context) {
-    return new Drawer(
-      child: new ListView(
+    return Drawer(
+      child: ListView(
         children: <Widget>[
-          new DrawerHeader(
-              child: new Center(
-                  child: new Column(
+          DrawerHeader(
+              child: Center(
+                  child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
-              new ImageIcon(
-                new AssetImage('images/car-leaf.png'),
+              ImageIcon(
+                AssetImage('images/car-leaf.png'),
                 size: 100.0,
                 color: Util.primaryColor(context),
               ),
             ],
           ))),
           _buildVehicleListTiles(context),
-          new ListTile(
+          ListTile(
             leading: const Icon(Icons.map),
             title: const Text('Locate my vehicle'),
             onTap: _locateVehicleGoogleMaps,
           ),
           const Divider(),
-          new ListTile(
+          ListTile(
             leading: const Icon(Icons.settings),
             title: const Text('Preferences'),
             onTap: _openPreferencesPage,
           ),
-          new ListTile(
+          ListTile(
             leading: const Icon(Icons.exit_to_app),
             title: const Text('Sign out'),
             onTap: _signOut,
@@ -178,34 +185,34 @@ class _MainPageState extends State<MainPage> {
     _session.changeVehicle(nickname);
 
     // Push replacement page to force refresh with selected vehicle
-    Navigator.of(context).pushReplacement(new MaterialPageRoute<Null>(
+    Navigator.of(context).pushReplacement(MaterialPageRoute<Null>(
       builder: (BuildContext context) {
-        return new MainPage(_session);
+        return MainPage(_session);
       },
     ));
   }
 
   Column _buildVehicleListTiles(context) {
-    List<ListTile> accountListTiles = new List<ListTile>();
+    List<ListTile> accountListTiles = List<ListTile>();
     var vehicles = _session.getVehicles();
     for (dynamic vehicle in vehicles) {
-      accountListTiles.add(new ListTile(
-        leading: new ImageIcon(new AssetImage('images/sports-car.png')),
-        trailing: new Radio(
+      accountListTiles.add(ListTile(
+        leading: ImageIcon(AssetImage('images/sports-car.png')),
+        trailing: Radio(
           value: vehicle.nickname,
           groupValue: _selectedVehicleValue,
           onChanged: _handleVehicleChange,
         ),
-        title: new Text(vehicle.nickname),
+        title: Text(vehicle.nickname),
         onTap: () => _openVehicleInfoPage(vehicle),
         onLongPress: () => null,
       ));
     }
-    return new Column(children: accountListTiles);
+    return Column(children: accountListTiles);
   }
 
   Widget _buildDonateListTile(BuildContext context) {
-    return new ListTile(
+    return ListTile(
       onTap: () async {
         try {
           await FlutterPayments.purchase(
@@ -226,8 +233,8 @@ class _MainPageState extends State<MainPage> {
   }
 
   void _snackBar(message) {
-    scaffoldKey.currentState.showSnackBar(new SnackBar(
-        duration: new Duration(seconds: 5), content: new Text(message)));
+    scaffoldKey.currentState.showSnackBar(
+        SnackBar(duration: Duration(seconds: 5), content: Text(message)));
   }
 
   @override
@@ -235,26 +242,30 @@ class _MainPageState extends State<MainPage> {
     return Scaffold(
       key: scaffoldKey,
       backgroundColor: Theme.of(context).primaryColor,
-      appBar: AppBar(title: new Text('Dashboard'), actions: [
-        new IconButton(
+      appBar: AppBar(title: Text('Dashboard'), actions: [
+        IconButton(
             icon: Icon(
               Icons.format_list_numbered,
               color: Colors.white,
             ),
             onPressed: _openTripDetailListPage),
-        new IconButton(
-            icon: new ImageIcon(AssetImage('images/aircondition.png'),
+        IconButton(
+            icon: ImageIcon(AssetImage('images/aircondition.png'),
                 color: Colors.white),
             onPressed: _openClimateControlPage),
-        new IconButton(
-            icon: new Icon(Icons.power, color: Colors.white),
+        IconButton(
+            icon: Icon(Icons.power, color: Colors.white),
             onPressed: _openChargingPage),
       ]),
       body: ListView(
         children: <Widget>[
-          WidgetDelegator.batteryLatestCard(_session),
-          WidgetDelegator.statisticsDailyCard(_session),
-          WidgetDelegator.statisticsMonthlyCard(_session),
+          Column(
+            children: <Widget>[
+              WidgetDelegator.batteryLatestCard(_session),
+              WidgetDelegator.statisticsDailyCard(_session),
+              WidgetDelegator.statisticsMonthlyCard(_session),
+            ],
+          )
         ],
       ),
       drawer: _buildDrawer(context),

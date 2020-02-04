@@ -33,8 +33,10 @@ class _ClimateControlPageState extends State<ClimateControlPage> {
         setState(() {
           _climateControlScheduled = date;
         });
-        if(!_session.carwings.isFirstGeneration) {
-          _session.carwings.vehicle.requestCabinTemperature().then((cabinTemperature) {
+        if (!_session.carwings.isFirstGeneration) {
+          _session.carwings.vehicle
+              .requestCabinTemperature()
+              .then((cabinTemperature) {
             setState(() {
               _cabinTemperature = cabinTemperature;
             });
@@ -50,7 +52,8 @@ class _ClimateControlPageState extends State<ClimateControlPage> {
       _climateControlOn = !_climateControlOn;
       if (_climateControlOn) {
         _session.carwings.vehicle
-            .requestClimateControlSchedule(DateTime.now().add(Duration(seconds: 5)))
+            .requestClimateControlSchedule(
+                DateTime.now().add(Duration(seconds: 5)))
             .then((_) {
           _snackbar('Climate Control was turned on');
         }).catchError((error) {

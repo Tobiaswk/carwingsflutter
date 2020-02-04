@@ -2,7 +2,7 @@ import 'package:carwingsflutter/preferences_manager.dart';
 import 'package:carwingsflutter/preferences_types.dart';
 import 'package:carwingsflutter/session.dart';
 import 'package:carwingsflutter/widget_rotater.dart';
-import 'package:dartnissanconnectna/dartnissanconnectna.dart';
+import 'package:dartnissanconnect/dartnissanconnect.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
@@ -35,8 +35,8 @@ class _StatisticsMonthlyCardState extends State<StatisticsMonthlyCard> {
   }
 
   _getDailyStatistics() async {
-    NissanConnectStats statsDaily = await _session.nissanConnectNa.vehicle
-        .requestMonthlyStatistics(DateTime.now());
+    NissanConnectStats statsDaily =
+        await _session.nissanConnect.vehicle.requestMonthlyStatistics();
     setState(() {
       this._stats = statsDaily;
     });
@@ -70,7 +70,9 @@ class _StatisticsMonthlyCardState extends State<StatisticsMonthlyCard> {
       String travelDistanceMiles,
       String kWhUsed,
       Duration travelTime,
-      String co2ReductionKg) {
+      String travelSpeedAverageKmh,
+      String travelSpeedAverageMph,
+      String tripsNumber) {
     return Material(
         borderRadius: BorderRadius.all(Radius.circular(4.0)),
         elevation: 2.0,
@@ -140,11 +142,21 @@ class _StatisticsMonthlyCardState extends State<StatisticsMonthlyCard> {
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
-                            Text('Distance'),
+                            Text('Distance covered'),
                             Text(
                               _generalSettings.useMiles
                                   ? travelDistanceMiles
                                   : travelDistanceKilometers,
+                              style: TextStyle(fontSize: 25.0),
+                            )
+                          ],
+                        ),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                            Text('Trips done'),
+                            Text(
+                              tripsNumber,
                               style: TextStyle(fontSize: 25.0),
                             )
                           ],
@@ -159,20 +171,23 @@ class _StatisticsMonthlyCardState extends State<StatisticsMonthlyCard> {
                             )
                           ],
                         ),
-                        _generalSettings.showCO2
-                            ? Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: <Widget>[
-                                  Text('CO2 savings'),
-                                  Text(
-                                    co2ReductionKg,
-                                    style: TextStyle(fontSize: 25.0),
-                                  )
-                                ],
-                              )
-                            : Column(),
                       ],
                     ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: <Widget>[
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                            Text('Average traveling speed'),
+                            Text(
+                              '${travelTime.inHours == 0 ? '-' : '${travelTime.inHours} hrs'}',
+                              style: TextStyle(fontSize: 25.0),
+                            )
+                          ],
+                        )
+                      ],
+                    )
                   ],
                 ))));
   }
@@ -192,19 +207,10 @@ class _StatisticsMonthlyCardState extends State<StatisticsMonthlyCard> {
                 _stats.travelDistanceMiles,
                 _stats.kWhUsed,
                 _stats.travelTime,
-                _stats.co2ReductionKg,
-              )
-            : _withValues(
-                null,
-                '-',
-                '-',
-                '-',
-                '-',
-                '-',
-                '-',
-                '-',
-                Duration(minutes: 0),
-                '-',
-              ));
+                _stats.travelSpeedAverageKmh,
+                _stats.travelSpeedAverageMph,
+                _stats.tripsNumber.toString())
+            : _withValues(null, '-', '-', '-', '-', '-', '-', '-',
+                Duration(minutes: 0), '-', '-', '-'));
   }
 }

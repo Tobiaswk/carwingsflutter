@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 class _DebugPageState extends State<DebugPage> {
-  final GlobalKey<ScaffoldState> scaffoldKey = new GlobalKey<ScaffoldState>();
+  final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
 
   Session _session;
 
@@ -11,35 +11,35 @@ class _DebugPageState extends State<DebugPage> {
 
   _copyAll() {
     String text = '';
-    _session.carwings.debugLog.forEach((logEntry) => text+=logEntry+'\n\n');
-    Clipboard.setData(new ClipboardData(text: text));
-    scaffoldKey.currentState.showSnackBar(new SnackBar(
-      content: new Text("All copied to Clipboard"),
+    _session.carwings.debugLog.forEach((logEntry) => text += logEntry + '\n\n');
+    Clipboard.setData(ClipboardData(text: text));
+    scaffoldKey.currentState.showSnackBar(SnackBar(
+      content: Text("All copied to Clipboard"),
     ));
   }
 
   @override
   Widget build(BuildContext context) {
-    return new Scaffold(
+    return Scaffold(
       key: scaffoldKey,
-      appBar: new AppBar(title: new Text("Debug log"), actions: [
-        new IconButton(icon: Icon(Icons.content_copy), onPressed: _copyAll),
+      appBar: AppBar(title: Text("Debug log"), actions: [
+        IconButton(icon: Icon(Icons.content_copy), onPressed: _copyAll),
       ]),
-      body: new ListView(
-        padding: new EdgeInsets.symmetric(vertical: 15.0, horizontal: 15.0),
+      body: ListView(
+        padding: EdgeInsets.symmetric(vertical: 15.0, horizontal: 15.0),
         children: _session.carwings.debugLog.reversed.map((String logEntry) {
           return Column(
             children: <Widget>[
-              new InkWell(
-                child: new Text(logEntry),
+              InkWell(
+                child: Text(logEntry),
                 onLongPress: () {
-                  Clipboard.setData(new ClipboardData(text: logEntry));
-                  scaffoldKey.currentState.showSnackBar(new SnackBar(
-                    content: new Text("Copied to Clipboard"),
+                  Clipboard.setData(ClipboardData(text: logEntry));
+                  scaffoldKey.currentState.showSnackBar(SnackBar(
+                    content: Text("Copied to Clipboard"),
                   ));
                 },
               ),
-              new Padding(padding: const EdgeInsets.all(3.0))
+              Padding(padding: const EdgeInsets.all(3.0))
             ],
           );
         }).toList(),
@@ -54,5 +54,5 @@ class DebugPage extends StatefulWidget {
   Session session;
 
   @override
-  _DebugPageState createState() => new _DebugPageState(session);
+  _DebugPageState createState() => _DebugPageState(session);
 }

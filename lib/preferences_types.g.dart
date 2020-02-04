@@ -8,54 +8,69 @@ part of 'preferences_types.dart';
 
 LoginSettings _$LoginSettingsFromJson(Map<String, dynamic> json) {
   return LoginSettings(
-      username: json['username'] as String,
-      password: json['password'] as String,
-      region: _$enumDecodeNullable(_$CarwingsRegionEnumMap, json['region']));
+    username: json['username'] as String,
+    password: json['password'] as String,
+    region: _$enumDecodeNullable(_$CarwingsRegionEnumMap, json['region']),
+  );
 }
 
 Map<String, dynamic> _$LoginSettingsToJson(LoginSettings instance) =>
     <String, dynamic>{
       'username': instance.username,
       'password': instance.password,
-      'region': _$CarwingsRegionEnumMap[instance.region]
+      'region': _$CarwingsRegionEnumMap[instance.region],
     };
 
-T _$enumDecode<T>(Map<T, dynamic> enumValues, dynamic source) {
+T _$enumDecode<T>(
+  Map<T, dynamic> enumValues,
+  dynamic source, {
+  T unknownValue,
+}) {
   if (source == null) {
     throw ArgumentError('A value must be provided. Supported values: '
         '${enumValues.values.join(', ')}');
   }
-  return enumValues.entries
-      .singleWhere((e) => e.value == source,
-          orElse: () => throw ArgumentError(
-              '`$source` is not one of the supported values: '
-              '${enumValues.values.join(', ')}'))
-      .key;
+
+  final value = enumValues.entries
+      .singleWhere((e) => e.value == source, orElse: () => null)
+      ?.key;
+
+  if (value == null && unknownValue == null) {
+    throw ArgumentError('`$source` is not one of the supported values: '
+        '${enumValues.values.join(', ')}');
+  }
+  return value ?? unknownValue;
 }
 
-T _$enumDecodeNullable<T>(Map<T, dynamic> enumValues, dynamic source) {
+T _$enumDecodeNullable<T>(
+  Map<T, dynamic> enumValues,
+  dynamic source, {
+  T unknownValue,
+}) {
   if (source == null) {
     return null;
   }
-  return _$enumDecode<T>(enumValues, source);
+  return _$enumDecode<T>(enumValues, source, unknownValue: unknownValue);
 }
 
-const _$CarwingsRegionEnumMap = <CarwingsRegion, dynamic>{
+const _$CarwingsRegionEnumMap = {
+  CarwingsRegion.World: 'World',
   CarwingsRegion.USA: 'USA',
   CarwingsRegion.Europe: 'Europe',
   CarwingsRegion.Canada: 'Canada',
   CarwingsRegion.Australia: 'Australia',
-  CarwingsRegion.Japan: 'Japan'
+  CarwingsRegion.Japan: 'Japan',
 };
 
 GeneralSettings _$GeneralSettingsFromJson(Map<String, dynamic> json) {
   return GeneralSettings(
-      useMiles: json['useMiles'] as bool ?? false,
-      useMileagePerKWh: json['useMileagePerKWh'] as bool ?? false,
-      timeZoneOverride: json['timeZoneOverride'] as bool ?? false,
-      use12thBarNotation: json['use12thBarNotation'] as bool ?? false,
-      showCO2: json['showCO2'] as bool ?? true,
-      timeZone: json['timeZone'] as String);
+    useMiles: json['useMiles'] as bool ?? false,
+    useMileagePerKWh: json['useMileagePerKWh'] as bool ?? false,
+    timeZoneOverride: json['timeZoneOverride'] as bool ?? false,
+    use12thBarNotation: json['use12thBarNotation'] as bool ?? false,
+    showCO2: json['showCO2'] as bool ?? true,
+    timeZone: json['timeZone'] as String,
+  );
 }
 
 Map<String, dynamic> _$GeneralSettingsToJson(GeneralSettings instance) =>
@@ -65,5 +80,5 @@ Map<String, dynamic> _$GeneralSettingsToJson(GeneralSettings instance) =>
       'timeZoneOverride': instance.timeZoneOverride,
       'use12thBarNotation': instance.use12thBarNotation,
       'showCO2': instance.showCO2,
-      'timeZone': instance.timeZone
+      'timeZone': instance.timeZone,
     };

@@ -60,7 +60,7 @@ class Setting {
   Setting copyWith({
     ThemeColor theme,
   }) {
-    return new Setting(
+    return Setting(
       theme: theme ?? this.theme,
     );
   }

@@ -7,15 +7,17 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  shared_preferences: ^0.5.4+5
-  json_annotation: ^3.0.0
-  url_launcher: ^5.2.5
+  shared_preferences: ^0.5.6+1
+  json_annotation: ^3.0.1
+  url_launcher: ^5.4.1
   flutter_payments:
     git: https://github.com/Tobiaswk/flutter_payments.git
   dartcarwings:
     git: https://gitlab.com/tobiaswkjeldsen/dartcarwings.git
   dartnissanconnectna:
     git: https://gitlab.com/tobiaswkjeldsen/dartnissanconnectna.git
+  dartnissanconnect:
+    git: https://gitlab.com/tobiaswkjeldsen/dartnissanconnect.git
   blowfish_native:
     git: https://gitlab.com/tobiaswkjeldsen/blowfish_native.git
 
@@ -26,7 +28,7 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  json_serializable: ^3.2.3 #  flutter packages pub run build_runner build
+  json_serializable: ^3.2.5 #  flutter packages pub run build_runner build
   build_runner: ^1.0.0
 
 

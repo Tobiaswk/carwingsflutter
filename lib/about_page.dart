@@ -17,29 +17,29 @@ class _AboutPageState extends State<AboutPage> {
 
   @override
   Widget build(BuildContext context) {
-    return new Scaffold(
-      appBar: new AppBar(title: new Text("About")),
-      body: new ListView(
+    return Scaffold(
+      appBar: AppBar(title: Text("About")),
+      body: ListView(
         children: <Widget>[
-          new Column(
+          Column(
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
-              new Padding(padding: const EdgeInsets.all(8.0)),
+              Padding(padding: const EdgeInsets.all(8.0)),
               ImageIcon(
                 AssetImage('images/car-leaf.png'),
                 color: Util.primaryColor(context),
                 size: 100.0,
               ),
-              new Padding(padding: const EdgeInsets.all(5.0)),
-              new Text(
+              Padding(padding: const EdgeInsets.all(5.0)),
+              Text(
                 'My Leaf',
                 style: TextStyle(fontSize: 20.0),
               ),
-              new Text(
+              Text(
                 'Third party NissanConnect EV app',
                 style: TextStyle(fontSize: 18.0),
               ),
-              new ListTile(
+              ListTile(
                 title: const Text('Developed by'),
                 subtitle:
                     const Text('Tobias Westergaard Kjeldsen <me@tobis.dk>'),
@@ -47,15 +47,15 @@ class _AboutPageState extends State<AboutPage> {
                   _launchUrl('mailto:me@tobis.dk');
                 },
               ),
-              new ListTile(
+              ListTile(
                 title: const Text('My Leaf icon by'),
                 subtitle: const Text('Freepik at flaticon.com'),
               ),
-              new Text(
+              Text(
                 'Libraries and source code',
                 style: TextStyle(fontSize: 20.0),
               ),
-              new ListTile(
+              ListTile(
                 title: const Text('dartcarwings library'),
                 subtitle: const Text(
                     'https://gitlab.com/tobiaswkjeldsen/dartcarwings'),
@@ -63,15 +63,25 @@ class _AboutPageState extends State<AboutPage> {
                   _launchUrl('https://gitlab.com/tobiaswkjeldsen/dartcarwings');
                 },
               ),
-              new ListTile(
+              ListTile(
+                title: const Text('dartnissanconnect library'),
+                subtitle: const Text(
+                    'https://gitlab.com/tobiaswkjeldsen/dartnissanconnect'),
+                onTap: () {
+                  _launchUrl(
+                      'https://gitlab.com/tobiaswkjeldsen/dartnissanconnect');
+                },
+              ),
+              ListTile(
                 title: const Text('dartnissanconnectna library'),
                 subtitle: const Text(
                     'https://gitlab.com/tobiaswkjeldsen/dartnissanconnectna'),
                 onTap: () {
-                  _launchUrl('https://gitlab.com/tobiaswkjeldsen/dartnissanconnectna');
+                  _launchUrl(
+                      'https://gitlab.com/tobiaswkjeldsen/dartnissanconnectna');
                 },
               ),
-              new ListTile(
+              ListTile(
                 title: const Text('blowfish_native library'),
                 subtitle: const Text(
                     'https://gitlab.com/tobiaswkjeldsen/blowfish_native'),
@@ -80,7 +90,7 @@ class _AboutPageState extends State<AboutPage> {
                       'https://gitlab.com/tobiaswkjeldsen/blowfish_native');
                 },
               ),
-              new ListTile(
+              ListTile(
                 title: const Text('My Leaf source code'),
                 subtitle: const Text(
                     'https://gitlab.com/tobiaswkjeldsen/carwingsflutter'),
@@ -89,13 +99,13 @@ class _AboutPageState extends State<AboutPage> {
                       'https://gitlab.com/tobiaswkjeldsen/carwingsflutter');
                 },
               ),
-              new Text(
+              Text(
                 'License',
                 style: TextStyle(fontSize: 20.0),
               ),
-              new Container(
+              Container(
                 padding: const EdgeInsets.all(15.0),
-                child: new Text(_LICENSE),
+                child: Text(_LICENSE),
               )
             ],
           )
@@ -109,5 +119,5 @@ class AboutPage extends StatefulWidget {
   AboutPage({Key key}) : super(key: key);
 
   @override
-  _AboutPageState createState() => new _AboutPageState();
+  _AboutPageState createState() => _AboutPageState();
 }

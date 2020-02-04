@@ -29,7 +29,7 @@ class _DebugPageState extends State<DebugPage> {
       body: ListView(
         padding: EdgeInsets.symmetric(vertical: 15.0, horizontal: 15.0),
         children:
-            _session.nissanConnectNa.debugLog.reversed.map((String logEntry) {
+            _session.nissanConnect.debugLog.reversed.map((String logEntry) {
           return Column(
             children: <Widget>[
               InkWell(

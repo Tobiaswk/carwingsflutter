@@ -13,13 +13,13 @@ class BatteryLatestCard extends StatefulWidget {
   final Session session;
 
   @override
-  _BatteryLatestCardState createState() => new _BatteryLatestCardState(session);
+  _BatteryLatestCardState createState() => _BatteryLatestCardState(session);
 }
 
 class _BatteryLatestCardState extends State<BatteryLatestCard> {
-  PreferencesManager preferencesManager = new PreferencesManager();
+  PreferencesManager preferencesManager = PreferencesManager();
 
-  GeneralSettings _generalSettings = new GeneralSettings();
+  GeneralSettings _generalSettings = GeneralSettings();
 
   Session _session;
   dynamic _battery;
@@ -80,37 +80,37 @@ class _BatteryLatestCardState extends State<BatteryLatestCard> {
       Duration timeToFullL2_6kw,
       String chargingkWLevelText,
       String chargingRemainingText) {
-    return new Material(
-        borderRadius: new BorderRadius.all(new Radius.circular(4.0)),
+    return Material(
+        borderRadius: BorderRadius.all(Radius.circular(4.0)),
         elevation: 2.0,
         type: Util.isDarkTheme(context)
             ? MaterialType.transparency
             : MaterialType.card,
-        child: new InkWell(
-            child: new Container(
+        child: InkWell(
+            child: Container(
                 decoration: Util.isDarkTheme(context)
-                    ? new BoxDecoration(
+                    ? BoxDecoration(
                         image: DecorationImage(
                             image: AssetImage('images/leaf-header.png'),
                             fit: BoxFit.cover))
-                    : new BoxDecoration(),
+                    : BoxDecoration(),
                 padding: const EdgeInsets.fromLTRB(15.0, 0.0, 15.0, 10.0),
-                child: new Column(
+                child: Column(
                   children: <Widget>[
-                    new Row(
+                    Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: <Widget>[
-                        new Row(
+                        Row(
                           children: <Widget>[
                             Text(
                               'Battery',
                               style: TextStyle(fontSize: 20.0),
                             ),
-                            new Padding(padding: const EdgeInsets.all(3.0)),
+                            Padding(padding: const EdgeInsets.all(3.0)),
                             Icon(Icons.access_time),
-                            new Padding(padding: const EdgeInsets.all(3.0)),
+                            Padding(padding: const EdgeInsets.all(3.0)),
                             Text(date != null
-                                ? new DateFormat("EEEE H:mm").format(date)
+                                ? DateFormat("EEEE H:mm").format(date)
                                 : '-'),
                           ],
                         ),
@@ -125,12 +125,12 @@ class _BatteryLatestCardState extends State<BatteryLatestCard> {
                               ),
                       ],
                     ),
-                    new Row(
+                    Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: <Widget>[
-                        new Row(
+                        Row(
                           children: <Widget>[
-                            isCharging ? Icon(Icons.power) : new Row(),
+                            isCharging ? Icon(Icons.power) : Row(),
                             Text(
                               '${_generalSettings.use12thBarNotation && battery12thBar != null ? battery12thBar : batteryPercentage}',
                               style: TextStyle(fontSize: 40.0),
@@ -141,8 +141,8 @@ class _BatteryLatestCardState extends State<BatteryLatestCard> {
                           '${_generalSettings.useMiles ? cruisingRangeAcOffMiles : cruisingRangeAcOffKm}',
                           style: TextStyle(fontSize: 20.0),
                         ),
-                        new Text('/'),
-                        new Row(
+                        Text('/'),
+                        Row(
                           children: <Widget>[
                             Text(
                               '${_generalSettings.useMiles ? cruisingRangeAcOnMiles : cruisingRangeAcOnKm}',
@@ -157,7 +157,7 @@ class _BatteryLatestCardState extends State<BatteryLatestCard> {
                       ],
                     ),
                     isCharging
-                        ? new Row(
+                        ? Row(
                             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                             children: <Widget>[
                               Text(
@@ -172,7 +172,7 @@ class _BatteryLatestCardState extends State<BatteryLatestCard> {
                               ),
                             ],
                           )
-                        : new Row(
+                        : Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: <Widget>[
                               Text('~1kW'),
@@ -198,7 +198,7 @@ class _BatteryLatestCardState extends State<BatteryLatestCard> {
 
   @override
   Widget build(BuildContext context) {
-    return new Container(
+    return Container(
         padding: const EdgeInsets.fromLTRB(15.0, 20.0, 15.0, 0.0),
         child: _battery != null
             ? _withValues(
@@ -224,9 +224,9 @@ class _BatteryLatestCardState extends State<BatteryLatestCard> {
                 '-',
                 '-',
                 '-',
-                new Duration(hours: 0),
-                new Duration(hours: 0),
-                new Duration(hours: 0),
+                Duration(hours: 0),
+                Duration(hours: 0),
+                Duration(hours: 0),
                 '',
                 ''));
   }

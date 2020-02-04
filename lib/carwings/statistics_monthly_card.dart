@@ -13,13 +13,13 @@ class StatisticsMonthlyCard extends StatefulWidget {
 
   @override
   _StatisticsMonthlyCardState createState() =>
-      new _StatisticsMonthlyCardState(session);
+      _StatisticsMonthlyCardState(session);
 }
 
 class _StatisticsMonthlyCardState extends State<StatisticsMonthlyCard> {
-  PreferencesManager preferencesManager = new PreferencesManager();
+  PreferencesManager preferencesManager = PreferencesManager();
 
-  GeneralSettings _generalSettings = new GeneralSettings();
+  GeneralSettings _generalSettings = GeneralSettings();
 
   Session _session;
   CarwingsStatsMonthly _statsMonthly;
@@ -70,8 +70,8 @@ class _StatisticsMonthlyCardState extends State<StatisticsMonthlyCard> {
     showDatePicker(
         context: context,
         initialDate: _currentMonth,
-        firstDate: _currentMonth.subtract(new Duration(days: 365)),
-        lastDate: new DateTime.now(),
+        firstDate: _currentMonth.subtract(Duration(days: 365)),
+        lastDate: DateTime.now(),
         selectableDayPredicate: (date) => date.day == 1).then((date) {
       if (date != null) {
         _currentMonth = date;
@@ -91,35 +91,34 @@ class _StatisticsMonthlyCardState extends State<StatisticsMonthlyCard> {
     String totalTravelDistanceMileage,
     String totalCO2Reduction,
   ) {
-    return new Material(
-        borderRadius: new BorderRadius.all(new Radius.circular(4.0)),
+    return Material(
+        borderRadius: BorderRadius.all(Radius.circular(4.0)),
         elevation: 2.0,
         type: MaterialType.card,
-        child: new InkWell(
-            child: new Container(
-                decoration: new BoxDecoration(),
+        child: InkWell(
+            child: Container(
+                decoration: BoxDecoration(),
                 padding: const EdgeInsets.fromLTRB(15.0, 0.0, 15.0, 10.0),
-                child: new Column(
+                child: Column(
                   children: <Widget>[
-                    new Row(
+                    Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: <Widget>[
-                        new Row(
+                        Row(
                           children: <Widget>[
                             Text(
                               'Monthly Statistics',
                               style: TextStyle(fontSize: 20.0),
                             ),
-                            new Padding(padding: const EdgeInsets.all(3.0)),
-                            new InkWell(
+                            Padding(padding: const EdgeInsets.all(3.0)),
+                            InkWell(
                               onTap: _changeStatisticsMonth,
-                              child: new Row(
+                              child: Row(
                                 children: <Widget>[
                                   Icon(Icons.access_time),
-                                  new Padding(
-                                      padding: const EdgeInsets.all(3.0)),
+                                  Padding(padding: const EdgeInsets.all(3.0)),
                                   Text(date != null
-                                      ? new DateFormat("MMMM").format(date)
+                                      ? DateFormat("MMMM").format(date)
                                       : '-'),
                                 ],
                               ),
@@ -137,10 +136,10 @@ class _StatisticsMonthlyCardState extends State<StatisticsMonthlyCard> {
                               ),
                       ],
                     ),
-                    new Row(
+                    Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: <Widget>[
-                        new Column(
+                        Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
                             Text('Trips'),
@@ -150,7 +149,7 @@ class _StatisticsMonthlyCardState extends State<StatisticsMonthlyCard> {
                             )
                           ],
                         ),
-                        new Column(
+                        Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
                             Text('Distance driven'),
@@ -160,7 +159,7 @@ class _StatisticsMonthlyCardState extends State<StatisticsMonthlyCard> {
                             ),
                           ],
                         ),
-                        new Column(
+                        Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
                             Text('Consumption'),
@@ -172,10 +171,10 @@ class _StatisticsMonthlyCardState extends State<StatisticsMonthlyCard> {
                         )
                       ],
                     ),
-                    new Row(
+                    Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: <Widget>[
-                        new Column(
+                        Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
                             Text('Driving efficiency'),
@@ -193,7 +192,7 @@ class _StatisticsMonthlyCardState extends State<StatisticsMonthlyCard> {
 
   @override
   Widget build(BuildContext context) {
-    return new Container(
+    return Container(
         padding: const EdgeInsets.fromLTRB(15.0, 20.0, 15.0, 15.0),
         child: _statsMonthly != null
             ? _withValues(

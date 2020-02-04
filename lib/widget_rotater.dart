@@ -4,7 +4,7 @@ class WidgetRotater extends StatefulWidget {
   final Widget _widget;
 
   @override
-  _WidgetRotaterState createState() => new _WidgetRotaterState(_widget);
+  _WidgetRotaterState createState() => _WidgetRotaterState(_widget);
 
   WidgetRotater(this._widget);
 }
@@ -21,11 +21,10 @@ class _WidgetRotaterState extends State<WidgetRotater>
   void initState() {
     super.initState();
 
-    animationController = new AnimationController(
+    animationController = AnimationController(
       vsync: this,
-      duration: new Duration(seconds: 2),
+      duration: Duration(seconds: 2),
     );
-
 
     animationController.repeat();
   }
@@ -38,13 +37,13 @@ class _WidgetRotaterState extends State<WidgetRotater>
 
   @override
   Widget build(BuildContext context) {
-    return new Container(
+    return Container(
       alignment: Alignment.center,
-      child: new AnimatedBuilder(
+      child: AnimatedBuilder(
         animation: animationController,
         child: _widget,
         builder: (BuildContext context, Widget _widget) {
-          return new Transform.rotate(
+          return Transform.rotate(
             angle: animationController.value * 12.3,
             child: _widget,
           );
