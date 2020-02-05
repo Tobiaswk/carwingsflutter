@@ -108,7 +108,7 @@ class _MainPageState extends State<MainPage> {
     ));
   }
 
-  _openChargingPage() {
+  _openChargingControlPage() {
     Navigator.of(context).push(MaterialPageRoute<Null>(
       builder: (BuildContext context) {
         return WidgetDelegator.chargingControlPage(_session);
@@ -255,7 +255,7 @@ class _MainPageState extends State<MainPage> {
             onPressed: _openClimateControlPage),
         IconButton(
             icon: Icon(Icons.power, color: Colors.white),
-            onPressed: _openChargingPage),
+            onPressed: _openChargingControlPage),
       ]),
       body: ListView(
         children: <Widget>[

@@ -36,7 +36,7 @@ class _AboutPageState extends State<AboutPage> {
                 style: TextStyle(fontSize: 20.0),
               ),
               Text(
-                'Third party NissanConnect EV app',
+                'Third party NissanConnect app',
                 style: TextStyle(fontSize: 18.0),
               ),
               ListTile(

@@ -1,6 +1,6 @@
 # My Leaf
 
-A NissanConnect EV app alternative written using Flutter.
+A NissanConnect app alternative written using Flutter.
 
 My Leaf is a simple, striving to be great looking, and fast alternative to the official NissanConnect EV app from Nissan.
 

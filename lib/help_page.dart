@@ -21,6 +21,11 @@ class _HelpPageState extends State<HelpPage> {
                   Text(
                       'If you have a vehicle that was produced after May 2019 you need to select \'World\' as your region'),
                   Padding(padding: const EdgeInsets.all(5.0)),
+                  Text('Try the official app first',
+                      style: TextStyle(fontSize: 18.0)),
+                  Text(
+                      'If possible make sure you are able to sign in using the official app before you try My Leaf'),
+                  Padding(padding: const EdgeInsets.all(5.0)),
                   Text('You+Nissan / NissanConnect',
                       style: TextStyle(fontSize: 18.0)),
                   Text(
@@ -37,7 +42,7 @@ class _HelpPageState extends State<HelpPage> {
                   Text('Try the official app first',
                       style: TextStyle(fontSize: 18.0)),
                   Text(
-                      'If possible make sure you are able to sign in using the official NissanConnect EV app before you try My Leaf'),
+                      'If possible make sure you are able to sign in using the official app before you try My Leaf'),
                   Padding(padding: const EdgeInsets.all(5.0)),
                   Text('Turn on debugging', style: TextStyle(fontSize: 18.0)),
                   Text(
