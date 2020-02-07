@@ -11,7 +11,7 @@ class _ClimateControlPageState extends State<ClimateControlPage> {
   bool _climateControlIsReady = false;
   bool _climateControlOn = false;
   double _cabinTemperature;
-  double _desiredTemperature = 20.0;
+  double _sliderDesiredTemperature = 21.0;
 
   DateTime _startDate =
       DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day);
@@ -152,6 +152,17 @@ class _ClimateControlPageState extends State<ClimateControlPage> {
                   : 'Not scheduled',
               style: TextStyle(fontSize: 18.0),
             ),
+/*
+            Row(mainAxisAlignment: MainAxisAlignment.center,children: <Widget>[
+              Text('Temperature'),
+              Slider(value: _desiredTemperature, label: 'Temperature $_desiredTemperature', divisions: 10, min: 16, max: 26, onChanged: (value) {
+                setState(() {
+                  _desiredTemperature = value;
+                });
+              },),
+              Text('$_desiredTemperature°C / ${(_desiredTemperature*1.8).toInt()}°F')
+            ],)
+*/
           ],
         ),
       ),
