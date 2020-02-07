@@ -11,8 +11,7 @@ class _ChargeControlPageState extends State<ChargeControlPage> {
   bool _isCharging = false;
   bool _isConnected = false;
   bool _chargeControlReady = false;
-
-  DateTime _chargingScheduled;
+  bool _chargingOn = false;
 
   _ChargeControlPageState(this._session);
 
@@ -34,13 +33,22 @@ class _ChargeControlPageState extends State<ChargeControlPage> {
 
   void _requestStartCharging() {
     Util.showLoadingDialog(context);
-    _session.nissanConnect.vehicle.requestChargingStart().then((_) {
-      _updateBatteryStatus();
-      _snackbar('Charging request issued');
-    }).catchError((error) {
-      _isCharging = false;
-      _snackbar('Charging request failed');
-    }).whenComplete(() => Util.dismissLoadingDialog(context));
+    _chargingOn = !_chargingOn;
+    if(_chargingOn) {
+      _session.nissanConnect.vehicle.requestChargingStart().then((_) {
+        _updateBatteryStatus();
+        _snackbar('Charging start request issued');
+      }).catchError((error) {
+        _snackbar('Charging start request issued');
+      }).whenComplete(() => Util.dismissLoadingDialog(context));
+    } else {
+      _session.nissanConnect.vehicle.requestChargingStop().then((_) {
+        _updateBatteryStatus();
+        _snackbar('Charging stop request issued');
+      }).catchError((error) {
+        _snackbar('Charging stop request issued');
+      }).whenComplete(() => Util.dismissLoadingDialog(context));
+    }
   }
 
   _snackbar(message) {
