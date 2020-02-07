@@ -228,7 +228,9 @@ class _MainPageState extends State<MainPage> {
         }
       },
       leading: const Icon(Icons.monetization_on),
-      title: Text('Donate + widgets'),
+      title: Text(_session.getAPIType() != API_TYPE.NISSANCONNECT
+          ? 'Donate + widgets'
+          : 'Donate'),
     );
   }
 
