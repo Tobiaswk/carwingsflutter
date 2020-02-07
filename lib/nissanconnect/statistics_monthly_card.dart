@@ -181,7 +181,9 @@ class _StatisticsMonthlyCardState extends State<StatisticsMonthlyCard> {
                           children: <Widget>[
                             Text('Average traveling speed'),
                             Text(
-                              '${travelTime.inHours == 0 ? '-' : '${travelTime.inHours} hrs'}',
+                              _generalSettings.useMiles
+                                  ? travelSpeedAverageMph
+                                  : travelSpeedAverageKmh,
                               style: TextStyle(fontSize: 25.0),
                             )
                           ],
