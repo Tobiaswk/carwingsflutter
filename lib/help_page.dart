@@ -39,11 +39,6 @@ class _HelpPageState extends State<HelpPage> {
                   Text(
                       'Make sure you are able to sign in to the You+Nissan / NissanConnect website. You should be able to see your connected vehicles on You+Nissan'),
                   Padding(padding: const EdgeInsets.all(5.0)),
-                  Text('Try the official app first',
-                      style: TextStyle(fontSize: 18.0)),
-                  Text(
-                      'If possible make sure you are able to sign in using the official app before you try My Leaf'),
-                  Padding(padding: const EdgeInsets.all(5.0)),
                   Text('Turn on debugging', style: TextStyle(fontSize: 18.0)),
                   Text(
                       'Hold your finger on the My Leaf icon; preferences will open. Press \'Turn on debugging\'. Try signing in again. Hold your finger on the My Leaf icon again; enter \'Debug log\'. Press the clipboard icon in the top right corner'),
