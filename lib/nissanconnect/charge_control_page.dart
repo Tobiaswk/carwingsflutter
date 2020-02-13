@@ -34,7 +34,7 @@ class _ChargeControlPageState extends State<ChargeControlPage> {
   void _requestStartCharging() {
     Util.showLoadingDialog(context);
     _chargingOn = !_chargingOn;
-    if(_chargingOn) {
+    if (_chargingOn) {
       _session.nissanConnect.vehicle.requestChargingStart().then((_) {
         _updateBatteryStatus();
         _snackbar('Charging start request issued');
