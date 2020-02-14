@@ -2,7 +2,7 @@
 
 A NissanConnect app alternative written using Flutter.
 
-My Leaf is a simple, striving to be great looking, and fast alternative to the official NissanConnect EV app from Nissan.
+My Leaf is a simple, striving to be great looking, and fast alternative to the official NissanConnect app(s) from Nissan.
 
 You can ask your vehicle for the latest data, see current battery and charging statuses, see the current climate control state, start or stop climate control remotely, remotely start charging, scheduling climate control and charging, lastly retrieve the last known location of your vehicle.
 
