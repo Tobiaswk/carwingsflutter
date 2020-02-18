@@ -39,14 +39,16 @@ class _ChargeControlPageState extends State<ChargeControlPage> {
         _updateBatteryStatus();
         _snackbar('Charging start request issued');
       }).catchError((error) {
-        _snackbar('Charging start request issued');
+        _chargingOn = !_chargingOn;
+        _snackbar('Charging start request failed');
       }).whenComplete(() => Util.dismissLoadingDialog(context));
     } else {
       _session.nissanConnect.vehicle.requestChargingStop().then((_) {
         _updateBatteryStatus();
         _snackbar('Charging stop request issued');
       }).catchError((error) {
-        _snackbar('Charging stop request issued');
+        _chargingOn = !_chargingOn;
+        _snackbar('Charging stop request failed');
       }).whenComplete(() => Util.dismissLoadingDialog(context));
     }
   }
