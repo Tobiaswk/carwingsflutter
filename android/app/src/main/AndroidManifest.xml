@@ -1,5 +1,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="dk.kjeldsen.carwingsflutter">
+    package="dk.kjeldsen.carwingsflutter"
+          android:installLocation="auto">
 
     <!-- The INTERNET permission is required for development. Specifically,
          flutter needs it to communicate with the running application
