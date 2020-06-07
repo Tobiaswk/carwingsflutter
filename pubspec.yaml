@@ -9,7 +9,7 @@ dependencies:
     sdk: flutter
   shared_preferences: ^0.5.7+2
   json_annotation: ^3.0.1
-  url_launcher: ^5.4.7
+  url_launcher: ^5.4.10
   flutter_payments:
     git: https://github.com/Tobiaswk/flutter_payments.git
   dartcarwings:

@@ -166,7 +166,7 @@ class _StatisticsDailyCardState extends State<StatisticsDailyCard> {
                           children: <Widget>[
                             Text('Travel time'),
                             Text(
-                              '${travelTime.inHours == 0 ? '-' : '${travelTime.inHours} hrs'}',
+                              '${travelTime.inHours == 0 ? travelTime.inMinutes == 0 ? '-' : '${travelTime.inMinutes} mins' : '${travelTime.inHours} hrs'}',
                               style: TextStyle(fontSize: 25.0),
                             )
                           ],
