@@ -36,7 +36,7 @@ class _StatisticsMonthlyCardState extends State<StatisticsMonthlyCard> {
     _update();
   }
 
-  _getDailyStatistics() async {
+  _getMonthlyStatistics() async {
     NissanConnectStats statsMonthly =
         await _session.nissanConnect.vehicle.requestMonthlyStatistics(month: _currentMonth);
     setState(() {
@@ -54,7 +54,7 @@ class _StatisticsMonthlyCardState extends State<StatisticsMonthlyCard> {
       _isLoading = true;
     });
     try {
-      await _getDailyStatistics();
+      await _getMonthlyStatistics();
     } finally {
       setState(() {
         _isLoading = false;
