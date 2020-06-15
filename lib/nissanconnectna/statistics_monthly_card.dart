@@ -24,6 +24,8 @@ class _StatisticsMonthlyCardState extends State<StatisticsMonthlyCard> {
   Session _session;
   NissanConnectStats _stats;
 
+  DateTime _currentMonth = DateTime(DateTime.now().year, DateTime.now().month);
+
   bool _isLoading = false;
 
   _StatisticsMonthlyCardState(this._session);
@@ -34,9 +36,9 @@ class _StatisticsMonthlyCardState extends State<StatisticsMonthlyCard> {
     _update();
   }
 
-  _getDailyStatistics() async {
+  _getMonthlyStatistics() async {
     NissanConnectStats statsDaily = await _session.nissanConnectNa.vehicle
-        .requestMonthlyStatistics(DateTime.now());
+        .requestMonthlyStatistics(_currentMonth);
     setState(() {
       this._stats = statsDaily;
     });
@@ -52,12 +54,30 @@ class _StatisticsMonthlyCardState extends State<StatisticsMonthlyCard> {
       _isLoading = true;
     });
     try {
-      await _getDailyStatistics();
+      await _getMonthlyStatistics();
     } finally {
       setState(() {
         _isLoading = false;
       });
     }
+  }
+
+  // Present a date picker were only 1st day in each month is selectable
+  // Used for changing monthly statistics month
+  _changeStatisticsMonth() {
+    // selectableDayPredicate is here to only make 1st day in month selectable
+    // firstDate is 1 year back
+    showDatePicker(
+        context: context,
+        initialDate: _currentMonth,
+        firstDate: _currentMonth.subtract(Duration(days: 365)),
+        lastDate: DateTime.now(),
+        selectableDayPredicate: (date) => date.day == 1).then((date) {
+      if (date != null) {
+        _currentMonth = date;
+        _update();
+      }
+    });
   }
 
   _withValues(
@@ -91,11 +111,18 @@ class _StatisticsMonthlyCardState extends State<StatisticsMonthlyCard> {
                               style: TextStyle(fontSize: 20.0),
                             ),
                             Padding(padding: const EdgeInsets.all(3.0)),
-                            Icon(Icons.access_time),
-                            Padding(padding: const EdgeInsets.all(3.0)),
-                            Text(date != null
-                                ? DateFormat("MMMM").format(date)
-                                : '-'),
+                            InkWell(
+                              onTap: _changeStatisticsMonth,
+                              child: Row(
+                                children: <Widget>[
+                                  Icon(Icons.access_time),
+                                  Padding(padding: const EdgeInsets.all(3.0)),
+                                  Text(date != null
+                                      ? DateFormat("MMMM").format(date)
+                                      : '-'),
+                                ],
+                              ),
+                            )
                           ],
                         ),
                         _isLoading
