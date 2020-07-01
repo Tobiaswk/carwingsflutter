@@ -44,7 +44,8 @@ class _ClimateControlPageState extends State<ClimateControlPage> {
       _climateControlOn = !_climateControlOn;
       if (_climateControlOn) {
         _session.nissanConnect.vehicle
-            .requestClimateControlOn(DateTime.now(), 21)
+            .requestClimateControlOn(
+                DateTime.now(), _sliderDesiredTemperature.toInt())
             .then((_) {
           _snackbar('Climate Control was turned on');
         }).catchError((error) {
@@ -152,17 +153,31 @@ class _ClimateControlPageState extends State<ClimateControlPage> {
                   : 'Not scheduled',
               style: TextStyle(fontSize: 18.0),
             ),
-/*
-            Row(mainAxisAlignment: MainAxisAlignment.center,children: <Widget>[
-              Text('Temperature'),
-              Slider(value: _desiredTemperature, label: 'Temperature $_desiredTemperature', divisions: 10, min: 16, max: 26, onChanged: (value) {
-                setState(() {
-                  _desiredTemperature = value;
-                });
-              },),
-              Text('$_desiredTemperature°C / ${(_desiredTemperature*1.8).toInt()}°F')
-            ],)
-*/
+            Padding(
+              padding: const EdgeInsets.fromLTRB(0.0, 15.0, 0.0, 0.0),
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                Slider(
+                  value: _sliderDesiredTemperature,
+                  divisions: 10,
+                  min: 16,
+                  max: 26,
+                  onChanged: !_climateControlOn
+                      ? (value) {
+                          setState(() {
+                            _sliderDesiredTemperature = value;
+                          });
+                        }
+                      : null,
+                ),
+                Chip(
+                  label: Text(
+                      '${_sliderDesiredTemperature.toInt()}°C / ${(_sliderDesiredTemperature * 9 / 5 + 32).toInt()}°F'),
+                )
+              ],
+            )
           ],
         ),
       ),
