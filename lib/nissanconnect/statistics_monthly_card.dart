@@ -37,8 +37,8 @@ class _StatisticsMonthlyCardState extends State<StatisticsMonthlyCard> {
   }
 
   _getMonthlyStatistics() async {
-    NissanConnectStats statsMonthly =
-        await _session.nissanConnect.vehicle.requestMonthlyStatistics(month: _currentMonth);
+    NissanConnectStats statsMonthly = await _session.nissanConnect.vehicle
+        .requestMonthlyStatistics(month: _currentMonth);
     setState(() {
       this._stats = statsMonthly;
     });
@@ -68,15 +68,15 @@ class _StatisticsMonthlyCardState extends State<StatisticsMonthlyCard> {
     // selectableDayPredicate is here to only make 1st day in month selectable
     // firstDate is 1 year back
     showDatePicker(
-      context: context,
-      initialDate: _currentMonth,
-      firstDate: _currentMonth.subtract(Duration(days: 365)),
-      lastDate: DateTime.now(),
-      selectableDayPredicate: (date) => date.day == 1).then((date) {
-        if (date != null) {
-          _currentMonth = date;
-          _update();
-        }
+        context: context,
+        initialDate: _currentMonth,
+        firstDate: _currentMonth.subtract(Duration(days: 365)),
+        lastDate: DateTime.now(),
+        selectableDayPredicate: (date) => date.day == 1).then((date) {
+      if (date != null) {
+        _currentMonth = date;
+        _update();
+      }
     });
   }
 
@@ -120,8 +120,8 @@ class _StatisticsMonthlyCardState extends State<StatisticsMonthlyCard> {
                                   Icon(Icons.access_time),
                                   Padding(padding: const EdgeInsets.all(3.0)),
                                   Text(date != null
-                                    ? DateFormat("MMMM").format(date)
-                                    : '-'),
+                                      ? DateFormat("MMMM").format(date)
+                                      : '-'),
                                 ],
                               ),
                             ),
