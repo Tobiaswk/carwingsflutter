@@ -1,6 +1,7 @@
 import 'package:carwingsflutter/session.dart';
 import 'package:carwingsflutter/util.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:intl/intl.dart';
 
 class _ClimateControlPageState extends State<ClimateControlPage> {
@@ -137,25 +138,6 @@ class _ClimateControlPageState extends State<ClimateControlPage> {
               'Climate Control is ${_climateControlIsReady ? _climateControlOn ? 'on' : 'off' : 'updating...'}',
               style: TextStyle(fontSize: 18.0),
             ),
-            Text(
-                'Cabin temperature is ${_cabinTemperature != null ? '${_cabinTemperature}°' : 'updating...'}'),
-            IconButton(
-              icon: Icon(Icons.access_time),
-              iconSize: 200.0,
-              color: _climateControlScheduled != null
-                  ? Util.primaryColor(context)
-                  : Theme.of(context).disabledColor,
-              onPressed: _climateControlSchedule,
-            ),
-            Text(
-              _climateControlScheduled != null
-                  ? 'At ${DateFormat('HH:mm \'this\' EEEE').format(_climateControlScheduled)}'
-                  : 'Not scheduled',
-              style: TextStyle(fontSize: 18.0),
-            ),
-            Padding(
-              padding: const EdgeInsets.fromLTRB(0.0, 15.0, 0.0, 0.0),
-            ),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
@@ -172,12 +154,26 @@ class _ClimateControlPageState extends State<ClimateControlPage> {
                         }
                       : null,
                 ),
-                Chip(
-                  label: Text(
-                      '${_sliderDesiredTemperature.toInt()}°C / ${(_sliderDesiredTemperature * 9 / 5 + 32).toInt()}°F'),
-                )
+                Text(
+                    '${_sliderDesiredTemperature.toInt()}°C / ${(_sliderDesiredTemperature * 9 / 5 + 32).toInt()}°F')
               ],
-            )
+            ),
+            Text(
+                'Cabin temperature is ${_cabinTemperature != null ? '${_cabinTemperature}°C / ${(_cabinTemperature * 9 / 5 + 32).toInt()}°F' : 'updating...'}'),
+            IconButton(
+              icon: Icon(Icons.access_time),
+              iconSize: 200.0,
+              color: _climateControlScheduled != null
+                  ? Util.primaryColor(context)
+                  : Theme.of(context).disabledColor,
+              onPressed: _climateControlSchedule,
+            ),
+            Text(
+              _climateControlScheduled != null
+                  ? 'At ${DateFormat('HH:mm \'this\' EEEE').format(_climateControlScheduled)}'
+                  : 'Not scheduled',
+              style: TextStyle(fontSize: 18.0),
+            ),
           ],
         ),
       ),
