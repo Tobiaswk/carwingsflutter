@@ -142,6 +142,7 @@ class _ClimateControlPageState extends State<ClimateControlPage> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
                 Slider(
+                  label: 'Desired cabin temperature',
                   value: _sliderDesiredTemperature,
                   divisions: 10,
                   min: 16,
