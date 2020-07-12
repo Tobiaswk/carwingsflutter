@@ -259,16 +259,24 @@ class _MainPageState extends State<MainPage> {
             icon: Icon(Icons.power, color: Colors.white),
             onPressed: _openChargingControlPage),
       ]),
-      body: ListView(
-        children: <Widget>[
-          Column(
-            children: <Widget>[
-              WidgetDelegator.batteryLatestCard(_session),
-              WidgetDelegator.statisticsDailyCard(_session),
-              WidgetDelegator.statisticsMonthlyCard(_session),
-            ],
-          )
-        ],
+      body: FutureBuilder(
+        future: preferencesManager.getGeneralSettings(),
+        initialData: List(),
+        builder: (context, generalSettingsData) {
+          return generalSettingsData.hasData
+              ? ListView(
+                  children: <Widget>[
+                    Column(
+                      children: <Widget>[
+                        WidgetDelegator.batteryLatestCard(_session, generalSettingsData.data),
+                        WidgetDelegator.statisticsDailyCard(_session),
+                        WidgetDelegator.statisticsMonthlyCard(_session)
+                      ],
+                    )
+                  ],
+                )
+              : null;
+        },
       ),
       drawer: _buildDrawer(context),
     );

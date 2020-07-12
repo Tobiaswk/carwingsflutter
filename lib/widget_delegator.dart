@@ -39,7 +39,11 @@ import 'package:carwingsflutter/nissanconnectna/charge_control_page.dart'
     as nissanconnectna;
 import 'package:carwingsflutter/nissanconnect/charge_control_page.dart'
     as nissanconnect;
+import 'package:carwingsflutter/preferences_types.dart';
 import 'package:carwingsflutter/session.dart';
+import 'package:carwingsflutter/nissanconnect/battery_latest.dart'
+    as nissanconnect;
+import 'package:carwingsflutter/carwings/battery_latest.dart' as carwings;
 
 class WidgetDelegator {
   static debugPage(Session session) {
@@ -78,14 +82,16 @@ class WidgetDelegator {
     }
   }
 
-  static batteryLatestCard(Session session) {
+  static batteryLatestCard(Session session, GeneralSettings generalSettings) {
     switch (session.getAPIType()) {
       case API_TYPE.CARWINGS:
-        return carwings.BatteryLatestCard(session);
+        return generalSettings.use12thBarNotation
+            ? carwings.BatteryLatestCard(session)
+            : carwings.BatteryLatest(session);
       case API_TYPE.NISSANCONNECTNA:
         return nissanconnectna.BatteryLatestCard(session);
       case API_TYPE.NISSANCONNECT:
-        return nissanconnect.BatteryLatestCard(session);
+        return nissanconnect.BatteryLatest(session);
         break;
     }
   }
