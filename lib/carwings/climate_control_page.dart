@@ -54,7 +54,8 @@ class _ClimateControlPageState extends State<ClimateControlPage> {
       if (_climateControlOn) {
         _session.carwings.vehicle
             .requestClimateControlSchedule(
-                DateTime.now().add(Duration(seconds: 5)), temperature: _sliderDesiredTemperature.toInt())
+                DateTime.now().add(Duration(seconds: 5)),
+                temperature: _sliderDesiredTemperature.toInt())
             .then((_) {
           _snackbar('Climate Control was turned on');
         }).catchError((error) {
@@ -102,7 +103,8 @@ class _ClimateControlPageState extends State<ClimateControlPage> {
                   date.year, date.month, date.day, time.hour, time.minute);
               Util.showLoadingDialog(context);
               _session.carwings.vehicle
-                  .requestClimateControlSchedule(_currentDate, temperature: _sliderDesiredTemperature.toInt())
+                  .requestClimateControlSchedule(_currentDate,
+                      temperature: _sliderDesiredTemperature.toInt())
                   .then((_) {
                 setState(() {
                   _climateControlScheduled = _currentDate;

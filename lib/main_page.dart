@@ -268,7 +268,8 @@ class _MainPageState extends State<MainPage> {
                   children: <Widget>[
                     Column(
                       children: <Widget>[
-                        WidgetDelegator.batteryLatestCard(_session, generalSettingsData.data),
+                        WidgetDelegator.batteryLatestCard(
+                            _session, generalSettingsData.data),
                         WidgetDelegator.statisticsDailyCard(_session),
                         WidgetDelegator.statisticsMonthlyCard(_session)
                       ],
