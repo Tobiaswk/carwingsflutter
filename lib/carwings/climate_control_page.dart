@@ -12,6 +12,7 @@ class _ClimateControlPageState extends State<ClimateControlPage> {
   bool _climateControlIsReady = false;
   bool _climateControlOn = false;
   CarwingsCabinTemperature _cabinTemperature;
+  double _sliderDesiredTemperature = 21.0;
 
   DateTime _startDate =
       DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day);
@@ -53,7 +54,7 @@ class _ClimateControlPageState extends State<ClimateControlPage> {
       if (_climateControlOn) {
         _session.carwings.vehicle
             .requestClimateControlSchedule(
-                DateTime.now().add(Duration(seconds: 5)))
+                DateTime.now().add(Duration(seconds: 5)), temperature: _sliderDesiredTemperature.toInt())
             .then((_) {
           _snackbar('Climate Control was turned on');
         }).catchError((error) {
@@ -101,7 +102,7 @@ class _ClimateControlPageState extends State<ClimateControlPage> {
                   date.year, date.month, date.day, time.hour, time.minute);
               Util.showLoadingDialog(context);
               _session.carwings.vehicle
-                  .requestClimateControlSchedule(_currentDate)
+                  .requestClimateControlSchedule(_currentDate, temperature: _sliderDesiredTemperature.toInt())
                   .then((_) {
                 setState(() {
                   _climateControlScheduled = _currentDate;
@@ -142,6 +143,27 @@ class _ClimateControlPageState extends State<ClimateControlPage> {
             Text(
               'Climate Control is ${_climateControlIsReady ? _climateControlOn ? 'on' : 'off' : 'updating...'}',
               style: TextStyle(fontSize: 18.0),
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                Slider(
+                  label: 'Desired cabin temperature',
+                  value: _sliderDesiredTemperature,
+                  divisions: 10,
+                  min: 16,
+                  max: 26,
+                  onChanged: !_climateControlOn
+                      ? (value) {
+                          setState(() {
+                            _sliderDesiredTemperature = value;
+                          });
+                        }
+                      : null,
+                ),
+                Text(
+                    '${_sliderDesiredTemperature.toInt()}°C / ${(_sliderDesiredTemperature * 9 / 5 + 32).toInt()}°F')
+              ],
             ),
             !_session.carwings.isFirstGeneration
                 ? Text(
