@@ -105,10 +105,10 @@ class _BatteryLatestState extends State<BatteryLatest> {
           ),
           Positioned(
             top: 125,
-            left: 74,
+            left: 76,
             child: isCharging
                 ? Text(
-                    'Charging...',
+                    'Charging!',
                     style: TextStyle(color: Colors.white),
                   )
                 : Row(),
