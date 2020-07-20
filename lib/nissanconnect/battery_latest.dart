@@ -183,7 +183,7 @@ class _BatteryLatestState extends State<BatteryLatest> {
                   ),
                   Text("Charging Times", style: TextStyle(color: Colors.white)),
                   isCharging
-                      ? Row(
+                      ? Column(
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           crossAxisAlignment: CrossAxisAlignment.end,
                           children: <Widget>[
