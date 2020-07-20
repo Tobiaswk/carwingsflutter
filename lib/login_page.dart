@@ -186,6 +186,8 @@ class _LoginPageState extends State<LoginPage> {
                         TextFormField(
                           controller: _usernameTextController,
                           autofocus: false,
+                          autocorrect: false,
+                          enableSuggestions: false,
                           decoration: InputDecoration(
                               labelText: 'Username',
                               enabledBorder: UnderlineInputBorder(
