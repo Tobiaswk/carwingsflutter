@@ -98,7 +98,7 @@ class _BatteryLatestState extends State<BatteryLatest> {
                           ),
                           1.0,
                           1.5,
-                          3)
+                          Duration(milliseconds: 1500))
                     ],
                   )
                 : Row(),

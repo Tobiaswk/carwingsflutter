@@ -4,7 +4,7 @@ class WidgetPulse extends StatefulWidget {
   final Widget _widget;
   final double _fromSize;
   final double _toSize;
-  final double _duration;
+  final Duration _duration;
 
   @override
   _WidgetPulseState createState() =>
@@ -21,7 +21,7 @@ class _WidgetPulseState extends State<WidgetPulse>
   Widget _widget;
   final double _fromSize;
   final double _toSize;
-  final double _duration;
+  final Duration _duration;
 
   _WidgetPulseState(this._widget, this._fromSize, this._toSize, this._duration);
 
@@ -30,16 +30,17 @@ class _WidgetPulseState extends State<WidgetPulse>
     super.initState();
 
     _animationController =
-        AnimationController(vsync: this, duration: Duration(seconds: 2))
+        AnimationController(vsync: this, duration: _duration)
           ..addStatusListener((AnimationStatus status) {
             if (status == AnimationStatus.completed) {
               _animationController.repeat(reverse: true);
             }
           });
+
     _animation =
         Tween(begin: _fromSize, end: _toSize).animate(_animationController);
+
     _animationController.forward();
-    super.initState();
   }
 
   @override
