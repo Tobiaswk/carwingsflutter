@@ -3,8 +3,8 @@ import 'dart:io';
 import 'package:carwingsflutter/preferences_manager.dart';
 import 'package:carwingsflutter/preferences_types.dart';
 import 'package:carwingsflutter/session.dart';
-import 'package:carwingsflutter/util.dart';
 import 'package:carwingsflutter/widget_rotater.dart';
+import 'package:carwingsflutter/widget_pulse.dart';
 import 'package:dartnissanconnect/dartnissanconnect.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
@@ -89,6 +89,34 @@ class _BatteryLatestState extends State<BatteryLatest> {
       height: 155,
       child: Stack(
         children: <Widget>[
+          Positioned(
+            top: 43,
+            left: 94,
+            child: isCharging
+                ? Row(
+                    children: <Widget>[
+                      WidgetPulse(
+                          Icon(
+                            Icons.power,
+                            color: Colors.white,
+                          ),
+                          1.0,
+                          1.5,
+                          3)
+                    ],
+                  )
+                : Row(),
+          ),
+          Positioned(
+            top: 125,
+            left: 74,
+            child: isCharging
+                ? Text(
+                    'Charging...',
+                    style: TextStyle(color: Colors.white),
+                  )
+                : Row(),
+          ),
           Positioned(
             top: 12,
             left: 20,
