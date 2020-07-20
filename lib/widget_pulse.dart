@@ -29,13 +29,12 @@ class _WidgetPulseState extends State<WidgetPulse>
   void initState() {
     super.initState();
 
-    _animationController =
-        AnimationController(vsync: this, duration: _duration)
-          ..addStatusListener((AnimationStatus status) {
-            if (status == AnimationStatus.completed) {
-              _animationController.repeat(reverse: true);
-            }
-          });
+    _animationController = AnimationController(vsync: this, duration: _duration)
+      ..addStatusListener((AnimationStatus status) {
+        if (status == AnimationStatus.completed) {
+          _animationController.repeat(reverse: true);
+        }
+      });
 
     _animation =
         Tween(begin: _fromSize, end: _toSize).animate(_animationController);
