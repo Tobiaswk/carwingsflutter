@@ -1,49 +1,49 @@
-import 'package:carwingsflutter/carwings/debug_page.dart' as carwings;
-import 'package:carwingsflutter/nissanconnectna/debug_page.dart'
-    as nissanconnectna;
-import 'package:carwingsflutter/nissanconnect/debug_page.dart' as nissanconnect;
-import 'package:carwingsflutter/carwings/vehicle_page.dart' as carwings;
-import 'package:carwingsflutter/nissanconnectna/vehicle_page.dart'
-    as nissanconnectna;
-import 'package:carwingsflutter/nissanconnect/vehicle_page.dart'
-    as nissanconnect;
+import 'package:carwingsflutter/carwings/battery_latest.dart' as carwings;
 import 'package:carwingsflutter/carwings/battery_latest_card.dart' as carwings;
-import 'package:carwingsflutter/nissanconnectna/battery_latest_card.dart'
-    as nissanconnectna;
-import 'package:carwingsflutter/nissanconnect/battery_latest_card.dart'
-    as nissanconnect;
+import 'package:carwingsflutter/carwings/charge_control_page.dart' as carwings;
+import 'package:carwingsflutter/carwings/climate_control_page.dart' as carwings;
+import 'package:carwingsflutter/carwings/debug_page.dart' as carwings;
 import 'package:carwingsflutter/carwings/statistics_daily_card.dart'
     as carwings;
-import 'package:carwingsflutter/nissanconnectna/statistics_daily_card.dart'
-    as nissanconnectna;
-import 'package:carwingsflutter/nissanconnect/statistics_daily_card.dart'
-    as nissanconnect;
 import 'package:carwingsflutter/carwings/statistics_monthly_card.dart'
     as carwings;
-import 'package:carwingsflutter/nissanconnectna/statistics_monthly_card.dart'
-    as nissanconnectna;
-import 'package:carwingsflutter/nissanconnect/statistics_monthly_card.dart'
-    as nissanconnect;
 import 'package:carwingsflutter/carwings/trip_detail_list.dart' as carwings;
-import 'package:carwingsflutter/nissanconnectna/trip_detail_list.dart'
-    as nissanconnectna;
-import 'package:carwingsflutter/nissanconnect/trip_detail_list.dart'
-    as nissanconnect;
-import 'package:carwingsflutter/carwings/climate_control_page.dart' as carwings;
-import 'package:carwingsflutter/nissanconnectna/climate_control_page.dart'
-    as nissanconnectna;
-import 'package:carwingsflutter/nissanconnect/climate_control_page.dart'
-    as nissanconnect;
-import 'package:carwingsflutter/carwings/charge_control_page.dart' as carwings;
-import 'package:carwingsflutter/nissanconnectna/charge_control_page.dart'
-    as nissanconnectna;
-import 'package:carwingsflutter/nissanconnect/charge_control_page.dart'
-    as nissanconnect;
-import 'package:carwingsflutter/preferences_types.dart';
-import 'package:carwingsflutter/session.dart';
+import 'package:carwingsflutter/carwings/vehicle_page.dart' as carwings;
 import 'package:carwingsflutter/nissanconnect/battery_latest.dart'
     as nissanconnect;
-import 'package:carwingsflutter/carwings/battery_latest.dart' as carwings;
+import 'package:carwingsflutter/nissanconnect/battery_latest_card.dart'
+    as nissanconnect;
+import 'package:carwingsflutter/nissanconnect/charge_control_page.dart'
+    as nissanconnect;
+import 'package:carwingsflutter/nissanconnect/climate_control_page.dart'
+    as nissanconnect;
+import 'package:carwingsflutter/nissanconnect/debug_page.dart' as nissanconnect;
+import 'package:carwingsflutter/nissanconnect/statistics_daily_card.dart'
+    as nissanconnect;
+import 'package:carwingsflutter/nissanconnect/statistics_monthly_card.dart'
+    as nissanconnect;
+import 'package:carwingsflutter/nissanconnect/trip_detail_list.dart'
+    as nissanconnect;
+import 'package:carwingsflutter/nissanconnect/vehicle_page.dart'
+    as nissanconnect;
+import 'package:carwingsflutter/nissanconnectna/battery_latest_card.dart'
+    as nissanconnectna;
+import 'package:carwingsflutter/nissanconnectna/charge_control_page.dart'
+    as nissanconnectna;
+import 'package:carwingsflutter/nissanconnectna/climate_control_page.dart'
+    as nissanconnectna;
+import 'package:carwingsflutter/nissanconnectna/debug_page.dart'
+    as nissanconnectna;
+import 'package:carwingsflutter/nissanconnectna/statistics_daily_card.dart'
+    as nissanconnectna;
+import 'package:carwingsflutter/nissanconnectna/statistics_monthly_card.dart'
+    as nissanconnectna;
+import 'package:carwingsflutter/nissanconnectna/trip_detail_list.dart'
+    as nissanconnectna;
+import 'package:carwingsflutter/nissanconnectna/vehicle_page.dart'
+    as nissanconnectna;
+import 'package:carwingsflutter/preferences_types.dart';
+import 'package:carwingsflutter/session.dart';
 
 class WidgetDelegator {
   static debugPage(Session session) {

@@ -1,3 +1,5 @@
+import 'dart:io' show Platform;
+
 import 'package:carwingsflutter/login_page.dart';
 import 'package:carwingsflutter/preferences_page.dart';
 import 'package:carwingsflutter/session.dart';
@@ -6,7 +8,6 @@ import 'package:carwingsflutter/widget_delegator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_payments/flutter_payments.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'dart:io' show Platform;
 
 class MainPage extends StatefulWidget {
   MainPage(this.session);

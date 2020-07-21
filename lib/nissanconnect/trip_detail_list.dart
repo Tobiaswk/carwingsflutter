@@ -1,10 +1,10 @@
+import 'dart:io';
+
 import 'package:carwingsflutter/preferences_manager.dart';
 import 'package:carwingsflutter/preferences_types.dart';
 import 'package:carwingsflutter/session.dart';
-import 'package:dartcarwings/dartcarwings.dart';
 import 'package:dartnissanconnect/dartnissanconnect.dart';
 import 'package:flutter/material.dart';
-import 'dart:io';
 import 'package:intl/intl.dart';
 
 class _TripDetailListState extends State<TripDetailList> {

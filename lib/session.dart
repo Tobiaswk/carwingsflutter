@@ -1,7 +1,7 @@
 import 'package:dartcarwings/dartcarwings.dart';
+import 'package:dartnissanconnect/dartnissanconnect.dart' as nissanconnect;
 import 'package:dartnissanconnectna/dartnissanconnectna.dart'
     as nissanconnectna;
-import 'package:dartnissanconnect/dartnissanconnect.dart' as nissanconnect;
 
 enum API_TYPE { CARWINGS, NISSANCONNECTNA, NISSANCONNECT }
 

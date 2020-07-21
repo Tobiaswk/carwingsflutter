@@ -1,6 +1,6 @@
 import 'package:carwingsflutter/login_page.dart';
-import 'package:carwingsflutter/preferences_page.dart';
 import 'package:carwingsflutter/preferences_manager.dart';
+import 'package:carwingsflutter/preferences_page.dart';
 import 'package:carwingsflutter/preferences_types.dart';
 import 'package:carwingsflutter/session.dart';
 import 'package:flutter/material.dart';

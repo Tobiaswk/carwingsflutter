@@ -1,10 +1,8 @@
-import 'dart:io';
-
 import 'package:carwingsflutter/preferences_manager.dart';
 import 'package:carwingsflutter/preferences_types.dart';
 import 'package:carwingsflutter/session.dart';
-import 'package:carwingsflutter/widget_rotater.dart';
 import 'package:carwingsflutter/widget_pulse.dart';
+import 'package:carwingsflutter/widget_rotater.dart';
 import 'package:dartnissanconnect/dartnissanconnect.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
