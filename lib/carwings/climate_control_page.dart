@@ -12,7 +12,6 @@ class _ClimateControlPageState extends State<ClimateControlPage> {
   bool _climateControlIsReady = false;
   bool _climateControlOn = false;
   CarwingsCabinTemperature _cabinTemperature;
-  double _sliderDesiredCabinTemperature = 21.0;
 
   DateTime _startDate =
       DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day);
@@ -58,8 +57,7 @@ class _ClimateControlPageState extends State<ClimateControlPage> {
       if (_climateControlOn) {
         _session.carwings.vehicle
             .requestClimateControlSchedule(
-                DateTime.now().add(Duration(seconds: 5)),
-                temperature: _sliderDesiredCabinTemperature.toInt())
+                DateTime.now().add(Duration(seconds: 5)))
             .then((_) {
           _snackbar('Climate Control was turned on');
         }).catchError((error) {
@@ -107,8 +105,7 @@ class _ClimateControlPageState extends State<ClimateControlPage> {
                   date.year, date.month, date.day, time.hour, time.minute);
               Util.showLoadingDialog(context);
               _session.carwings.vehicle
-                  .requestClimateControlSchedule(_currentDate,
-                      temperature: _sliderDesiredCabinTemperature.toInt())
+                  .requestClimateControlSchedule(_currentDate)
                   .then((_) {
                 setState(() {
                   _climateControlScheduled = _currentDate;
@@ -149,27 +146,6 @@ class _ClimateControlPageState extends State<ClimateControlPage> {
             Text(
               'Climate Control is ${_climateControlIsReady ? _climateControlOn ? 'on' : 'off' : 'updating...'}',
               style: TextStyle(fontSize: 18.0),
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                Slider(
-                  label: 'Desired cabin temperature',
-                  value: _sliderDesiredCabinTemperature,
-                  divisions: 10,
-                  min: 16,
-                  max: 26,
-                  onChanged: !_climateControlOn
-                      ? (value) {
-                          setState(() {
-                            _sliderDesiredCabinTemperature = value;
-                          });
-                        }
-                      : null,
-                ),
-                Text(
-                    '${_sliderDesiredCabinTemperature.floor()}°C / ${_toFahrenheit(_sliderDesiredCabinTemperature.floor())}°F')
-              ],
             ),
             !_session.carwings.isFirstGeneration
                 ? Text(
