@@ -248,7 +248,7 @@ class _BatteryLatestState extends State<BatteryLatest> {
                     Padding(padding: const EdgeInsets.all(3.0)),
                     Text(
                         date != null
-                            ? DateFormat("EEEE H:mm").format(date)
+                            ? DateFormat("EEE H:mm").format(date)
                             : '-',
                         style: TextStyle(color: Colors.white)),
                   ],
