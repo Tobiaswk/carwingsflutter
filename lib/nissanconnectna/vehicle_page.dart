@@ -2,10 +2,6 @@ import 'package:carwingsflutter/session.dart';
 import 'package:flutter/material.dart';
 
 class _VehiclePageState extends State<VehiclePage> {
-  Session _session;
-
-  _VehiclePageState(this._session);
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -15,15 +11,15 @@ class _VehiclePageState extends State<VehiclePage> {
         children: <Widget>[
           ListTile(
             title: const Text('Name'),
-            subtitle: Text(_session.nissanConnectNa.vehicle.nickname),
+            subtitle: Text(widget.session.nissanConnectNa.vehicle.nickname),
           ),
           ListTile(
             title: Text('Model year'),
-            subtitle: Text(_session.nissanConnectNa.vehicle.modelYear),
+            subtitle: Text(widget.session.nissanConnectNa.vehicle.modelYear),
           ),
           ListTile(
             title: Text('VIN'),
-            subtitle: Text(_session.nissanConnectNa.vehicle.vin),
+            subtitle: Text(widget.session.nissanConnectNa.vehicle.vin),
           ),
         ],
       ),
@@ -37,5 +33,5 @@ class VehiclePage extends StatefulWidget {
   Session session;
 
   @override
-  _VehiclePageState createState() => _VehiclePageState(session);
+  _VehiclePageState createState() => _VehiclePageState();
 }

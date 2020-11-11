@@ -12,8 +12,7 @@ class StatisticsMonthlyCard extends StatefulWidget {
   final Session session;
 
   @override
-  _StatisticsMonthlyCardState createState() =>
-      _StatisticsMonthlyCardState(session);
+  _StatisticsMonthlyCardState createState() => _StatisticsMonthlyCardState();
 }
 
 class _StatisticsMonthlyCardState extends State<StatisticsMonthlyCard> {
@@ -21,14 +20,11 @@ class _StatisticsMonthlyCardState extends State<StatisticsMonthlyCard> {
 
   GeneralSettings _generalSettings = GeneralSettings();
 
-  Session _session;
   NissanConnectStats _stats;
 
   DateTime _currentMonth = DateTime(DateTime.now().year, DateTime.now().month);
 
   bool _isLoading = false;
-
-  _StatisticsMonthlyCardState(this._session);
 
   @override
   void initState() {
@@ -37,7 +33,7 @@ class _StatisticsMonthlyCardState extends State<StatisticsMonthlyCard> {
   }
 
   _getMonthlyStatistics() async {
-    NissanConnectStats statsDaily = await _session.nissanConnectNa.vehicle
+    NissanConnectStats statsDaily = await widget.session.nissanConnectNa.vehicle
         .requestMonthlyStatistics(_currentMonth);
     setState(() {
       this._stats = statsDaily;

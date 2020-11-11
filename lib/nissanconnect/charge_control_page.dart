@@ -6,14 +6,10 @@ import 'package:flutter/material.dart';
 class _ChargeControlPageState extends State<ChargeControlPage> {
   final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
 
-  Session _session;
-
   bool _isCharging = false;
   bool _isConnected = false;
   bool _chargeControlReady = false;
   bool _chargingOn = false;
-
-  _ChargeControlPageState(this._session);
 
   @override
   void initState() {
@@ -23,7 +19,7 @@ class _ChargeControlPageState extends State<ChargeControlPage> {
 
   _updateBatteryStatus() async {
     NissanConnectBattery battery =
-        await _session.nissanConnect.vehicle.requestBatteryStatus();
+        await widget.session.nissanConnect.vehicle.requestBatteryStatus();
     setState(() {
       _isCharging = battery.isCharging;
       _isConnected = battery.isConnected;
@@ -35,7 +31,7 @@ class _ChargeControlPageState extends State<ChargeControlPage> {
     Util.showLoadingDialog(context);
     _chargingOn = !_chargingOn;
     if (_chargingOn) {
-      _session.nissanConnect.vehicle.requestChargingStart().then((_) {
+      widget.session.nissanConnect.vehicle.requestChargingStart().then((_) {
         _updateBatteryStatus();
         _snackbar('Charging start request issued');
       }).catchError((error) {
@@ -43,7 +39,7 @@ class _ChargeControlPageState extends State<ChargeControlPage> {
         _snackbar('Charging start request failed');
       }).whenComplete(() => Util.dismissLoadingDialog(context));
     } else {
-      _session.nissanConnect.vehicle.requestChargingStop().then((_) {
+      widget.session.nissanConnect.vehicle.requestChargingStop().then((_) {
         _updateBatteryStatus();
         _snackbar('Charging stop request issued');
       }).catchError((error) {
@@ -95,5 +91,5 @@ class ChargeControlPage extends StatefulWidget {
   Session session;
 
   @override
-  _ChargeControlPageState createState() => _ChargeControlPageState(session);
+  _ChargeControlPageState createState() => _ChargeControlPageState();
 }

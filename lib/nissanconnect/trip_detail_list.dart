@@ -17,11 +17,8 @@ class _TripDetailListState extends State<TripDetailList> {
   DateFormat dateFormatWeekDay;
   DateFormat dateFormatDate;
 
-  Session _session;
   List<NissanConnectStats> _statsTrips;
   int tripCounter = 1;
-
-  _TripDetailListState(this._session);
 
   @override
   void didChangeDependencies() {
@@ -44,8 +41,8 @@ class _TripDetailListState extends State<TripDetailList> {
     setState(() {
       _statsTrips = null;
     });
-    List<NissanConnectStats> carwingsStatsTrips = await _session
-        .nissanConnect.vehicle
+    List<NissanConnectStats> carwingsStatsTrips = await widget
+        .session.nissanConnect.vehicle
         .requestMonthlyTripsStatistics(_currentDate);
     setState(() {
       _statsTrips = carwingsStatsTrips;
@@ -172,5 +169,5 @@ class TripDetailList extends StatefulWidget {
   final Session session;
 
   @override
-  _TripDetailListState createState() => _TripDetailListState(session);
+  _TripDetailListState createState() => _TripDetailListState();
 }

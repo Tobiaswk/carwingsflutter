@@ -14,7 +14,7 @@ class BatteryLatest extends StatefulWidget {
   final Session session;
 
   @override
-  _BatteryLatestState createState() => _BatteryLatestState(session);
+  _BatteryLatestState createState() => _BatteryLatestState();
 }
 
 class _BatteryLatestState extends State<BatteryLatest> {
@@ -22,12 +22,9 @@ class _BatteryLatestState extends State<BatteryLatest> {
 
   GeneralSettings _generalSettings = GeneralSettings();
 
-  Session _session;
   dynamic _battery;
 
   bool _isLoading = false;
-
-  _BatteryLatestState(this._session);
 
   @override
   void initState() {
@@ -37,7 +34,7 @@ class _BatteryLatestState extends State<BatteryLatest> {
 
   _getBatteryStatusLatest() async {
     CarwingsBattery battery =
-        await _session.carwings.vehicle.requestBatteryStatusLatest();
+        await widget.session.carwings.vehicle.requestBatteryStatusLatest();
     setState(() {
       this._battery = battery;
     });
@@ -49,7 +46,7 @@ class _BatteryLatestState extends State<BatteryLatest> {
   }
 
   _getBatteryStatus() async {
-    await _session.carwings.vehicle.requestBatteryStatus();
+    await widget.session.carwings.vehicle.requestBatteryStatus();
   }
 
   _update() async {

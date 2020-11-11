@@ -10,8 +10,6 @@ class _ChargeControlPageState extends State<ChargeControlPage> {
 
   PreferencesManager preferencesManager = PreferencesManager();
 
-  Session _session;
-
   bool _isCharging = false;
   bool _isConnected = false;
   bool _chargeControlReady = false;
@@ -25,8 +23,6 @@ class _ChargeControlPageState extends State<ChargeControlPage> {
       DateTime.now().hour,
       DateTime.now().add(Duration(seconds: 5)).minute);
   DateTime _chargingScheduled;
-
-  _ChargeControlPageState(this._session);
 
   @override
   void initState() {
@@ -48,10 +44,10 @@ class _ChargeControlPageState extends State<ChargeControlPage> {
 
   _updateBatteryStatus() async {
     try {
-      await _session.carwings.vehicle.requestBatteryStatus();
+      await widget.session.carwings.vehicle.requestBatteryStatus();
     } finally {
       CarwingsBattery battery =
-          await _session.carwings.vehicle.requestBatteryStatusLatest();
+          await widget.session.carwings.vehicle.requestBatteryStatusLatest();
       setState(() {
         _isCharging = battery.isCharging;
         _isConnected = battery.isConnected;
@@ -89,7 +85,9 @@ class _ChargeControlPageState extends State<ChargeControlPage> {
 
   void _requestStartCharging() {
     Util.showLoadingDialog(context);
-    _session.carwings.vehicle.requestChargingStart(_currentDate).then((_) {
+    widget.session.carwings.vehicle
+        .requestChargingStart(_currentDate)
+        .then((_) {
       _updateBatteryStatus();
       _snackbar('Charging was scheduled');
       preferencesManager.setChargingSchedule(_currentDate);
@@ -155,5 +153,5 @@ class ChargeControlPage extends StatefulWidget {
   Session session;
 
   @override
-  _ChargeControlPageState createState() => _ChargeControlPageState(session);
+  _ChargeControlPageState createState() => _ChargeControlPageState();
 }

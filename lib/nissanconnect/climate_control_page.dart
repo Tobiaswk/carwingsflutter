@@ -7,8 +7,6 @@ import 'package:intl/intl.dart';
 class _ClimateControlPageState extends State<ClimateControlPage> {
   final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
 
-  Session _session;
-
   bool _climateControlIsReady = false;
   bool _climateControlOn = false;
   double _cabinTemperature;
@@ -20,15 +18,15 @@ class _ClimateControlPageState extends State<ClimateControlPage> {
       DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day);
   DateTime _climateControlScheduled;
 
-  _ClimateControlPageState(this._session);
-
   @override
   void initState() {
     super.initState();
-    _session.nissanConnect.vehicle
+    widget.session.nissanConnect.vehicle
         .requestClimateControlStatusRefresh()
         .then((_) {
-      _session.nissanConnect.vehicle.requestClimateControlStatus().then((hvac) {
+      widget.session.nissanConnect.vehicle
+          .requestClimateControlStatus()
+          .then((hvac) {
         setState(() {
           _climateControlScheduled = hvac.climateScheduled;
           _cabinTemperature = hvac.cabinTemperature;
@@ -48,7 +46,7 @@ class _ClimateControlPageState extends State<ClimateControlPage> {
       Util.showLoadingDialog(context);
       _climateControlOn = !_climateControlOn;
       if (_climateControlOn) {
-        _session.nissanConnect.vehicle
+        widget.session.nissanConnect.vehicle
             .requestClimateControlOn(
                 DateTime.now(), _sliderDesiredCabinTemperature.toInt())
             .then((_) {
@@ -58,7 +56,9 @@ class _ClimateControlPageState extends State<ClimateControlPage> {
           _snackbar('Climate Control failed to turn on');
         }).whenComplete(() => Util.dismissLoadingDialog(context));
       } else {
-        _session.nissanConnect.vehicle.requestClimateControlOff().then((_) {
+        widget.session.nissanConnect.vehicle
+            .requestClimateControlOff()
+            .then((_) {
           _snackbar('Climate Control was turned off');
         }).catchError((error) {
           _climateControlOn = !_climateControlOn;
@@ -70,7 +70,7 @@ class _ClimateControlPageState extends State<ClimateControlPage> {
 
   _climateControlScheduledCancel() {
     Util.showLoadingDialog(context);
-    _session.nissanConnect.vehicle
+    widget.session.nissanConnect.vehicle
         .requestClimateControlScheduledCancel()
         .then((_) {
       _snackbar('Scheduled Climate Control was canceled');
@@ -99,7 +99,7 @@ class _ClimateControlPageState extends State<ClimateControlPage> {
               _currentDate = DateTime(
                   date.year, date.month, date.day, time.hour, time.minute);
               Util.showLoadingDialog(context);
-              _session.nissanConnect.vehicle
+              widget.session.nissanConnect.vehicle
                   .requestClimateControlOn(_currentDate, 21)
                   .then((_) {
                 setState(() {
@@ -192,5 +192,5 @@ class ClimateControlPage extends StatefulWidget {
   Session session;
 
   @override
-  _ClimateControlPageState createState() => _ClimateControlPageState(session);
+  _ClimateControlPageState createState() => _ClimateControlPageState();
 }

@@ -12,7 +12,7 @@ class StatisticsDailyCard extends StatefulWidget {
   final Session session;
 
   @override
-  _StatisticsDailyCardState createState() => _StatisticsDailyCardState(session);
+  _StatisticsDailyCardState createState() => _StatisticsDailyCardState();
 }
 
 class _StatisticsDailyCardState extends State<StatisticsDailyCard> {
@@ -20,12 +20,9 @@ class _StatisticsDailyCardState extends State<StatisticsDailyCard> {
 
   GeneralSettings _generalSettings = GeneralSettings();
 
-  Session _session;
   NissanConnectStats _stats;
 
   bool _isLoading = false;
-
-  _StatisticsDailyCardState(this._session);
 
   @override
   void initState() {
@@ -34,7 +31,7 @@ class _StatisticsDailyCardState extends State<StatisticsDailyCard> {
   }
 
   _getDailyStatistics() async {
-    NissanConnectStats statsDaily = await _session.nissanConnectNa.vehicle
+    NissanConnectStats statsDaily = await widget.session.nissanConnectNa.vehicle
         .requestDailyStatistics(DateTime(
             DateTime.now().year, DateTime.now().month, DateTime.now().day));
     setState(() {

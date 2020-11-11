@@ -15,7 +15,7 @@ class LoginPage extends StatefulWidget {
   bool autoLogin;
 
   @override
-  _LoginPageState createState() => _LoginPageState(session, autoLogin);
+  _LoginPageState createState() => _LoginPageState();
 }
 
 class _LoginPageState extends State<LoginPage> {
@@ -23,9 +23,6 @@ class _LoginPageState extends State<LoginPage> {
 
   PreferencesManager preferencesManager = PreferencesManager();
 
-  Session _session;
-
-  bool _autoLogin;
   CarwingsRegion _regionSelected = CarwingsRegion.Europe;
   bool _rememberLoginSettings = false;
 
@@ -33,8 +30,6 @@ class _LoginPageState extends State<LoginPage> {
   TextEditingController _passwordTextController = TextEditingController();
 
   String _serverStatus;
-
-  _LoginPageState(this._session, [this._autoLogin = false]);
 
   @override
   void initState() {
@@ -47,12 +42,12 @@ class _LoginPageState extends State<LoginPage> {
         setState(() {
           _rememberLoginSettings = true;
         });
-        if (_autoLogin) _doLogin();
+        if (widget.autoLogin) _doLogin();
       }
     });
     preferencesManager.getGeneralSettings().then((generalSettings) {
       if (generalSettings.timeZoneOverride) {
-        _session.carwings.setTimeZoneOverride(generalSettings.timeZone);
+        widget.session.carwings.setTimeZoneOverride(generalSettings.timeZone);
       }
     });
     _getServerStatus();
@@ -74,7 +69,7 @@ class _LoginPageState extends State<LoginPage> {
     var username = _usernameTextController.text.trim();
     var password = _passwordTextController.text.trim();
 
-    _session
+    widget.session
         .login(
             username: username,
             password: password,
@@ -122,7 +117,7 @@ class _LoginPageState extends State<LoginPage> {
   _openMainPage() {
     Navigator.of(context).pushReplacement(MaterialPageRoute<Null>(
       builder: (BuildContext context) {
-        return MainPage(_session);
+        return MainPage(widget.session);
       },
     ));
   }

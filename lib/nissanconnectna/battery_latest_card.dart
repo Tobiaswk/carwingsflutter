@@ -13,7 +13,7 @@ class BatteryLatestCard extends StatefulWidget {
   final Session session;
 
   @override
-  _BatteryLatestCardState createState() => _BatteryLatestCardState(session);
+  _BatteryLatestCardState createState() => _BatteryLatestCardState();
 }
 
 class _BatteryLatestCardState extends State<BatteryLatestCard> {
@@ -21,12 +21,9 @@ class _BatteryLatestCardState extends State<BatteryLatestCard> {
 
   GeneralSettings _generalSettings = GeneralSettings();
 
-  Session _session;
   NissanConnectBattery _battery;
 
   bool _isLoading = false;
-
-  _BatteryLatestCardState(this._session);
 
   @override
   void initState() {
@@ -36,7 +33,7 @@ class _BatteryLatestCardState extends State<BatteryLatestCard> {
 
   _getBatteryStatus() async {
     NissanConnectBattery battery =
-        await _session.nissanConnectNa.vehicle.requestBatteryStatus();
+        await widget.session.nissanConnectNa.vehicle.requestBatteryStatus();
     setState(() {
       this._battery = battery;
     });

@@ -5,13 +5,9 @@ import 'package:flutter/services.dart';
 class _DebugPageState extends State<DebugPage> {
   final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
 
-  Session _session;
-
-  _DebugPageState(this._session);
-
   _copyAll() {
     String text = '';
-    _session.nissanConnectNa.debugLog
+    widget.session.nissanConnectNa.debugLog
         .forEach((logEntry) => text += logEntry + '\n\n');
     Clipboard.setData(ClipboardData(text: text));
     scaffoldKey.currentState.showSnackBar(SnackBar(
@@ -28,8 +24,8 @@ class _DebugPageState extends State<DebugPage> {
       ]),
       body: ListView(
         padding: EdgeInsets.symmetric(vertical: 15.0, horizontal: 15.0),
-        children:
-            _session.nissanConnectNa.debugLog.reversed.map((String logEntry) {
+        children: widget.session.nissanConnectNa.debugLog.reversed
+            .map((String logEntry) {
           return Column(
             children: <Widget>[
               InkWell(
@@ -56,5 +52,5 @@ class DebugPage extends StatefulWidget {
   Session session;
 
   @override
-  _DebugPageState createState() => _DebugPageState(session);
+  _DebugPageState createState() => _DebugPageState();
 }

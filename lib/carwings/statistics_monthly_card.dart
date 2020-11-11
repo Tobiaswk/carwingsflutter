@@ -12,8 +12,7 @@ class StatisticsMonthlyCard extends StatefulWidget {
   final Session session;
 
   @override
-  _StatisticsMonthlyCardState createState() =>
-      _StatisticsMonthlyCardState(session);
+  _StatisticsMonthlyCardState createState() => _StatisticsMonthlyCardState();
 }
 
 class _StatisticsMonthlyCardState extends State<StatisticsMonthlyCard> {
@@ -21,14 +20,11 @@ class _StatisticsMonthlyCardState extends State<StatisticsMonthlyCard> {
 
   GeneralSettings _generalSettings = GeneralSettings();
 
-  Session _session;
   CarwingsStatsMonthly _statsMonthly;
 
   DateTime _currentMonth = DateTime(DateTime.now().year, DateTime.now().month);
 
   bool _isUpdating = false;
-
-  _StatisticsMonthlyCardState(this._session);
 
   @override
   void initState() {
@@ -37,8 +33,8 @@ class _StatisticsMonthlyCardState extends State<StatisticsMonthlyCard> {
   }
 
   _getMonthlyStatistics() async {
-    CarwingsStatsMonthly statsMonthly =
-        await _session.carwings.vehicle.requestStatisticsMonthly(_currentMonth);
+    CarwingsStatsMonthly statsMonthly = await widget.session.carwings.vehicle
+        .requestStatisticsMonthly(_currentMonth);
     setState(() {
       this._statsMonthly = statsMonthly;
     });

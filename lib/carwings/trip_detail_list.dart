@@ -17,10 +17,7 @@ class _TripDetailListState extends State<TripDetailList> {
   DateFormat dateFormatWeekDay;
   DateFormat dateFormatDate;
 
-  Session _session;
   CarwingsStatsTrips _statsTrips;
-
-  _TripDetailListState(this._session);
 
   @override
   void didChangeDependencies() {
@@ -43,7 +40,8 @@ class _TripDetailListState extends State<TripDetailList> {
     setState(() {
       _statsTrips = null;
     });
-    CarwingsStatsTrips carwingsStatsTrips = await _session.carwings.vehicle
+    CarwingsStatsTrips carwingsStatsTrips = await widget
+        .session.carwings.vehicle
         .requestStatisticsMonthlyTrips(_currentDate);
     setState(() {
       _statsTrips = carwingsStatsTrips;
@@ -181,5 +179,5 @@ class TripDetailList extends StatefulWidget {
   final Session session;
 
   @override
-  _TripDetailListState createState() => _TripDetailListState(session);
+  _TripDetailListState createState() => _TripDetailListState();
 }

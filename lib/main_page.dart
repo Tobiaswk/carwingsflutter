@@ -15,7 +15,7 @@ class MainPage extends StatefulWidget {
   final Session session;
 
   @override
-  _MainPageState createState() => _MainPageState(session);
+  _MainPageState createState() => _MainPageState();
 }
 
 class _MainPageState extends State<MainPage> {
@@ -23,12 +23,8 @@ class _MainPageState extends State<MainPage> {
 
   static final String SKU_DONATE = 'donate2';
 
-  Session _session;
-
   var _selectedVehicleValue; // Represents the current selected vehicle by nickname
   bool _donated = false;
-
-  _MainPageState(this._session);
 
   @override
   void initState() {
@@ -63,7 +59,7 @@ class _MainPageState extends State<MainPage> {
 
   _initSelectedVehicle() {
     setState(() {
-      _selectedVehicleValue = _session.getVehicle().nickname;
+      _selectedVehicleValue = widget.session.getVehicle().nickname;
     });
   }
 
@@ -71,17 +67,18 @@ class _MainPageState extends State<MainPage> {
     Util.showLoadingDialog(context, 'Locating vehicle...');
     try {
       var location;
-      switch (_session.getAPIType()) {
+      switch (widget.session.getAPIType()) {
         case API_TYPE.CARWINGS:
-          location = await _session.carwings.vehicle.requestLocation();
+          location = await widget.session.carwings.vehicle.requestLocation();
           break;
         case API_TYPE.NISSANCONNECTNA:
-          location = await _session.nissanConnectNa.vehicle
+          location = await widget.session.nissanConnectNa.vehicle
               .requestLocation(DateTime.now());
           break;
         case API_TYPE.NISSANCONNECT:
-          await _session.nissanConnect.vehicle.requestLocationRefresh();
-          location = await _session.nissanConnect.vehicle.requestLocation();
+          await widget.session.nissanConnect.vehicle.requestLocationRefresh();
+          location =
+              await widget.session.nissanConnect.vehicle.requestLocation();
           break;
       }
       launch(
@@ -96,7 +93,7 @@ class _MainPageState extends State<MainPage> {
   _openVehicleInfoPage(vehicle) {
     Navigator.of(context).push(MaterialPageRoute<Null>(
       builder: (BuildContext context) {
-        return WidgetDelegator.vehiclePage(_session);
+        return WidgetDelegator.vehiclePage(widget.session);
       },
     ));
   }
@@ -104,7 +101,7 @@ class _MainPageState extends State<MainPage> {
   _openClimateControlPage() {
     Navigator.of(context).push(MaterialPageRoute<Null>(
       builder: (BuildContext context) {
-        return WidgetDelegator.climateControlPage(_session);
+        return WidgetDelegator.climateControlPage(widget.session);
       },
     ));
   }
@@ -112,7 +109,7 @@ class _MainPageState extends State<MainPage> {
   _openChargingControlPage() {
     Navigator.of(context).push(MaterialPageRoute<Null>(
       builder: (BuildContext context) {
-        return WidgetDelegator.chargingControlPage(_session);
+        return WidgetDelegator.chargingControlPage(widget.session);
       },
     ));
   }
@@ -120,7 +117,7 @@ class _MainPageState extends State<MainPage> {
   _openTripDetailListPage() {
     Navigator.of(context).push(MaterialPageRoute<Null>(
       builder: (BuildContext context) {
-        return WidgetDelegator.tripDetailsPage(_session);
+        return WidgetDelegator.tripDetailsPage(widget.session);
       },
     ));
   }
@@ -132,7 +129,7 @@ class _MainPageState extends State<MainPage> {
   _signOut() {
     Navigator.of(context).pushReplacement(MaterialPageRoute<Null>(
       builder: (BuildContext context) {
-        return LoginPage(_session, false);
+        return LoginPage(widget.session, false);
       },
     ));
   }
@@ -183,19 +180,19 @@ class _MainPageState extends State<MainPage> {
     });
 
     // Set selected vehicle on session by vehicle nickname
-    _session.changeVehicle(nickname);
+    widget.session.changeVehicle(nickname);
 
     // Push replacement page to force refresh with selected vehicle
     Navigator.of(context).pushReplacement(MaterialPageRoute<Null>(
       builder: (BuildContext context) {
-        return MainPage(_session);
+        return MainPage(widget.session);
       },
     ));
   }
 
   Column _buildVehicleListTiles(context) {
     List<ListTile> accountListTiles = List<ListTile>();
-    var vehicles = _session.getVehicles();
+    var vehicles = widget.session.getVehicles();
     for (dynamic vehicle in vehicles) {
       accountListTiles.add(ListTile(
         leading: ImageIcon(AssetImage('images/sports-car.png')),
@@ -229,7 +226,7 @@ class _MainPageState extends State<MainPage> {
         }
       },
       leading: const Icon(Icons.monetization_on),
-      title: Text(_session.getAPIType() != API_TYPE.NISSANCONNECT
+      title: Text(widget.session.getAPIType() != API_TYPE.NISSANCONNECT
           ? 'Donate + widgets'
           : 'Donate'),
     );
@@ -270,9 +267,9 @@ class _MainPageState extends State<MainPage> {
                     Column(
                       children: <Widget>[
                         WidgetDelegator.batteryLatestCard(
-                            _session, generalSettingsData.data),
-                        WidgetDelegator.statisticsDailyCard(_session),
-                        WidgetDelegator.statisticsMonthlyCard(_session)
+                            widget.session, generalSettingsData.data),
+                        WidgetDelegator.statisticsDailyCard(widget.session),
+                        WidgetDelegator.statisticsMonthlyCard(widget.session)
                       ],
                     )
                   ],

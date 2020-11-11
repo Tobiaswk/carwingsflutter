@@ -6,15 +6,11 @@ import 'package:flutter/material.dart';
 class _ChargeControlPageState extends State<ChargeControlPage> {
   final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
 
-  Session _session;
-
   bool _isCharging = false;
   bool _isConnected = false;
   bool _chargeControlReady = false;
 
   DateTime _chargingScheduled;
-
-  _ChargeControlPageState(this._session);
 
   @override
   void initState() {
@@ -24,7 +20,7 @@ class _ChargeControlPageState extends State<ChargeControlPage> {
 
   _updateBatteryStatus() async {
     NissanConnectBattery battery =
-        await _session.nissanConnectNa.vehicle.requestBatteryStatus();
+        await widget.session.nissanConnectNa.vehicle.requestBatteryStatus();
     setState(() {
       _isCharging = battery.isCharging;
       _isConnected = battery.isConnected;
@@ -34,7 +30,7 @@ class _ChargeControlPageState extends State<ChargeControlPage> {
 
   void _requestStartCharging() {
     Util.showLoadingDialog(context);
-    _session.nissanConnectNa.vehicle.requestChargingStart().then((_) {
+    widget.session.nissanConnectNa.vehicle.requestChargingStart().then((_) {
       _updateBatteryStatus();
       _snackbar('Charging request issued');
     }).catchError((error) {
@@ -85,5 +81,5 @@ class ChargeControlPage extends StatefulWidget {
   Session session;
 
   @override
-  _ChargeControlPageState createState() => _ChargeControlPageState(session);
+  _ChargeControlPageState createState() => _ChargeControlPageState();
 }

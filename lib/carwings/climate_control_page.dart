@@ -7,8 +7,6 @@ import 'package:intl/intl.dart';
 class _ClimateControlPageState extends State<ClimateControlPage> {
   final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
 
-  Session _session;
-
   bool _climateControlIsReady = false;
   bool _climateControlOn = false;
   CarwingsCabinTemperature _cabinTemperature;
@@ -19,22 +17,22 @@ class _ClimateControlPageState extends State<ClimateControlPage> {
       DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day);
   DateTime _climateControlScheduled;
 
-  _ClimateControlPageState(this._session);
-
   @override
   void initState() {
     super.initState();
-    _session.carwings.vehicle.requestHVACStatus().then((hvac) {
+    widget.session.carwings.vehicle.requestHVACStatus().then((hvac) {
       setState(() {
         _climateControlOn = hvac.isRunning;
         _climateControlIsReady = true;
       });
-      _session.carwings.vehicle.requestClimateControlScheduleGet().then((date) {
+      widget.session.carwings.vehicle
+          .requestClimateControlScheduleGet()
+          .then((date) {
         setState(() {
           _climateControlScheduled = date;
         });
-        if (!_session.carwings.isFirstGeneration) {
-          _session.carwings.vehicle
+        if (!widget.session.carwings.isFirstGeneration) {
+          widget.session.carwings.vehicle
               .requestCabinTemperature()
               .then((cabinTemperature) {
             setState(() {
@@ -55,7 +53,7 @@ class _ClimateControlPageState extends State<ClimateControlPage> {
       Util.showLoadingDialog(context);
       _climateControlOn = !_climateControlOn;
       if (_climateControlOn) {
-        _session.carwings.vehicle
+        widget.session.carwings.vehicle
             .requestClimateControlSchedule(
                 DateTime.now().add(Duration(seconds: 5)))
             .then((_) {
@@ -65,7 +63,7 @@ class _ClimateControlPageState extends State<ClimateControlPage> {
           _snackbar('Climate Control failed to turn on');
         }).whenComplete(() => Util.dismissLoadingDialog(context));
       } else {
-        _session.carwings.vehicle.requestClimateControlOff().then((_) {
+        widget.session.carwings.vehicle.requestClimateControlOff().then((_) {
           _snackbar('Climate Control was turned off');
         }).catchError((error) {
           _climateControlOn = !_climateControlOn;
@@ -77,7 +75,9 @@ class _ClimateControlPageState extends State<ClimateControlPage> {
 
   _climateControlScheduledCancel() {
     Util.showLoadingDialog(context);
-    _session.carwings.vehicle.requestClimateControlScheduleCancel().then((_) {
+    widget.session.carwings.vehicle
+        .requestClimateControlScheduleCancel()
+        .then((_) {
       _snackbar('Scheduled Climate Control was canceled');
       setState(() {
         _climateControlScheduled = null;
@@ -104,7 +104,7 @@ class _ClimateControlPageState extends State<ClimateControlPage> {
               _currentDate = DateTime(
                   date.year, date.month, date.day, time.hour, time.minute);
               Util.showLoadingDialog(context);
-              _session.carwings.vehicle
+              widget.session.carwings.vehicle
                   .requestClimateControlSchedule(_currentDate)
                   .then((_) {
                 setState(() {
@@ -147,7 +147,7 @@ class _ClimateControlPageState extends State<ClimateControlPage> {
               'Climate Control is ${_climateControlIsReady ? _climateControlOn ? 'on' : 'off' : 'updating...'}',
               style: TextStyle(fontSize: 18.0),
             ),
-            !_session.carwings.isFirstGeneration
+            !widget.session.carwings.isFirstGeneration
                 ? Text(
                     'Cabin temperature is ${_cabinTemperature != null ? '${_cabinTemperature.temperature.floor()}°C / ${_toFahrenheit(_cabinTemperature.temperature.floor())}°F' : 'updating...'}')
                 : Column(),
@@ -178,5 +178,5 @@ class ClimateControlPage extends StatefulWidget {
   Session session;
 
   @override
-  _ClimateControlPageState createState() => _ClimateControlPageState(session);
+  _ClimateControlPageState createState() => _ClimateControlPageState();
 }

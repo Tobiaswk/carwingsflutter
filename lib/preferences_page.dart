@@ -17,14 +17,11 @@ class PreferencesPage extends StatefulWidget {
   final Session session;
 
   @override
-  _PreferencesPageState createState() => _PreferencesPageState(session);
+  _PreferencesPageState createState() => _PreferencesPageState();
 }
 
 class _PreferencesPageState extends State<PreferencesPage> {
   GeneralSettings _generalSettings = GeneralSettings();
-  Session _session;
-
-  _PreferencesPageState(this._session);
 
   @override
   void initState() {
@@ -53,7 +50,7 @@ class _PreferencesPageState extends State<PreferencesPage> {
   _openDebugPage() {
     Navigator.of(context).push(MaterialPageRoute<Null>(
       builder: (BuildContext context) {
-        return WidgetDelegator.debugPage(_session);
+        return WidgetDelegator.debugPage(widget.session);
       },
     ));
   }
@@ -214,14 +211,14 @@ class _PreferencesPageState extends State<PreferencesPage> {
       ListTile(
         title: Text('Turn on debugging'),
         trailing: Switch(
-            value: _session.carwings.debug != null
-                ? _session.carwings.debug
+            value: widget.session.carwings.debug != null
+                ? widget.session.carwings.debug
                 : false,
             onChanged: (bool value) {
               setState(() {
-                _session.carwings.debug = value;
-                _session.nissanConnectNa.debug = value;
-                _session.nissanConnect.debug = value;
+                widget.session.carwings.debug = value;
+                widget.session.nissanConnectNa.debug = value;
+                widget.session.nissanConnect.debug = value;
               });
             }),
       ),
@@ -243,9 +240,9 @@ class _PreferencesPageState extends State<PreferencesPage> {
   void persistGeneralSettings() {
     preferencesManager.setGeneralSettings(_generalSettings);
     if (_generalSettings.timeZoneOverride) {
-      _session.carwings.setTimeZoneOverride(_generalSettings.timeZone);
+      widget.session.carwings.setTimeZoneOverride(_generalSettings.timeZone);
     } else {
-      _session.carwings.setTimeZoneOverride(null);
+      widget.session.carwings.setTimeZoneOverride(null);
     }
   }
 

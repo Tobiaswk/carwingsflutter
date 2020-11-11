@@ -20,7 +20,9 @@ class Session {
 
   API_TYPE getAPIType() => isWorld()
       ? API_TYPE.NISSANCONNECT
-      : isNorthAmerica() ? API_TYPE.NISSANCONNECTNA : API_TYPE.CARWINGS;
+      : isNorthAmerica()
+          ? API_TYPE.NISSANCONNECTNA
+          : API_TYPE.CARWINGS;
 
   bool isCanada() => region == CarwingsRegion.Canada;
 
