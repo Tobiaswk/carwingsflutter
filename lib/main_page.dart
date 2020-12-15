@@ -1,7 +1,9 @@
 import 'dart:io' show Platform;
+import 'dart:math';
 
 import 'package:carwingsflutter/login_page.dart';
 import 'package:carwingsflutter/preferences_page.dart';
+import 'package:carwingsflutter/preferences_types.dart';
 import 'package:carwingsflutter/session.dart';
 import 'package:carwingsflutter/util.dart';
 import 'package:carwingsflutter/widget_delegator.dart';
@@ -22,6 +24,9 @@ class _MainPageState extends State<MainPage> {
   final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
 
   static final String SKU_DONATE = 'donate2';
+  static final String SKU_DONATE_10 = 'donate10';
+  static final String SKU_DONATE_30 = 'donate30';
+  static final String SKU_DONATE_50 = 'donate50';
 
   var _selectedVehicleValue; // Represents the current selected vehicle by nickname
   bool _donated = false;
@@ -41,20 +46,28 @@ class _MainPageState extends State<MainPage> {
       });
       return;
     }
+
     List<Purchase> purchases =
         await FlutterPayments.getPurchaseHistory(ProductType.InApp);
     bool donated = false;
     if (purchases != null) {
       for (Purchase purchase in purchases) {
-        if (purchase.sku == SKU_DONATE) {
+        if (purchase.sku == SKU_DONATE ||
+            purchase.sku == SKU_DONATE_10 ||
+            purchase.sku == SKU_DONATE_30 ||
+            purchase.sku == SKU_DONATE_50) {
           donated = true;
         }
       }
     }
+
     await preferencesManager.setDonated(donated);
+
     setState(() {
       _donated = donated;
     });
+
+    _donateDialog(context, false);
   }
 
   _initSelectedVehicle() {
@@ -209,26 +222,71 @@ class _MainPageState extends State<MainPage> {
     return Column(children: accountListTiles);
   }
 
+  void _donateDialog(BuildContext context, bool force) async {
+    if ((!_donated && Random.secure().nextInt(10) > 6) || force) {
+      showDialog<bool>(
+          context: context,
+          child: SimpleDialog(
+            title: const Text("Consider supporting My Leaf!"),
+            children: [
+              SimpleDialogOption(
+                child: Text(
+                    'This is Tobias! The developer behind My Leaf! As you may know My Leaf is a free and fully open source project! Naturally it takes time to maintain, improve and support! Even a small donation goes a long way!'),
+              ),
+              SimpleDialogOption(
+                  child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  TextButton(
+                      onPressed: () => _donate(SKU_DONATE_10),
+                      child: const Text('☕️ A coffee')),
+                  TextButton(
+                      onPressed: () => _donate(SKU_DONATE_30),
+                      child: const Text('🍜 Some ramen'))
+                ],
+              )),
+              SimpleDialogOption(
+                  child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  TextButton(
+                      onPressed: () => _donate(SKU_DONATE_50),
+                      child: const Text('🍱 A dinner')),
+                  TextButton(
+                      onPressed: () => _donate(SKU_DONATE),
+                      child: const Text('🥳 You\'re awesome'))
+                ],
+              )),
+              SimpleDialogOption(
+                child: Text('Thank you either way!'),
+              )
+            ],
+          ));
+    }
+  }
+
+  _donate(String sku) async {
+    try {
+      await FlutterPayments.purchase(
+        sku: sku,
+        type: ProductType.InApp,
+      );
+
+      Navigator.pop(context);
+
+      _snackBar('Thank you for the donation!');
+
+      _donationMadeCheck();
+    } on FlutterPaymentsException catch (error) {
+      _snackBar('Too bad, donation failed!');
+    }
+  }
+
   Widget _buildDonateListTile(BuildContext context) {
     return ListTile(
-      onTap: () async {
-        try {
-          await FlutterPayments.purchase(
-            sku: SKU_DONATE,
-            type: ProductType.InApp,
-          );
-
-          _snackBar('Thank you for the donation!');
-
-          _donationMadeCheck();
-        } on FlutterPaymentsException catch (error) {
-          _snackBar('Too bad, donation failed!');
-        }
-      },
+      onTap: () => _donateDialog(context, true),
       leading: const Icon(Icons.monetization_on),
-      title: Text(widget.session.getAPIType() != API_TYPE.NISSANCONNECT
-          ? 'Donate + widgets'
-          : 'Donate'),
+      title: Text('Donate'),
     );
   }
 
@@ -257,24 +315,26 @@ class _MainPageState extends State<MainPage> {
             icon: Icon(Icons.power, color: Colors.white),
             onPressed: _openChargingControlPage),
       ]),
-      body: FutureBuilder(
+      body: FutureBuilder<GeneralSettings>(
         future: preferencesManager.getGeneralSettings(),
-        initialData: List(),
-        builder: (context, generalSettingsData) {
-          return generalSettingsData.hasData
-              ? ListView(
-                  children: <Widget>[
-                    Column(
-                      children: <Widget>[
-                        WidgetDelegator.batteryLatestCard(
-                            widget.session, generalSettingsData.data),
-                        WidgetDelegator.statisticsDailyCard(widget.session),
-                        WidgetDelegator.statisticsMonthlyCard(widget.session)
-                      ],
-                    )
-                  ],
-                )
-              : null;
+        builder: (context, snapshot) {
+          switch (snapshot.connectionState) {
+            case ConnectionState.waiting:
+              return Center(child: CircularProgressIndicator());
+            default:
+              return ListView(
+                children: <Widget>[
+                  Column(
+                    children: <Widget>[
+                      WidgetDelegator.batteryLatestCard(
+                          widget.session, snapshot.data),
+                      WidgetDelegator.statisticsDailyCard(widget.session),
+                      WidgetDelegator.statisticsMonthlyCard(widget.session)
+                    ],
+                  )
+                ],
+              );
+          }
         },
       ),
       drawer: _buildDrawer(context),
