@@ -21,11 +21,9 @@ class _TripDetailListState extends State<TripDetailList> {
   int tripCounter = 1;
 
   @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-
+  void initState() {
+    super.initState();
     _initDateFormatting();
-
     _update();
   }
 
