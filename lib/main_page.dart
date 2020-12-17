@@ -153,16 +153,10 @@ class _MainPageState extends State<MainPage> {
         children: <Widget>[
           DrawerHeader(
               child: Center(
-                  child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: <Widget>[
-              ImageIcon(
-                AssetImage('images/car-leaf.png'),
-                size: 100.0,
-                color: Util.primaryColor(context),
-              ),
-            ],
+                  child: ImageIcon(
+            AssetImage('images/car-leaf.png'),
+            size: 100.0,
+            color: Util.primaryColor(context),
           ))),
           _buildVehicleListTiles(context),
           ListTile(
