@@ -112,14 +112,12 @@ class _TripDetailListState extends State<TripDetailList> {
                         Column(
                           children: <Widget>[
                             Icon(Icons.compare_arrows),
-                            Padding(padding: const EdgeInsets.all(2.0)),
                             Text('${trip.tripsNumber} trips')
                           ],
                         ),
-                        Row(
+                        Column(
                           children: <Widget>[
                             Icon(Icons.timer),
-                            Padding(padding: const EdgeInsets.all(2.0)),
                             Text('${trip.travelTime.inMinutes.toString()} min')
                           ],
                         ),
