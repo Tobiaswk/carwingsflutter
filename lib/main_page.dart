@@ -312,23 +312,20 @@ class _MainPageState extends State<MainPage> {
       body: FutureBuilder<GeneralSettings>(
         future: preferencesManager.getGeneralSettings(),
         builder: (context, snapshot) {
-          switch (snapshot.connectionState) {
-            case ConnectionState.waiting:
-              return Center(child: CircularProgressIndicator());
-            default:
-              return ListView(
-                children: <Widget>[
-                  Column(
-                    children: <Widget>[
-                      WidgetDelegator.batteryLatestCard(
-                          widget.session, snapshot.data),
-                      WidgetDelegator.statisticsDailyCard(widget.session),
-                      WidgetDelegator.statisticsMonthlyCard(widget.session)
-                    ],
-                  )
-                ],
-              );
-          }
+          return snapshot.hasData
+              ? ListView(
+                  children: <Widget>[
+                    Column(
+                      children: <Widget>[
+                        WidgetDelegator.batteryLatestCard(
+                            widget.session, snapshot.data),
+                        WidgetDelegator.statisticsDailyCard(widget.session),
+                        WidgetDelegator.statisticsMonthlyCard(widget.session)
+                      ],
+                    )
+                  ],
+                )
+              : null;
         },
       ),
       drawer: _buildDrawer(context),
