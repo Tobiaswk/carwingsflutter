@@ -58,6 +58,14 @@ class MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      // Enforce text scale factor; ignore system font size
+      builder: (BuildContext context, Widget child) {
+        final MediaQueryData data = MediaQuery.of(context);
+        return MediaQuery(
+          data: data.copyWith(textScaleFactor: 1),
+          child: child,
+        );
+      },
       title: 'My Leaf',
       theme: theme,
       home: LoginPage(
