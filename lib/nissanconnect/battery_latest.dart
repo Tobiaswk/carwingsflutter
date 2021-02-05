@@ -35,7 +35,6 @@ class _BatteryLatestState extends State<BatteryLatest> {
 
   _getBatteryStatus() async {
     await widget.session.nissanConnect.vehicle.requestBatteryStatusRefresh();
-    await Future.delayed(Duration(minutes: 1));
   }
 
   _getBatteryStatusLatest() async {
