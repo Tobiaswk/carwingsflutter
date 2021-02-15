@@ -8,7 +8,7 @@ class _ClimateControlPageState extends State<ClimateControlPage> {
 
   bool _climateControlIsReady = true;
   bool _climateControlOn = false;
-  String _cabinTemperature;
+  double _cabinTemperature;
 
   DateTime _startDate =
       DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day);
@@ -29,6 +29,10 @@ class _ClimateControlPageState extends State<ClimateControlPage> {
     setState(() {
       _cabinTemperature = widget.session.nissanConnectNa.vehicle.incTemperature;
     });
+  }
+
+  int _toFahrenheit(int temperatureCelcius) {
+    return (temperatureCelcius * 9 / 5 + 32).floor();
   }
 
   _climateControlToggle() {
@@ -132,7 +136,7 @@ class _ClimateControlPageState extends State<ClimateControlPage> {
               style: TextStyle(fontSize: 18.0),
             ),
             Text(
-                'Cabin temperature is ${_cabinTemperature != null ? '${_cabinTemperature}°' : 'updating...'}'),
+                'Cabin temperature is ${_cabinTemperature != null ? '${_cabinTemperature.floor()}°C / ${_toFahrenheit(_cabinTemperature.floor())}°F' : 'updating...'}'),
             IconButton(
               icon: Icon(Icons.access_time),
               iconSize: 200.0,
