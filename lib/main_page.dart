@@ -220,42 +220,42 @@ class _MainPageState extends State<MainPage> {
     if ((!_donated && Random.secure().nextInt(10) > 6) || force) {
       showDialog<bool>(
           context: context,
-          child: SimpleDialog(
-            title: const Text("Consider supporting My Leaf!"),
-            children: [
-              SimpleDialogOption(
-                child: Text(
-                    'This is Tobias! The developer behind My Leaf! As you may know My Leaf is a free and fully open source project! Naturally it takes time to maintain, improve and support! Even a small donation goes a long way!'),
-              ),
-              SimpleDialogOption(
-                  child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
+          builder: (BuildContext context) => SimpleDialog(
+                title: const Text("Consider supporting My Leaf!"),
                 children: [
-                  TextButton(
-                      onPressed: () => _donate(SKU_DONATE_10),
-                      child: const Text('☕️ A coffee')),
-                  TextButton(
-                      onPressed: () => _donate(SKU_DONATE_30),
-                      child: const Text('🍜 Some ramen'))
+                  SimpleDialogOption(
+                    child: Text(
+                        'This is Tobias! The developer behind My Leaf! As you may know My Leaf is a free and fully open source project! Naturally it takes time to maintain, improve and support! Even a small donation goes a long way!'),
+                  ),
+                  SimpleDialogOption(
+                      child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      TextButton(
+                          onPressed: () => _donate(SKU_DONATE_10),
+                          child: const Text('☕️ A coffee')),
+                      TextButton(
+                          onPressed: () => _donate(SKU_DONATE_30),
+                          child: const Text('🍜 Some ramen'))
+                    ],
+                  )),
+                  SimpleDialogOption(
+                      child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      TextButton(
+                          onPressed: () => _donate(SKU_DONATE_50),
+                          child: const Text('🍱 A dinner')),
+                      TextButton(
+                          onPressed: () => _donate(SKU_DONATE),
+                          child: const Text('🥳 You\'re awesome'))
+                    ],
+                  )),
+                  SimpleDialogOption(
+                    child: Text('Thank you either way!'),
+                  )
                 ],
-              )),
-              SimpleDialogOption(
-                  child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  TextButton(
-                      onPressed: () => _donate(SKU_DONATE_50),
-                      child: const Text('🍱 A dinner')),
-                  TextButton(
-                      onPressed: () => _donate(SKU_DONATE),
-                      child: const Text('🥳 You\'re awesome'))
-                ],
-              )),
-              SimpleDialogOption(
-                child: Text('Thank you either way!'),
-              )
-            ],
-          ));
+              ));
     }
   }
 
@@ -325,7 +325,7 @@ class _MainPageState extends State<MainPage> {
                     )
                   ],
                 )
-              : null;
+              : Container();
         },
       ),
       drawer: _buildDrawer(context),

@@ -58,7 +58,8 @@ class _PreferencesPageState extends State<PreferencesPage> {
   void _changeTheme() {
     showDialog<bool>(
       context: context,
-      child: SimpleDialog(title: const Text("Color preference"), children: [
+      builder: (BuildContext context) =>
+          SimpleDialog(title: const Text("Color preference"), children: [
         ListTile(
             title: Text("Standard"),
             subtitle: Container(
