@@ -68,7 +68,6 @@ class _BatteryLatestCardState extends State<BatteryLatestCard> {
       DateTime date,
       bool isCharging,
       String batteryPercentage,
-      String battery12thBar,
       String cruisingRangeAcOffKm,
       String cruisingRangeAcOffMiles,
       String cruisingRangeAcOnKm,
@@ -130,7 +129,7 @@ class _BatteryLatestCardState extends State<BatteryLatestCard> {
                           children: <Widget>[
                             isCharging ? Icon(Icons.power) : Row(),
                             Text(
-                              '${_generalSettings.use12thBarNotation && battery12thBar != null ? battery12thBar : batteryPercentage}',
+                              '${batteryPercentage}',
                               style: TextStyle(fontSize: 40.0),
                             )
                           ],
@@ -203,7 +202,6 @@ class _BatteryLatestCardState extends State<BatteryLatestCard> {
                 _battery.dateTime,
                 _battery.isCharging,
                 _battery.batteryPercentage,
-                _battery.battery12thBar,
                 _battery.cruisingRangeAcOffKm,
                 _battery.cruisingRangeAcOffMiles,
                 _battery.cruisingRangeAcOnKm,
@@ -216,7 +214,6 @@ class _BatteryLatestCardState extends State<BatteryLatestCard> {
             : _withValues(
                 null,
                 false,
-                '-',
                 '-',
                 '-',
                 '-',

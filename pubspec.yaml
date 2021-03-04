@@ -7,7 +7,7 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  shared_preferences: ^0.5.12+4
+  shared_preferences: ^2.0.3
   json_annotation: ^3.1.1
   url_launcher: ^5.7.10
   sleek_circular_slider: ^1.1.0
