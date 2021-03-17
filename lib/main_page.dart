@@ -140,11 +140,7 @@ class _MainPageState extends State<MainPage> {
   }
 
   _signOut() {
-    Navigator.of(context).pushReplacement(MaterialPageRoute<Null>(
-      builder: (BuildContext context) {
-        return LoginPage(widget.session, false);
-      },
-    ));
+    Navigator.of(context).popUntil((route) => route.isFirst);
   }
 
   Widget _buildDrawer(BuildContext context) {
