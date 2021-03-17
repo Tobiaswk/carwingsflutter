@@ -1,7 +1,6 @@
 import 'dart:io' show Platform;
 import 'dart:math';
 
-import 'package:carwingsflutter/login_page.dart';
 import 'package:carwingsflutter/preferences_page.dart';
 import 'package:carwingsflutter/preferences_types.dart';
 import 'package:carwingsflutter/session.dart';
@@ -267,7 +266,7 @@ class _MainPageState extends State<MainPage> {
       _snackBar('Thank you for the donation!');
 
       _donationMadeCheck();
-    } on FlutterPaymentsException catch (error) {
+    } on FlutterPaymentsException {
       _snackBar('Too bad, donation failed!');
     }
   }
