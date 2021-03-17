@@ -115,7 +115,7 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   _openMainPage() {
-    Navigator.of(context).pushReplacement(MaterialPageRoute<Null>(
+    Navigator.of(context).push(MaterialPageRoute<Null>(
       builder: (BuildContext context) {
         return MainPage(widget.session);
       },
