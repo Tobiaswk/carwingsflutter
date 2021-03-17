@@ -23,7 +23,7 @@ class _LoginPageState extends State<LoginPage> {
 
   PreferencesManager preferencesManager = PreferencesManager();
 
-  CarwingsRegion _regionSelected = CarwingsRegion.Europe;
+  CarwingsRegion _regionSelected = CarwingsRegion.World;
   bool _rememberLoginSettings = false;
 
   TextEditingController _usernameTextController = TextEditingController();
