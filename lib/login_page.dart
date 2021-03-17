@@ -213,7 +213,7 @@ class _LoginPageState extends State<LoginPage> {
                                 });
                               },
                             ),
-                            FlatButton.icon(
+                            TextButton.icon(
                                 onPressed: _openHelpPage,
                                 icon: Icon(
                                   Icons.help,
