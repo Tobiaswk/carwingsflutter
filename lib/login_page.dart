@@ -142,12 +142,14 @@ class _LoginPageState extends State<LoginPage> {
             data: Theme.of(context).copyWith(
                 primaryColorDark: Colors.white,
                 primaryColorLight: Colors.white,
-                textTheme: TextTheme(body1: TextStyle(color: Colors.white)),
+                textTheme: TextTheme(bodyText2: TextStyle(color: Colors.white)),
                 primaryColor: Colors.white,
                 accentColor: Colors.white,
-                buttonColor: Util.isDarkTheme(context)
-                    ? Theme.of(context).primaryColor
-                    : Colors.white,
+                textSelectionTheme: TextSelectionThemeData(
+                  cursorColor: Colors.white,
+                  selectionColor: Colors.white,
+                  selectionHandleColor: Colors.white,
+                ),
                 hintColor: Colors.white,
                 canvasColor: Theme.of(context).primaryColor,
                 toggleableActiveColor: Colors.white),
