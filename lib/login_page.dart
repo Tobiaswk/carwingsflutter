@@ -105,13 +105,11 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   List<DropdownMenuItem<CarwingsRegion>> _buildRegionAndGetDropDownMenuItems() {
-    List<DropdownMenuItem<CarwingsRegion>> items = List();
-    for (CarwingsRegion region in CarwingsRegion.values) {
-      items.add(DropdownMenuItem(
+    return CarwingsRegion.values.map((region) {
+      return DropdownMenuItem(
           value: region,
-          child: Text(region.toString().replaceAll('CarwingsRegion\.', ''))));
-    }
-    return items;
+          child: Text(region.toString().replaceAll('CarwingsRegion\.', '')));
+    }).toList();
   }
 
   _openMainPage() {
