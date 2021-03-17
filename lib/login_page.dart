@@ -95,7 +95,7 @@ class _LoginPageState extends State<LoginPage> {
 
       scaffoldKey.currentState.showSnackBar(SnackBar(
           duration: Duration(seconds: 5),
-          content: Text('Login failed. Please try again')));
+          content: Text('Sign in failed! Please make sure your credentials are valid!')));
 
       if (_serverStatus != null && _serverStatus.isNotEmpty) {
         scaffoldKey.currentState.showSnackBar(SnackBar(
