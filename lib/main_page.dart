@@ -193,10 +193,10 @@ class _MainPageState extends State<MainPage> {
   }
 
   Column _buildVehicleListTiles(context) {
-    List<ListTile> accountListTiles = List<ListTile>();
+    List<ListTile> vehicleListTiles = List<ListTile>();
     var vehicles = widget.session.getVehicles();
     for (dynamic vehicle in vehicles) {
-      accountListTiles.add(ListTile(
+      vehicleListTiles.add(ListTile(
         leading: ImageIcon(AssetImage('images/sports-car.png')),
         trailing: Radio(
           value: vehicle.nickname,
@@ -208,7 +208,7 @@ class _MainPageState extends State<MainPage> {
         onLongPress: () => null,
       ));
     }
-    return Column(children: accountListTiles);
+    return Column(children: vehicleListTiles);
   }
 
   void _donateDialog(BuildContext context, bool force) async {
