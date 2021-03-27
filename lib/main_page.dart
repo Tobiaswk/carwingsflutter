@@ -1,13 +1,9 @@
-import 'dart:io' show Platform;
-import 'dart:math';
-
 import 'package:carwingsflutter/preferences_page.dart';
 import 'package:carwingsflutter/preferences_types.dart';
 import 'package:carwingsflutter/session.dart';
 import 'package:carwingsflutter/util.dart';
 import 'package:carwingsflutter/widget_delegator.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_payments/flutter_payments.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class MainPage extends StatefulWidget {
@@ -22,51 +18,12 @@ class MainPage extends StatefulWidget {
 class _MainPageState extends State<MainPage> {
   final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
 
-  static final String SKU_DONATE = 'donate2';
-  static final String SKU_DONATE_10 = 'donate10';
-  static final String SKU_DONATE_30 = 'donate30';
-  static final String SKU_DONATE_50 = 'donate50';
-
   var _selectedVehicleValue; // Represents the current selected vehicle by nickname
-  bool _donated = false;
 
   @override
   void initState() {
     super.initState();
-    _donationMadeCheck();
     _initSelectedVehicle();
-  }
-
-  _donationMadeCheck() async {
-    if (Platform.isIOS) {
-      // iOS is paid app; set as donated
-      setState(() {
-        _donated = true;
-      });
-      return;
-    }
-
-    List<Purchase> purchases =
-        await FlutterPayments.getPurchaseHistory(ProductType.InApp);
-    bool donated = false;
-    if (purchases != null) {
-      for (Purchase purchase in purchases) {
-        if (purchase.sku == SKU_DONATE ||
-            purchase.sku == SKU_DONATE_10 ||
-            purchase.sku == SKU_DONATE_30 ||
-            purchase.sku == SKU_DONATE_50) {
-          donated = true;
-        }
-      }
-    }
-
-    await preferencesManager.setDonated(donated);
-
-    setState(() {
-      _donated = donated;
-    });
-
-    _donateDialog(context, false);
   }
 
   _initSelectedVehicle() {
@@ -170,7 +127,6 @@ class _MainPageState extends State<MainPage> {
             title: const Text('Sign out'),
             onTap: _signOut,
           ),
-          _donated ? Row() : _buildDonateListTile(context)
         ],
       ),
     );
@@ -209,74 +165,6 @@ class _MainPageState extends State<MainPage> {
       ));
     }
     return Column(children: vehicleListTiles);
-  }
-
-  void _donateDialog(BuildContext context, bool force) async {
-    if ((!_donated && Random.secure().nextInt(10) > 6) || force) {
-      showDialog<bool>(
-          context: context,
-          builder: (BuildContext context) => SimpleDialog(
-                title: const Text("Consider supporting My Leaf!"),
-                children: [
-                  SimpleDialogOption(
-                    child: Text(
-                        'This is Tobias! The developer behind My Leaf! As you may know My Leaf is a free and fully open source project! Naturally it takes time to maintain, improve and support! Even a small donation goes a long way!'),
-                  ),
-                  SimpleDialogOption(
-                      child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      TextButton(
-                          onPressed: () => _donate(SKU_DONATE_10),
-                          child: const Text('☕️ A coffee')),
-                      TextButton(
-                          onPressed: () => _donate(SKU_DONATE_30),
-                          child: const Text('🍜 Some ramen'))
-                    ],
-                  )),
-                  SimpleDialogOption(
-                      child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      TextButton(
-                          onPressed: () => _donate(SKU_DONATE_50),
-                          child: const Text('🍱 A dinner')),
-                      TextButton(
-                          onPressed: () => _donate(SKU_DONATE),
-                          child: const Text('🥳 You\'re awesome'))
-                    ],
-                  )),
-                  SimpleDialogOption(
-                    child: Text('Thank you either way!'),
-                  )
-                ],
-              ));
-    }
-  }
-
-  _donate(String sku) async {
-    try {
-      await FlutterPayments.purchase(
-        sku: sku,
-        type: ProductType.InApp,
-      );
-
-      Navigator.pop(context);
-
-      _snackBar('Thank you for the donation!');
-
-      _donationMadeCheck();
-    } on FlutterPaymentsException {
-      _snackBar('Too bad, donation failed!');
-    }
-  }
-
-  Widget _buildDonateListTile(BuildContext context) {
-    return ListTile(
-      onTap: () => _donateDialog(context, true),
-      leading: const Icon(Icons.monetization_on),
-      title: Text('Donate'),
-    );
   }
 
   void _snackBar(message) {
