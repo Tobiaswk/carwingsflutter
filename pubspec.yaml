@@ -11,8 +11,7 @@ dependencies:
   json_annotation: ^3.1.1
   url_launcher: ^5.7.10
   sleek_circular_slider: ^1.1.0
-  flutter_payments:
-    git: https://github.com/Tobiaswk/flutter_payments.git
+  in_app_purchase: ^0.3.5+1
   dartcarwings:
     git: https://gitlab.com/tobiaswkjeldsen/dartcarwings.git
   dartnissanconnectna:

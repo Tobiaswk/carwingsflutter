@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:io' show Platform;
 import 'dart:math';
 
@@ -7,7 +8,7 @@ import 'package:carwingsflutter/session.dart';
 import 'package:carwingsflutter/util.dart';
 import 'package:carwingsflutter/widget_delegator.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_payments/flutter_payments.dart';
+import 'package:in_app_purchase/in_app_purchase.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class MainPage extends StatefulWidget {
@@ -22,19 +23,49 @@ class MainPage extends StatefulWidget {
 class _MainPageState extends State<MainPage> {
   final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
 
-  static final String SKU_DONATE = 'donate2';
-  static final String SKU_DONATE_10 = 'donate10';
-  static final String SKU_DONATE_30 = 'donate30';
-  static final String SKU_DONATE_50 = 'donate50';
+  static const String SKU_DONATE = 'donate2';
+  static const String SKU_DONATE_10 = 'donate10';
+  static const String SKU_DONATE_30 = 'donate30';
+  static const String SKU_DONATE_50 = 'donate50';
+
+  final InAppPurchaseConnection _connection = InAppPurchaseConnection.instance;
+  StreamSubscription<List<PurchaseDetails>> _subscription;
+  List<ProductDetails> productsAvailable;
+
+  bool _donated = false;
 
   var _selectedVehicleValue; // Represents the current selected vehicle by nickname
-  bool _donated = false;
 
   @override
   void initState() {
     super.initState();
     _donationMadeCheck();
     _initSelectedVehicle();
+    Stream purchaseUpdated =
+        InAppPurchaseConnection.instance.purchaseUpdatedStream;
+    _subscription = purchaseUpdated.listen((purchaseDetailsList) {
+      _listenToPurchaseUpdated(purchaseDetailsList);
+    }, onDone: () {
+      _subscription.cancel();
+    });
+  }
+
+  void _listenToPurchaseUpdated(List<PurchaseDetails> purchaseDetailsList) {
+    purchaseDetailsList.forEach((PurchaseDetails purchaseDetails) async {
+      if (purchaseDetails.status == PurchaseStatus.error) {
+        _snackBar('Too bad, donation failed!');
+      } else if (purchaseDetails.status == PurchaseStatus.purchased) {
+        Navigator.pop(context);
+
+        _snackBar('Thank you for the donation!');
+
+        _donationMadeCheck();
+      }
+      if (purchaseDetails.pendingCompletePurchase) {
+        await InAppPurchaseConnection.instance
+            .completePurchase(purchaseDetails);
+      }
+    });
   }
 
   _donationMadeCheck() async {
@@ -46,27 +77,34 @@ class _MainPageState extends State<MainPage> {
       return;
     }
 
-    List<Purchase> purchases =
-        await FlutterPayments.getPurchaseHistory(ProductType.InApp);
-    bool donated = false;
-    if (purchases != null) {
-      for (Purchase purchase in purchases) {
-        if (purchase.sku == SKU_DONATE ||
-            purchase.sku == SKU_DONATE_10 ||
-            purchase.sku == SKU_DONATE_30 ||
-            purchase.sku == SKU_DONATE_50) {
-          donated = true;
-        }
-      }
+    if (await _connection.isAvailable()) {
+      final ProductDetailsResponse availableProductsResponse =
+          await InAppPurchaseConnection.instance.queryProductDetails(<String>{
+        SKU_DONATE_10,
+        SKU_DONATE_30,
+        SKU_DONATE_50,
+        SKU_DONATE
+      });
+
+      productsAvailable = availableProductsResponse.productDetails;
+
+      final QueryPurchaseDetailsResponse response =
+          await InAppPurchaseConnection.instance.queryPastPurchases();
+
+      bool donated = response.pastPurchases.any((purchase) =>
+          purchase.productID == SKU_DONATE ||
+          purchase.productID == SKU_DONATE_10 ||
+          purchase.productID == SKU_DONATE_30 ||
+          purchase.productID == SKU_DONATE_50);
+
+      await preferencesManager.setDonated(donated);
+
+      setState(() {
+        _donated = donated;
+      });
+
+      _donateDialog(context, false);
     }
-
-    await preferencesManager.setDonated(donated);
-
-    setState(() {
-      _donated = donated;
-    });
-
-    _donateDialog(context, false);
   }
 
   _initSelectedVehicle() {
@@ -227,10 +265,12 @@ class _MainPageState extends State<MainPage> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       TextButton(
-                          onPressed: () => _donate(SKU_DONATE_10),
+                          onPressed: () => _donate(productsAvailable.firstWhere(
+                              (product) => product.id == SKU_DONATE_10)),
                           child: const Text('☕️ A coffee')),
                       TextButton(
-                          onPressed: () => _donate(SKU_DONATE_30),
+                          onPressed: () => _donate(productsAvailable.firstWhere(
+                              (product) => product.id == SKU_DONATE_30)),
                           child: const Text('🍜 Some ramen'))
                     ],
                   )),
@@ -239,10 +279,12 @@ class _MainPageState extends State<MainPage> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       TextButton(
-                          onPressed: () => _donate(SKU_DONATE_50),
+                          onPressed: () => _donate(productsAvailable.firstWhere(
+                              (product) => product.id == SKU_DONATE_50)),
                           child: const Text('🍱 A dinner')),
                       TextButton(
-                          onPressed: () => _donate(SKU_DONATE),
+                          onPressed: () => _donate(productsAvailable.firstWhere(
+                              (product) => product.id == SKU_DONATE)),
                           child: const Text('🥳 You\'re awesome'))
                     ],
                   )),
@@ -254,21 +296,9 @@ class _MainPageState extends State<MainPage> {
     }
   }
 
-  _donate(String sku) async {
-    try {
-      await FlutterPayments.purchase(
-        sku: sku,
-        type: ProductType.InApp,
-      );
-
-      Navigator.pop(context);
-
-      _snackBar('Thank you for the donation!');
-
-      _donationMadeCheck();
-    } on FlutterPaymentsException {
-      _snackBar('Too bad, donation failed!');
-    }
+  _donate(ProductDetails productDetails) async {
+    InAppPurchaseConnection.instance.buyNonConsumable(
+        purchaseParam: PurchaseParam(productDetails: productDetails));
   }
 
   Widget _buildDonateListTile(BuildContext context) {

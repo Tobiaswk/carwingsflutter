@@ -4,8 +4,15 @@ import 'package:carwingsflutter/preferences_page.dart';
 import 'package:carwingsflutter/preferences_types.dart';
 import 'package:carwingsflutter/session.dart';
 import 'package:flutter/material.dart';
+import 'package:in_app_purchase/in_app_purchase.dart';
 
-void main() => runApp(MyApp());
+void main() {
+  // For play billing library 2.0 on Android, it is mandatory to call
+  // [enablePendingPurchases](https://developer.android.com/reference/com/android/billingclient/api/BillingClient.Builder.html#enablependingpurchases)
+  // as part of initializing the app.
+  InAppPurchaseConnection.enablePendingPurchases();
+  runApp(MyApp());
+}
 
 class MyApp extends StatefulWidget {
   @override
