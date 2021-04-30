@@ -21,7 +21,7 @@ class _BatteryLatestCardState extends State<BatteryLatestCard> {
 
   GeneralSettings _generalSettings = GeneralSettings();
 
-  NissanConnectBattery _battery;
+  NissanConnectBattery? _battery;
 
   bool _isLoading = false;
 
@@ -32,7 +32,7 @@ class _BatteryLatestCardState extends State<BatteryLatestCard> {
   }
 
   _getBatteryStatus() async {
-    NissanConnectBattery battery =
+    NissanConnectBattery? battery =
         await widget.session.nissanConnectNa.vehicle.requestBatteryStatus();
     setState(() {
       this._battery = battery;
@@ -58,10 +58,10 @@ class _BatteryLatestCardState extends State<BatteryLatestCard> {
   }
 
   _withValues(
-      DateTime date,
+      DateTime? date,
       bool isCharging,
       String batteryPercentage,
-      String battery12thBar,
+      String? battery12thBar,
       String cruisingRangeAcOffKm,
       String cruisingRangeAcOffMiles,
       String cruisingRangeAcOnKm,
@@ -69,8 +69,8 @@ class _BatteryLatestCardState extends State<BatteryLatestCard> {
       Duration timeToFullTrickle,
       Duration timeToFullL2,
       Duration timeToFullL2_6kw,
-      String chargingkWLevelText,
-      String chargingRemainingText) {
+      String? chargingkWLevelText,
+      String? chargingRemainingText) {
     return Material(
         borderRadius: BorderRadius.all(Radius.circular(4.0)),
         elevation: 2.0,
@@ -152,13 +152,13 @@ class _BatteryLatestCardState extends State<BatteryLatestCard> {
                             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                             children: <Widget>[
                               Text(
-                                chargingRemainingText,
+                                chargingRemainingText ?? '',
                                 style: TextStyle(
                                     fontSize: 18.0,
                                     fontWeight: FontWeight.bold),
                               ),
                               Text(
-                                chargingkWLevelText,
+                                chargingkWLevelText ?? '',
                                 style: TextStyle(fontSize: 18.0),
                               ),
                             ],
@@ -193,19 +193,19 @@ class _BatteryLatestCardState extends State<BatteryLatestCard> {
         padding: const EdgeInsets.fromLTRB(15.0, 20.0, 15.0, 0.0),
         child: _battery != null
             ? _withValues(
-                _battery.dateTime,
-                _battery.isCharging,
-                _battery.batteryPercentage,
-                _battery.battery12thBar,
-                _battery.cruisingRangeAcOffKm,
-                _battery.cruisingRangeAcOffMiles,
-                _battery.cruisingRangeAcOnKm,
-                _battery.cruisingRangeAcOnMiles,
-                _battery.timeToFullTrickle,
-                _battery.timeToFullL2,
-                _battery.timeToFullL2_6kw,
-                _battery.chargingkWLevelText,
-                _battery.chargingRemainingText)
+                _battery!.dateTime,
+                _battery!.isCharging,
+                _battery!.batteryPercentage,
+                _battery!.battery12thBar,
+                _battery!.cruisingRangeAcOffKm,
+                _battery!.cruisingRangeAcOffMiles,
+                _battery!.cruisingRangeAcOnKm,
+                _battery!.cruisingRangeAcOnMiles,
+                _battery!.timeToFullTrickle,
+                _battery!.timeToFullL2,
+                _battery!.timeToFullL2_6kw,
+                _battery!.chargingkWLevelText,
+                _battery!.chargingRemainingText)
             : _withValues(
                 null,
                 false,

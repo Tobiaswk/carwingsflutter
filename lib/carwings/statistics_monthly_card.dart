@@ -20,7 +20,7 @@ class _StatisticsMonthlyCardState extends State<StatisticsMonthlyCard> {
 
   GeneralSettings _generalSettings = GeneralSettings();
 
-  CarwingsStatsMonthly _statsMonthly;
+  CarwingsStatsMonthly? _statsMonthly;
 
   DateTime _currentMonth = DateTime(DateTime.now().year, DateTime.now().month);
 
@@ -33,7 +33,7 @@ class _StatisticsMonthlyCardState extends State<StatisticsMonthlyCard> {
   }
 
   _getMonthlyStatistics() async {
-    CarwingsStatsMonthly statsMonthly = await widget.session.carwings.vehicle
+    CarwingsStatsMonthly? statsMonthly = await widget.session.carwings.vehicle
         .requestStatisticsMonthly(_currentMonth);
     setState(() {
       this._statsMonthly = statsMonthly;
@@ -77,7 +77,7 @@ class _StatisticsMonthlyCardState extends State<StatisticsMonthlyCard> {
   }
 
   _withValues(
-    DateTime date,
+    DateTime? date,
     String electricCostScale,
     String mileageUnit,
     String totalNumberOfTrips,
@@ -192,15 +192,15 @@ class _StatisticsMonthlyCardState extends State<StatisticsMonthlyCard> {
         padding: const EdgeInsets.fromLTRB(15.0, 10.0, 15.0, 10.0),
         child: _statsMonthly != null
             ? _withValues(
-                _statsMonthly.dateTime,
-                _statsMonthly.electricCostScale,
-                _statsMonthly.mileageUnit,
-                _statsMonthly.totalNumberOfTrips,
-                _statsMonthly.totalkWhPerMileage,
-                _statsMonthly.totalMileagePerKWh,
-                _statsMonthly.totalConsumptionKWh,
-                _statsMonthly.totalTravelDistanceMileage,
-                _statsMonthly.totalCO2Reduction,
+                _statsMonthly!.dateTime,
+                _statsMonthly!.electricCostScale,
+                _statsMonthly!.mileageUnit,
+                _statsMonthly!.totalNumberOfTrips,
+                _statsMonthly!.totalkWhPerMileage,
+                _statsMonthly!.totalMileagePerKWh,
+                _statsMonthly!.totalConsumptionKWh,
+                _statsMonthly!.totalTravelDistanceMileage,
+                _statsMonthly!.totalCO2Reduction,
               )
             : _withValues(
                 null,

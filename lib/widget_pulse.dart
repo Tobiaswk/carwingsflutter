@@ -15,8 +15,8 @@ class WidgetPulse extends StatefulWidget {
 
 class _WidgetPulseState extends State<WidgetPulse>
     with SingleTickerProviderStateMixin {
-  AnimationController _animationController;
-  Animation _animation;
+  late AnimationController _animationController;
+  late Animation _animation;
 
   Widget _widget;
   final double _fromSize;
@@ -53,10 +53,10 @@ class _WidgetPulseState extends State<WidgetPulse>
     return AnimatedBuilder(
       animation: _animationController,
       child: _widget,
-      builder: (BuildContext context, Widget _widget) {
+      builder: (BuildContext context, Widget? widget) {
         return Transform.scale(
           scale: _animation.value,
-          child: _widget,
+          child: widget,
         );
       },
     );

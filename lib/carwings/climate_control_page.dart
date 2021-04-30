@@ -5,24 +5,22 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 class _ClimateControlPageState extends State<ClimateControlPage> {
-  final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
-
   bool _climateControlIsReady = false;
   bool _climateControlOn = false;
-  CarwingsCabinTemperature _cabinTemperature;
+  CarwingsCabinTemperature? _cabinTemperature;
 
   DateTime _startDate =
       DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day);
   DateTime _currentDate =
       DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day);
-  DateTime _climateControlScheduled;
+  DateTime? _climateControlScheduled;
 
   @override
   void initState() {
     super.initState();
     widget.session.carwings.vehicle.requestHVACStatus().then((hvac) {
       setState(() {
-        _climateControlOn = hvac.isRunning;
+        _climateControlOn = hvac?.isRunning ?? false;
         _climateControlIsReady = true;
       });
       widget.session.carwings.vehicle
@@ -122,14 +120,14 @@ class _ClimateControlPageState extends State<ClimateControlPage> {
   }
 
   _snackbar(message) {
-    scaffoldKey.currentState.showSnackBar(
+    ScaffoldMessenger.of(context).hideCurrentSnackBar();
+    ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(duration: Duration(seconds: 5), content: Text(message)));
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      key: scaffoldKey,
       appBar: AppBar(title: Text("Climate Control")),
       body: Center(
         child: Column(
@@ -149,7 +147,7 @@ class _ClimateControlPageState extends State<ClimateControlPage> {
             ),
             !widget.session.carwings.isFirstGeneration
                 ? Text(
-                    'Cabin temperature is ${_cabinTemperature != null ? '${_cabinTemperature.temperature.floor()}°C / ${_toFahrenheit(_cabinTemperature.temperature.floor())}°F' : 'updating...'}')
+                    'Cabin temperature is ${_cabinTemperature != null ? '${_cabinTemperature!.temperature.floor()}°C / ${_toFahrenheit(_cabinTemperature!.temperature.floor())}°F' : 'updating...'}')
                 : Column(),
             IconButton(
               icon: Icon(Icons.access_time),
@@ -161,7 +159,7 @@ class _ClimateControlPageState extends State<ClimateControlPage> {
             ),
             Text(
               _climateControlScheduled != null
-                  ? 'At ${DateFormat('HH:mm \'this\' EEEE').format(_climateControlScheduled)}'
+                  ? 'At ${DateFormat('HH:mm \'this\' EEEE').format(_climateControlScheduled!)}'
                   : 'Not scheduled',
               style: TextStyle(fontSize: 18.0),
             ),

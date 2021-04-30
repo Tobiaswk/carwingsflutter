@@ -59,18 +59,17 @@ class MyAppState extends State<MyApp> {
           primarySwatch: Colors.grey,
         );
     }
-    return ThemeData(primarySwatch: Colors.blue, buttonColor: Colors.white);
   }
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       // Enforce text scale factor; ignore system font size
-      builder: (BuildContext context, Widget child) {
+      builder: (BuildContext context, Widget? child) {
         final MediaQueryData data = MediaQuery.of(context);
         return MediaQuery(
           data: data.copyWith(textScaleFactor: 1),
-          child: child,
+          child: child!,
         );
       },
       title: 'My Leaf',

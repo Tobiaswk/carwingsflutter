@@ -55,7 +55,7 @@ class _HelpPageState extends State<HelpPage> {
 }
 
 class HelpPage extends StatefulWidget {
-  HelpPage({Key key}) : super(key: key);
+  HelpPage();
 
   @override
   _HelpPageState createState() => _HelpPageState();

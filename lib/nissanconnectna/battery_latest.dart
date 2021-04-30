@@ -3,8 +3,9 @@ import 'package:carwingsflutter/preferences_types.dart';
 import 'package:carwingsflutter/session.dart';
 import 'package:carwingsflutter/widget_pulse.dart';
 import 'package:carwingsflutter/widget_rotater.dart';
-import 'package:dartcarwings/dartcarwings.dart';
+import 'package:dartnissanconnectna/dartnissanconnectna.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:intl/intl.dart';
 import 'package:sleek_circular_slider/sleek_circular_slider.dart';
 
@@ -22,7 +23,7 @@ class _BatteryLatestState extends State<BatteryLatest> {
 
   GeneralSettings _generalSettings = GeneralSettings();
 
-  CarwingsBattery? _battery;
+  NissanConnectBattery? _battery;
 
   bool _isLoading = false;
 
@@ -32,9 +33,9 @@ class _BatteryLatestState extends State<BatteryLatest> {
     _update();
   }
 
-  _getBatteryStatusLatest() async {
-    CarwingsBattery? battery =
-        await widget.session.carwings.vehicle.requestBatteryStatusLatest();
+  _getBatteryStatus() async {
+    NissanConnectBattery? battery =
+        await widget.session.nissanConnectNa.vehicle.requestBatteryStatus();
     setState(() {
       this._battery = battery;
     });
@@ -45,19 +46,13 @@ class _BatteryLatestState extends State<BatteryLatest> {
     });
   }
 
-  _getBatteryStatus() async {
-    await widget.session.carwings.vehicle.requestBatteryStatus();
-  }
-
   _update() async {
     setState(() {
       _isLoading = true;
     });
     try {
-      await _getBatteryStatusLatest(); // Present cached battery first
-      await _getBatteryStatus(); // Requests new battery status polling
+      await _getBatteryStatus();
     } finally {
-      await _getBatteryStatusLatest(); // Force use new cached battery
       setState(() {
         _isLoading = false;
       });
@@ -68,7 +63,6 @@ class _BatteryLatestState extends State<BatteryLatest> {
       DateTime? date,
       bool isCharging,
       String batteryPercentage,
-      String? battery12thBar,
       String cruisingRangeAcOffKm,
       String cruisingRangeAcOffMiles,
       String cruisingRangeAcOnKm,
@@ -277,21 +271,19 @@ class _BatteryLatestState extends State<BatteryLatest> {
                 _battery!.dateTime,
                 _battery!.isCharging,
                 _battery!.batteryPercentage,
-                _battery!.battery12thBar,
                 _battery!.cruisingRangeAcOffKm,
                 _battery!.cruisingRangeAcOffMiles,
                 _battery!.cruisingRangeAcOnKm,
                 _battery!.cruisingRangeAcOnMiles,
                 _battery!.timeToFullTrickle,
-                _battery!.timeToFullL2,
                 _battery!.timeToFullL2_6kw,
+                _battery!.timeToFullL2,
                 _battery!.chargingkWLevelText,
                 _battery!.chargingRemainingText)
             : _withValues(
                 null,
                 false,
                 '0',
-                '-',
                 '-',
                 '-',
                 '-',

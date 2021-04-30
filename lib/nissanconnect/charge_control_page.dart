@@ -4,8 +4,6 @@ import 'package:dartnissanconnect/dartnissanconnect.dart';
 import 'package:flutter/material.dart';
 
 class _ChargeControlPageState extends State<ChargeControlPage> {
-  final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
-
   bool _isCharging = false;
   bool _isConnected = false;
   bool _chargeControlReady = false;
@@ -18,7 +16,7 @@ class _ChargeControlPageState extends State<ChargeControlPage> {
   }
 
   _updateBatteryStatus() async {
-    NissanConnectBattery battery =
+    NissanConnectBattery? battery =
         await widget.session.nissanConnect.vehicle.requestBatteryStatus();
     setState(() {
       _isCharging = battery.isCharging;
@@ -50,14 +48,13 @@ class _ChargeControlPageState extends State<ChargeControlPage> {
   }
 
   _snackbar(message) {
-    scaffoldKey.currentState.showSnackBar(
+    ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(duration: Duration(seconds: 5), content: Text(message)));
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      key: scaffoldKey,
       appBar: AppBar(title: Text("Charging")),
       body: Center(
         child: Column(

@@ -3,14 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 class _DebugPageState extends State<DebugPage> {
-  final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
-
   _copyAll() {
     String text = '';
     widget.session.nissanConnectNa.debugLog
         .forEach((logEntry) => text += logEntry + '\n\n');
     Clipboard.setData(ClipboardData(text: text));
-    scaffoldKey.currentState.showSnackBar(SnackBar(
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
       content: Text("All copied to Clipboard"),
     ));
   }
@@ -18,7 +16,6 @@ class _DebugPageState extends State<DebugPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      key: scaffoldKey,
       appBar: AppBar(title: Text("Debug log"), actions: [
         IconButton(icon: Icon(Icons.content_copy), onPressed: _copyAll),
       ]),
@@ -32,7 +29,7 @@ class _DebugPageState extends State<DebugPage> {
                 child: Text(logEntry),
                 onLongPress: () {
                   Clipboard.setData(ClipboardData(text: logEntry));
-                  scaffoldKey.currentState.showSnackBar(SnackBar(
+                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                     content: Text("Copied to Clipboard"),
                   ));
                 },

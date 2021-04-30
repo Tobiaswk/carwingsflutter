@@ -11,8 +11,6 @@ import 'package:carwingsflutter/carwings/trip_detail_list.dart' as carwings;
 import 'package:carwingsflutter/carwings/vehicle_page.dart' as carwings;
 import 'package:carwingsflutter/nissanconnect/battery_latest.dart'
     as nissanconnect;
-import 'package:carwingsflutter/nissanconnect/battery_latest_card.dart'
-    as nissanconnect;
 import 'package:carwingsflutter/nissanconnect/charge_control_page.dart'
     as nissanconnect;
 import 'package:carwingsflutter/nissanconnect/climate_control_page.dart'
@@ -26,7 +24,7 @@ import 'package:carwingsflutter/nissanconnect/trip_detail_list.dart'
     as nissanconnect;
 import 'package:carwingsflutter/nissanconnect/vehicle_page.dart'
     as nissanconnect;
-import 'package:carwingsflutter/nissanconnectna/battery_latest_card.dart'
+import 'package:carwingsflutter/nissanconnectna/battery_latest.dart'
     as nissanconnectna;
 import 'package:carwingsflutter/nissanconnectna/charge_control_page.dart'
     as nissanconnectna;
@@ -45,7 +43,7 @@ import 'package:carwingsflutter/nissanconnectna/vehicle_page.dart'
 import 'package:carwingsflutter/preferences_types.dart';
 import 'package:carwingsflutter/session.dart';
 
-class WidgetDelegator {
+class WidgetAPIChooser {
   static debugPage(Session session) {
     switch (session.getAPIType()) {
       case API_TYPE.CARWINGS:
@@ -54,7 +52,6 @@ class WidgetDelegator {
         return nissanconnectna.DebugPage(session);
       case API_TYPE.NISSANCONNECT:
         return nissanconnect.DebugPage(session);
-        break;
     }
   }
 
@@ -66,7 +63,6 @@ class WidgetDelegator {
         return nissanconnectna.VehiclePage(session);
       case API_TYPE.NISSANCONNECT:
         return nissanconnect.VehiclePage(session);
-        break;
     }
   }
 
@@ -78,7 +74,6 @@ class WidgetDelegator {
         return nissanconnectna.StatisticsDailyCard(session);
       case API_TYPE.NISSANCONNECT:
         return nissanconnect.StatisticsDailyCard(session);
-        break;
     }
   }
 
@@ -89,10 +84,9 @@ class WidgetDelegator {
             ? carwings.BatteryLatestCard(session)
             : carwings.BatteryLatest(session);
       case API_TYPE.NISSANCONNECTNA:
-        return nissanconnectna.BatteryLatestCard(session);
+        return nissanconnectna.BatteryLatest(session);
       case API_TYPE.NISSANCONNECT:
         return nissanconnect.BatteryLatest(session);
-        break;
     }
   }
 
@@ -104,7 +98,6 @@ class WidgetDelegator {
         return nissanconnectna.StatisticsMonthlyCard(session);
       case API_TYPE.NISSANCONNECT:
         return nissanconnect.StatisticsMonthlyCard(session);
-        break;
     }
   }
 
@@ -116,7 +109,6 @@ class WidgetDelegator {
         return nissanconnectna.TripDetailList(session);
       case API_TYPE.NISSANCONNECT:
         return nissanconnect.TripDetailList(session);
-        break;
     }
   }
 
@@ -128,7 +120,6 @@ class WidgetDelegator {
         return nissanconnectna.ClimateControlPage(session);
       case API_TYPE.NISSANCONNECT:
         return nissanconnect.ClimateControlPage(session);
-        break;
     }
   }
 
@@ -140,7 +131,6 @@ class WidgetDelegator {
         return nissanconnectna.ChargeControlPage(session);
       case API_TYPE.NISSANCONNECT:
         return nissanconnect.ChargeControlPage(session);
-        break;
     }
   }
 }
