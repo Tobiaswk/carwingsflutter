@@ -20,7 +20,7 @@ class _StatisticsDailyCardState extends State<StatisticsDailyCard> {
 
   GeneralSettings _generalSettings = GeneralSettings();
 
-  CarwingsStatsDaily _statsDaily;
+  CarwingsStatsDaily? _statsDaily;
 
   bool _isLoading = false;
 
@@ -31,7 +31,7 @@ class _StatisticsDailyCardState extends State<StatisticsDailyCard> {
   }
 
   _getDailyStatistics() async {
-    CarwingsStatsDaily statsDaily =
+    CarwingsStatsDaily? statsDaily =
         await widget.session.carwings.vehicle.requestStatisticsDaily();
     setState(() {
       this._statsDaily = statsDaily;
@@ -57,7 +57,7 @@ class _StatisticsDailyCardState extends State<StatisticsDailyCard> {
   }
 
   Widget _generateStars(int numberOfStars, [int maxNumberOfStars = 5]) {
-    List<Icon> stars = List<Icon>();
+    List<Icon> stars = <Icon>[];
     int starsAdded;
     for (starsAdded = 0; starsAdded < numberOfStars; starsAdded++) {
       stars.add(Icon(Icons.star, size: 18.0));
@@ -75,7 +75,7 @@ class _StatisticsDailyCardState extends State<StatisticsDailyCard> {
   }
 
   _withValues(
-      DateTime date,
+      DateTime? date,
       String electricCostScale,
       String mileagePerKWh,
       String KWhPerMileage,
@@ -229,17 +229,17 @@ class _StatisticsDailyCardState extends State<StatisticsDailyCard> {
         padding: const EdgeInsets.fromLTRB(15.0, 10.0, 15.0, 10.0),
         child: _statsDaily != null
             ? _withValues(
-                _statsDaily.dateTime,
-                _statsDaily.electricCostScale,
-                _statsDaily.mileagePerKWh,
-                _statsDaily.KWhPerMileage,
-                _statsDaily.mileageLevel,
-                _statsDaily.accelerationWh,
-                _statsDaily.accelerationLevel,
-                _statsDaily.regenerativeWh,
-                _statsDaily.regenerativeLevel,
-                _statsDaily.auxWh,
-                _statsDaily.auxLevel,
+                _statsDaily!.dateTime,
+                _statsDaily!.electricCostScale,
+                _statsDaily!.mileagePerKWh,
+                _statsDaily!.KWhPerMileage,
+                _statsDaily!.mileageLevel,
+                _statsDaily!.accelerationWh,
+                _statsDaily!.accelerationLevel,
+                _statsDaily!.regenerativeWh,
+                _statsDaily!.regenerativeLevel,
+                _statsDaily!.auxWh,
+                _statsDaily!.auxLevel,
               )
             : _withValues(
                 null,

@@ -1,7 +1,7 @@
 import 'package:carwingsflutter/about_page.dart';
 import 'package:carwingsflutter/preferences_manager.dart';
 import 'package:carwingsflutter/session.dart';
-import 'package:carwingsflutter/widget_delegator.dart';
+import 'package:carwingsflutter/widget_api_chooser.dart';
 import 'package:flutter/material.dart';
 
 import 'preferences_types.dart';
@@ -50,7 +50,7 @@ class _PreferencesPageState extends State<PreferencesPage> {
   _openDebugPage() {
     Navigator.of(context).push(MaterialPageRoute<Null>(
       builder: (BuildContext context) {
-        return WidgetDelegator.debugPage(widget.session);
+        return WidgetAPIChooser.debugPage(widget.session);
       },
     ));
   }
@@ -194,15 +194,14 @@ class _PreferencesPageState extends State<PreferencesPage> {
               })),
       _generalSettings.timeZoneOverride
           ? ListTile(
-              trailing: DropdownButton(
-                value: _generalSettings.timeZone != null &&
-                        _generalSettings.timeZone.isEmpty
+              trailing: DropdownButton<String>(
+                value: _generalSettings.timeZone.isEmpty
                     ? _buildTimeZoneDropDownMenuItems()[0].value
                     : _generalSettings.timeZone,
                 items: _buildTimeZoneDropDownMenuItems(),
                 onChanged: (timezone) {
                   setState(() {
-                    _generalSettings.timeZone = timezone;
+                    _generalSettings.timeZone = timezone!;
                     persistGeneralSettings();
                   });
                 },
@@ -212,9 +211,7 @@ class _PreferencesPageState extends State<PreferencesPage> {
       ListTile(
         title: Text('Turn on debugging'),
         trailing: Switch(
-            value: widget.session.carwings.debug != null
-                ? widget.session.carwings.debug
-                : false,
+            value: widget.session.carwings.debug,
             onChanged: (bool value) {
               setState(() {
                 widget.session.carwings.debug = value;
@@ -247,8 +244,8 @@ class _PreferencesPageState extends State<PreferencesPage> {
     }
   }
 
-  List<DropdownMenuItem> _buildTimeZoneDropDownMenuItems() {
-    List<DropdownMenuItem<String>> items = List();
+  List<DropdownMenuItem<String>> _buildTimeZoneDropDownMenuItems() {
+    List<DropdownMenuItem<String>> items = [];
     for (String timezone in timeZones) {
       items.add(DropdownMenuItem(value: timezone, child: Text(timezone)));
     }

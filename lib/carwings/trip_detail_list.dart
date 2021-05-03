@@ -14,10 +14,10 @@ class _TripDetailListState extends State<TripDetailList> {
 
   DateTime _currentDate = DateTime(DateTime.now().year, DateTime.now().month);
 
-  DateFormat dateFormatWeekDay;
-  DateFormat dateFormatDate;
+  late DateFormat dateFormatWeekDay;
+  late DateFormat dateFormatDate;
 
-  CarwingsStatsTrips _statsTrips;
+  CarwingsStatsTrips? _statsTrips;
 
   @override
   void didChangeDependencies() {
@@ -40,7 +40,7 @@ class _TripDetailListState extends State<TripDetailList> {
     setState(() {
       _statsTrips = null;
     });
-    CarwingsStatsTrips carwingsStatsTrips = await widget
+    CarwingsStatsTrips? carwingsStatsTrips = await widget
         .session.carwings.vehicle
         .requestStatisticsMonthlyTrips(_currentDate);
     setState(() {
@@ -82,7 +82,7 @@ class _TripDetailListState extends State<TripDetailList> {
       body: _statsTrips != null
           ? ListView(
               padding: const EdgeInsets.fromLTRB(15.0, 0.0, 15.0, 15.0),
-              children: _statsTrips.trips.map((carwingsTrip) {
+              children: _statsTrips!.trips.map((carwingsTrip) {
                 return Column(
                   children: <Widget>[
                     Padding(padding: const EdgeInsets.all(8.0)),

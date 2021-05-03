@@ -2,16 +2,16 @@ name: carwingsflutter
 description: A NissanConnect EV alternative written using Flutter
 
 environment:
-  sdk: '>=2.7.0 <3.0.0'
+  sdk: '>=2.12.0 <3.0.0'
 
 dependencies:
   flutter:
     sdk: flutter
-  shared_preferences: ^0.5.12+4
-  json_annotation: ^3.1.1
-  url_launcher: ^5.7.10
-  sleek_circular_slider: ^1.1.0
-  in_app_purchase: ^0.3.5+1
+  shared_preferences: ^2.0.5
+  json_annotation: ^4.0.1
+  url_launcher: ^6.0.3
+  sleek_circular_slider: ^2.0.0
+  in_app_purchase: ^0.5.2
   dartcarwings:
     git: https://gitlab.com/tobiaswkjeldsen/dartcarwings.git
   dartnissanconnectna:
@@ -28,7 +28,7 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  json_serializable: ^3.5.1 #  flutter packages pub run build_runner build
+  json_serializable: ^4.1.1 #  flutter packages pub run build_runner build
   build_runner: ^1.0.0
 
 

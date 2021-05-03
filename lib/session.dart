@@ -16,7 +16,7 @@ class Session {
   nissanconnect.NissanConnectSession nissanConnect =
       nissanconnect.NissanConnectSession();
 
-  CarwingsRegion region;
+  late CarwingsRegion region;
 
   API_TYPE getAPIType() => isWorld()
       ? API_TYPE.NISSANCONNECT
@@ -71,11 +71,11 @@ class Session {
   }
 
   Future<Null> login(
-      {String username,
-      String password,
+      {required String username,
+      required String password,
       CarwingsRegion region = CarwingsRegion.Europe,
       Future<String> blowfishEncryptCallback(
-          String key, String password)}) async {
+          String key, String password)?}) async {
     this.region = region;
     switch (getAPIType()) {
       case API_TYPE.CARWINGS:
@@ -83,7 +83,7 @@ class Session {
             username: username,
             password: password,
             region: region,
-            blowfishEncryptCallback: blowfishEncryptCallback);
+            blowfishEncryptCallback: blowfishEncryptCallback!);
         break;
       case API_TYPE.NISSANCONNECTNA:
         if (isCanada()) {

@@ -20,7 +20,7 @@ class _StatisticsDailyCardState extends State<StatisticsDailyCard> {
 
   GeneralSettings _generalSettings = GeneralSettings();
 
-  NissanConnectStats _stats;
+  NissanConnectStats? _stats;
 
   bool _isLoading = false;
 
@@ -31,7 +31,7 @@ class _StatisticsDailyCardState extends State<StatisticsDailyCard> {
   }
 
   _getDailyStatistics() async {
-    NissanConnectStats statsDaily =
+    NissanConnectStats? statsDaily =
         await widget.session.nissanConnect.vehicle.requestDailyStatistics();
     setState(() {
       this._stats = statsDaily;
@@ -57,7 +57,7 @@ class _StatisticsDailyCardState extends State<StatisticsDailyCard> {
   }
 
   _withValues(
-      DateTime date,
+      DateTime? date,
       String kWhPerKilometers,
       String kWhPerMiles,
       String kilometersPerKWh,
@@ -197,18 +197,18 @@ class _StatisticsDailyCardState extends State<StatisticsDailyCard> {
         padding: const EdgeInsets.fromLTRB(15.0, 10.0, 15.0, 10.0),
         child: _stats != null
             ? _withValues(
-                _stats.date,
-                _stats.kWhPerKilometers,
-                _stats.kWhPerMiles,
-                _stats.kilometersPerKWh,
-                _stats.milesPerKWh,
-                _stats.travelDistanceKilometers,
-                _stats.travelDistanceMiles,
-                _stats.kWhUsed,
-                _stats.travelTime,
-                _stats.travelSpeedAverageKmh,
-                _stats.travelSpeedAverageMph,
-                _stats.tripsNumber.toString())
+                _stats!.date,
+                _stats!.kWhPerKilometers,
+                _stats!.kWhPerMiles,
+                _stats!.kilometersPerKWh,
+                _stats!.milesPerKWh,
+                _stats!.travelDistanceKilometers,
+                _stats!.travelDistanceMiles,
+                _stats!.kWhUsed,
+                _stats!.travelTime,
+                _stats!.travelSpeedAverageKmh,
+                _stats!.travelSpeedAverageMph,
+                _stats!.tripsNumber.toString())
             : _withValues(null, '-', '-', '-', '-', '-', '-', '-',
                 Duration(minutes: 0), '-', '-', '-'));
   }

@@ -23,7 +23,7 @@ class _BatteryLatestState extends State<BatteryLatest> {
 
   GeneralSettings _generalSettings = GeneralSettings();
 
-  NissanConnectBattery _battery;
+  NissanConnectBattery? _battery;
 
   bool _isLoading = false;
 
@@ -38,7 +38,7 @@ class _BatteryLatestState extends State<BatteryLatest> {
   }
 
   _getBatteryStatusLatest() async {
-    NissanConnectBattery battery =
+    NissanConnectBattery? battery =
         await widget.session.nissanConnect.vehicle.requestBatteryStatus();
     setState(() {
       this._battery = battery;
@@ -66,7 +66,7 @@ class _BatteryLatestState extends State<BatteryLatest> {
   }
 
   _withValues(
-      DateTime date,
+      DateTime? date,
       bool isCharging,
       String batteryPercentage,
       String cruisingRangeAcOffKm,
@@ -76,8 +76,8 @@ class _BatteryLatestState extends State<BatteryLatest> {
       Duration timeToFullTrickle,
       Duration timeToFullL2,
       Duration timeToFullL2_6kw,
-      String chargingkWLevelText,
-      String chargingRemainingText) {
+      String? chargingkWLevelText,
+      String? chargingRemainingText) {
     return Container(
       height: 155,
       child: Stack(
@@ -181,13 +181,13 @@ class _BatteryLatestState extends State<BatteryLatest> {
                           crossAxisAlignment: CrossAxisAlignment.end,
                           children: <Widget>[
                             Text(
-                              chargingRemainingText,
+                              chargingRemainingText ?? '',
                               style: TextStyle(
                                   fontWeight: FontWeight.bold,
                                   color: Colors.white),
                             ),
                             Text(
-                              chargingkWLevelText,
+                              chargingkWLevelText ?? '',
                               style: TextStyle(color: Colors.white),
                             ),
                           ],
@@ -274,18 +274,18 @@ class _BatteryLatestState extends State<BatteryLatest> {
         padding: const EdgeInsets.fromLTRB(0.0, 8.0, 0.0, 0.0),
         child: _battery != null
             ? _withValues(
-                _battery.dateTime,
-                _battery.isCharging,
-                _battery.batteryPercentage,
-                _battery.cruisingRangeAcOffKm,
-                _battery.cruisingRangeAcOffMiles,
-                _battery.cruisingRangeAcOnKm,
-                _battery.cruisingRangeAcOnMiles,
-                _battery.timeToFullSlow,
-                _battery.timeToFullNormal,
-                _battery.timeToFullFast,
-                _battery.chargingkWLevelText,
-                _battery.chargingRemainingText)
+                _battery!.dateTime,
+                _battery!.isCharging,
+                _battery!.batteryPercentage,
+                _battery!.cruisingRangeAcOffKm,
+                _battery!.cruisingRangeAcOffMiles,
+                _battery!.cruisingRangeAcOnKm,
+                _battery!.cruisingRangeAcOnMiles,
+                _battery!.timeToFullSlow,
+                _battery!.timeToFullNormal,
+                _battery!.timeToFullFast,
+                _battery!.chargingkWLevelText,
+                _battery!.chargingRemainingText)
             : _withValues(
                 null,
                 false,

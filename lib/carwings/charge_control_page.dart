@@ -6,8 +6,6 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 class _ChargeControlPageState extends State<ChargeControlPage> {
-  final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
-
   PreferencesManager preferencesManager = PreferencesManager();
 
   bool _isCharging = false;
@@ -22,7 +20,7 @@ class _ChargeControlPageState extends State<ChargeControlPage> {
       DateTime.now().day,
       DateTime.now().hour,
       DateTime.now().add(Duration(seconds: 5)).minute);
-  DateTime _chargingScheduled;
+  DateTime? _chargingScheduled;
 
   @override
   void initState() {
@@ -46,11 +44,11 @@ class _ChargeControlPageState extends State<ChargeControlPage> {
     try {
       await widget.session.carwings.vehicle.requestBatteryStatus();
     } finally {
-      CarwingsBattery battery =
+      CarwingsBattery? battery =
           await widget.session.carwings.vehicle.requestBatteryStatusLatest();
       setState(() {
-        _isCharging = battery.isCharging;
-        _isConnected = battery.isConnected;
+        _isCharging = battery?.isCharging ?? false;
+        _isConnected = battery?.isConnected ?? false;
         _chargeControlReady = true;
       });
     }
@@ -98,14 +96,14 @@ class _ChargeControlPageState extends State<ChargeControlPage> {
   }
 
   _snackbar(message) {
-    scaffoldKey.currentState.showSnackBar(
+    ScaffoldMessenger.of(context).hideCurrentSnackBar();
+    ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(duration: Duration(seconds: 5), content: Text(message)));
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      key: scaffoldKey,
       appBar: AppBar(title: Text("Charging")),
       body: Center(
         child: Column(
@@ -136,7 +134,7 @@ class _ChargeControlPageState extends State<ChargeControlPage> {
             ),
             Text(
               _chargingScheduled != null
-                  ? 'At ${DateFormat('HH:mm \'this\' EEEE').format(_chargingScheduled)}'
+                  ? 'At ${DateFormat('HH:mm \'this\' EEEE').format(_chargingScheduled!)}'
                   : 'Not scheduled',
               style: TextStyle(fontSize: 18.0),
             ),

@@ -32,9 +32,9 @@ class PreferencesManager {
     sharedPreferences.setInt(PREF_THEME, theme);
   }
 
-  Future<LoginSettings> getLoginSettings() async {
+  Future<LoginSettings?> getLoginSettings() async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
-    String data = preferences.getString(PREF_LOGIN);
+    String? data = preferences.getString(PREF_LOGIN);
     return data != null ? LoginSettings.fromJson(json.decode(data)) : null;
   }
 
@@ -55,7 +55,7 @@ class PreferencesManager {
 
   Future<GeneralSettings> getGeneralSettings() async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
-    String data = preferences.getString(PREF_GENERAL_SETTINGS);
+    String? data = preferences.getString(PREF_GENERAL_SETTINGS);
     return data != null
         ? GeneralSettings.fromJson(json.decode(data))
         : GeneralSettings();
@@ -71,8 +71,8 @@ class PreferencesManager {
   // It is not possible to get schedule with Carwings API
   Future<DateTime> getChargingSchedule() async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
-    int chargingSchduled = preferences.getInt(PREF_CHARGING_SCHEDULED);
-    return DateTime.fromMillisecondsSinceEpoch(chargingSchduled);
+    int? chargingSchduled = preferences.getInt(PREF_CHARGING_SCHEDULED);
+    return DateTime.fromMillisecondsSinceEpoch(chargingSchduled ?? 0);
   }
 
   Future<Null> setChargingSchedule(DateTime chargingSchedule) async {

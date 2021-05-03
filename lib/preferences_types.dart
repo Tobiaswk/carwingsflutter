@@ -1,5 +1,4 @@
 import 'package:dartcarwings/dartcarwings.dart';
-import 'package:flutter/foundation.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'preferences_types.g.dart';
@@ -10,7 +9,8 @@ class LoginSettings {
   String password;
   CarwingsRegion region;
 
-  LoginSettings({this.username, this.password, this.region});
+  LoginSettings(
+      {required this.username, required this.password, required this.region});
 
   factory LoginSettings.fromJson(Map<String, dynamic> json) =>
       _$LoginSettingsFromJson(json);
@@ -30,6 +30,7 @@ class GeneralSettings {
   bool use12thBarNotation;
   @JsonKey(defaultValue: true)
   bool showCO2;
+  @JsonKey(defaultValue: '')
   String timeZone;
 
   GeneralSettings(
@@ -38,7 +39,7 @@ class GeneralSettings {
       this.timeZoneOverride = false,
       this.use12thBarNotation = false,
       this.showCO2 = true,
-      this.timeZone});
+      this.timeZone = ''});
 
   factory GeneralSettings.fromJson(Map<String, dynamic> json) =>
       _$GeneralSettingsFromJson(json);
@@ -50,18 +51,16 @@ enum ThemeColor { standard, green, red, purple, dark }
 
 class Setting {
   Setting({
-    @required this.theme,
-  }) {
-    assert(theme != null);
-  }
+    required this.theme,
+  });
 
   final ThemeColor theme;
 
   Setting copyWith({
-    ThemeColor theme,
+    required ThemeColor theme,
   }) {
     return Setting(
-      theme: theme ?? this.theme,
+      theme: theme,
     );
   }
 }

@@ -20,7 +20,7 @@ class _StatisticsMonthlyCardState extends State<StatisticsMonthlyCard> {
 
   GeneralSettings _generalSettings = GeneralSettings();
 
-  NissanConnectStats _stats;
+  NissanConnectStats? _stats;
 
   DateTime _currentMonth = DateTime(DateTime.now().year, DateTime.now().month);
 
@@ -33,7 +33,8 @@ class _StatisticsMonthlyCardState extends State<StatisticsMonthlyCard> {
   }
 
   _getMonthlyStatistics() async {
-    NissanConnectStats statsDaily = await widget.session.nissanConnectNa.vehicle
+    NissanConnectStats? statsDaily = await widget
+        .session.nissanConnectNa.vehicle
         .requestMonthlyStatistics(_currentMonth);
     setState(() {
       this._stats = statsDaily;
@@ -77,7 +78,7 @@ class _StatisticsMonthlyCardState extends State<StatisticsMonthlyCard> {
   }
 
   _withValues(
-      DateTime date,
+      DateTime? date,
       String kWhPerKilometers,
       String kWhPerMiles,
       String kilometersPerKWh,
@@ -206,16 +207,16 @@ class _StatisticsMonthlyCardState extends State<StatisticsMonthlyCard> {
         padding: const EdgeInsets.fromLTRB(15.0, 20.0, 15.0, 0.0),
         child: _stats != null
             ? _withValues(
-                _stats.date,
-                _stats.kWhPerKilometers,
-                _stats.kWhPerMiles,
-                _stats.kilometersPerKWh,
-                _stats.milesPerKWh,
-                _stats.travelDistanceKilometers,
-                _stats.travelDistanceMiles,
-                _stats.kWhUsed,
-                _stats.travelTime,
-                _stats.co2ReductionKg,
+                _stats!.date,
+                _stats!.kWhPerKilometers,
+                _stats!.kWhPerMiles,
+                _stats!.kilometersPerKWh,
+                _stats!.milesPerKWh,
+                _stats!.travelDistanceKilometers,
+                _stats!.travelDistanceMiles,
+                _stats!.kWhUsed,
+                _stats!.travelTime,
+                _stats!.co2ReductionKg,
               )
             : _withValues(
                 null,
