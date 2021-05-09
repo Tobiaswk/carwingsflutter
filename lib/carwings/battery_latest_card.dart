@@ -32,7 +32,7 @@ class _BatteryLatestCardState extends State<BatteryLatestCard> {
   }
 
   _getBatteryStatusLatest() async {
-    CarwingsBattery battery =
+    CarwingsBattery? battery =
         await widget.session.carwings.vehicle.requestBatteryStatusLatest();
     setState(() {
       this._battery = battery;
@@ -64,7 +64,7 @@ class _BatteryLatestCardState extends State<BatteryLatestCard> {
   }
 
   _withValues(
-      DateTime date,
+      DateTime? date,
       bool isCharging,
       String batteryPercentage,
       String battery12thBar,

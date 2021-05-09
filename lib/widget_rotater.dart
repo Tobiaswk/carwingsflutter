@@ -11,7 +11,7 @@ class WidgetRotater extends StatefulWidget {
 
 class _WidgetRotaterState extends State<WidgetRotater>
     with SingleTickerProviderStateMixin {
-  AnimationController animationController;
+  late AnimationController animationController;
 
   Widget _widget;
 
@@ -42,10 +42,10 @@ class _WidgetRotaterState extends State<WidgetRotater>
       child: AnimatedBuilder(
         animation: animationController,
         child: _widget,
-        builder: (BuildContext context, Widget _widget) {
+        builder: (BuildContext context, Widget? widget) {
           return Transform.rotate(
             angle: animationController.value * 12.3,
-            child: _widget,
+            child: widget,
           );
         },
       ),

@@ -117,7 +117,7 @@ class _AboutPageState extends State<AboutPage> {
 }
 
 class AboutPage extends StatefulWidget {
-  AboutPage({Key key}) : super(key: key);
+  AboutPage();
 
   @override
   _AboutPageState createState() => _AboutPageState();

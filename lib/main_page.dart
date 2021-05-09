@@ -2,7 +2,7 @@ import 'package:carwingsflutter/preferences_page.dart';
 import 'package:carwingsflutter/preferences_types.dart';
 import 'package:carwingsflutter/session.dart';
 import 'package:carwingsflutter/util.dart';
-import 'package:carwingsflutter/widget_delegator.dart';
+import 'package:carwingsflutter/widget_api_chooser.dart';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -62,7 +62,7 @@ class _MainPageState extends State<MainPage> {
   _openVehicleInfoPage(vehicle) {
     Navigator.of(context).push(MaterialPageRoute<Null>(
       builder: (BuildContext context) {
-        return WidgetDelegator.vehiclePage(widget.session);
+        return WidgetAPIChooser.vehiclePage(widget.session);
       },
     ));
   }
@@ -70,7 +70,7 @@ class _MainPageState extends State<MainPage> {
   _openClimateControlPage() {
     Navigator.of(context).push(MaterialPageRoute<Null>(
       builder: (BuildContext context) {
-        return WidgetDelegator.climateControlPage(widget.session);
+        return WidgetAPIChooser.climateControlPage(widget.session);
       },
     ));
   }
@@ -78,7 +78,7 @@ class _MainPageState extends State<MainPage> {
   _openChargingControlPage() {
     Navigator.of(context).push(MaterialPageRoute<Null>(
       builder: (BuildContext context) {
-        return WidgetDelegator.chargingControlPage(widget.session);
+        return WidgetAPIChooser.chargingControlPage(widget.session);
       },
     ));
   }
@@ -86,7 +86,7 @@ class _MainPageState extends State<MainPage> {
   _openTripDetailListPage() {
     Navigator.of(context).push(MaterialPageRoute<Null>(
       builder: (BuildContext context) {
-        return WidgetDelegator.tripDetailsPage(widget.session);
+        return WidgetAPIChooser.tripDetailsPage(widget.session);
       },
     ));
   }
@@ -149,7 +149,7 @@ class _MainPageState extends State<MainPage> {
   }
 
   Column _buildVehicleListTiles(context) {
-    List<ListTile> vehicleListTiles = List<ListTile>();
+    List<ListTile> vehicleListTiles = <ListTile>[];
     var vehicles = widget.session.getVehicles();
     for (dynamic vehicle in vehicles) {
       vehicleListTiles.add(ListTile(
@@ -168,7 +168,7 @@ class _MainPageState extends State<MainPage> {
   }
 
   void _snackBar(message) {
-    scaffoldKey.currentState.showSnackBar(
+    ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(duration: Duration(seconds: 5), content: Text(message)));
   }
 
@@ -200,10 +200,10 @@ class _MainPageState extends State<MainPage> {
                   children: <Widget>[
                     Column(
                       children: <Widget>[
-                        WidgetDelegator.batteryLatestCard(
-                            widget.session, snapshot.data),
-                        WidgetDelegator.statisticsDailyCard(widget.session),
-                        WidgetDelegator.statisticsMonthlyCard(widget.session)
+                        WidgetAPIChooser.batteryLatestCard(
+                            widget.session, snapshot.data!),
+                        WidgetAPIChooser.statisticsDailyCard(widget.session),
+                        WidgetAPIChooser.statisticsMonthlyCard(widget.session),
                       ],
                     )
                   ],

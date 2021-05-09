@@ -14,10 +14,10 @@ class _TripDetailListState extends State<TripDetailList> {
 
   DateTime _currentDate = DateTime(DateTime.now().year, DateTime.now().month);
 
-  DateFormat dateFormatWeekDay;
-  DateFormat dateFormatDate;
+  late DateFormat dateFormatWeekDay;
+  late DateFormat dateFormatDate;
 
-  List<NissanConnectStats> _statsTrips;
+  List<NissanConnectStats>? _statsTrips;
   int tripCounter = 1;
 
   @override
@@ -39,7 +39,7 @@ class _TripDetailListState extends State<TripDetailList> {
     setState(() {
       _statsTrips = null;
     });
-    List<NissanConnectStats> carwingsStatsTrips = await widget
+    List<NissanConnectStats>? carwingsStatsTrips = await widget
         .session.nissanConnect.vehicle
         .requestMonthlyTripsStatistics(_currentDate);
     setState(() {
@@ -82,8 +82,9 @@ class _TripDetailListState extends State<TripDetailList> {
       body: _statsTrips != null
           ? ListView(
               padding: const EdgeInsets.fromLTRB(15.0, 0.0, 15.0, 15.0),
-              children:
-                  _statsTrips.where((trip) => trip.tripsNumber > 0).map((trip) {
+              children: _statsTrips!
+                  .where((trip) => trip.tripsNumber > 0)
+                  .map((trip) {
                 return Column(
                   children: <Widget>[
                     Padding(padding: const EdgeInsets.all(8.0)),

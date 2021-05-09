@@ -4,8 +4,15 @@ import 'package:carwingsflutter/preferences_page.dart';
 import 'package:carwingsflutter/preferences_types.dart';
 import 'package:carwingsflutter/session.dart';
 import 'package:flutter/material.dart';
+import 'package:in_app_purchase/in_app_purchase.dart';
 
-void main() => runApp(MyApp());
+void main() {
+  // For play billing library 2.0 on Android, it is mandatory to call
+  // [enablePendingPurchases](https://developer.android.com/reference/com/android/billingclient/api/BillingClient.Builder.html#enablependingpurchases)
+  // as part of initializing the app.
+  InAppPurchaseConnection.enablePendingPurchases();
+  runApp(MyApp());
+}
 
 class MyApp extends StatefulWidget {
   @override
@@ -52,18 +59,17 @@ class MyAppState extends State<MyApp> {
           primarySwatch: Colors.grey,
         );
     }
-    return ThemeData(primarySwatch: Colors.blue, buttonColor: Colors.white);
   }
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       // Enforce text scale factor; ignore system font size
-      builder: (BuildContext context, Widget child) {
+      builder: (BuildContext context, Widget? child) {
         final MediaQueryData data = MediaQuery.of(context);
         return MediaQuery(
           data: data.copyWith(textScaleFactor: 1),
-          child: child,
+          child: child!,
         );
       },
       title: 'My Leaf',

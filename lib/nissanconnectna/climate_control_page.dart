@@ -4,17 +4,15 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 class _ClimateControlPageState extends State<ClimateControlPage> {
-  final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
-
   bool _climateControlIsReady = true;
   bool _climateControlOn = false;
-  double _cabinTemperature;
+  double? _cabinTemperature;
 
   DateTime _startDate =
       DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day);
   DateTime _currentDate =
       DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day);
-  DateTime _climateControlScheduled;
+  DateTime? _climateControlScheduled;
 
   @override
   void initState() {
@@ -110,14 +108,13 @@ class _ClimateControlPageState extends State<ClimateControlPage> {
   }
 
   _snackbar(message) {
-    scaffoldKey.currentState.showSnackBar(
+    ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(duration: Duration(seconds: 5), content: Text(message)));
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      key: scaffoldKey,
       appBar: AppBar(title: Text("Climate Control")),
       body: Center(
         child: Column(
@@ -136,7 +133,7 @@ class _ClimateControlPageState extends State<ClimateControlPage> {
               style: TextStyle(fontSize: 18.0),
             ),
             Text(
-                'Cabin temperature is ${_cabinTemperature != null ? '${_cabinTemperature.floor()}°C / ${_toFahrenheit(_cabinTemperature.floor())}°F' : 'updating...'}'),
+                'Cabin temperature is ${_cabinTemperature != null ? '${_cabinTemperature!.floor()}°C / ${_toFahrenheit(_cabinTemperature!.floor())}°F' : 'updating...'}'),
             IconButton(
               icon: Icon(Icons.access_time),
               iconSize: 200.0,
@@ -147,7 +144,7 @@ class _ClimateControlPageState extends State<ClimateControlPage> {
             ),
             Text(
               _climateControlScheduled != null
-                  ? 'At ${DateFormat('HH:mm \'this\' EEEE').format(_climateControlScheduled)}'
+                  ? 'At ${DateFormat('HH:mm \'this\' EEEE').format(_climateControlScheduled!)}'
                   : 'Not scheduled',
               style: TextStyle(fontSize: 18.0),
             ),

@@ -29,7 +29,7 @@ class _LoginPageState extends State<LoginPage> {
   TextEditingController _usernameTextController = TextEditingController();
   TextEditingController _passwordTextController = TextEditingController();
 
-  String _serverStatus;
+  String? _serverStatus;
 
   @override
   void initState() {
@@ -55,7 +55,7 @@ class _LoginPageState extends State<LoginPage> {
 
   _getServerStatus() async {
     http.Response response =
-        await http.get("https://wkjeldsen.dk/myleaf/server_status");
+        await http.get(Uri.parse('https://wkjeldsen.dk/myleaf/server_status'));
     setState(() {
       _serverStatus = response.body.trim();
     });
@@ -93,14 +93,14 @@ class _LoginPageState extends State<LoginPage> {
     }).catchError((error) {
       Util.dismissLoadingDialog(context);
 
-      scaffoldKey.currentState.showSnackBar(SnackBar(
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
           duration: Duration(seconds: 5),
           content: Text(
               'Sign in failed! Please make sure your credentials are valid!')));
 
-      if (_serverStatus != null && _serverStatus.isNotEmpty) {
-        scaffoldKey.currentState.showSnackBar(SnackBar(
-            duration: Duration(seconds: 10), content: Text(_serverStatus)));
+      if (_serverStatus != null && _serverStatus!.isNotEmpty) {
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+            duration: Duration(seconds: 10), content: Text(_serverStatus!)));
       }
     });
   }
@@ -150,6 +150,14 @@ class _LoginPageState extends State<LoginPage> {
                   selectionColor: Colors.white,
                   selectionHandleColor: Colors.white,
                 ),
+                elevatedButtonTheme: ElevatedButtonThemeData(
+                    style: ButtonStyle(
+                        foregroundColor:
+                            MaterialStateProperty.resolveWith<Color>(
+                                (states) => Colors.black),
+                        backgroundColor:
+                            MaterialStateProperty.resolveWith<Color>(
+                                (states) => Colors.white))),
                 hintColor: Colors.white,
                 canvasColor: Theme.of(context).primaryColor,
                 toggleableActiveColor: Colors.white),
@@ -207,12 +215,13 @@ class _LoginPageState extends State<LoginPage> {
                               style: TextStyle(color: Colors.white),
                             ),
                             Padding(padding: const EdgeInsets.all(10.0)),
-                            DropdownButton(
+                            DropdownButton<CarwingsRegion>(
                               value: _regionSelected,
                               items: _buildRegionAndGetDropDownMenuItems(),
                               onChanged: (region) {
                                 setState(() {
-                                  _regionSelected = region;
+                                  _regionSelected =
+                                      region ?? CarwingsRegion.World;
                                 });
                               },
                             ),
@@ -242,7 +251,7 @@ class _LoginPageState extends State<LoginPage> {
                                     _rememberLoginSettings = value;
                                   });
                                 }),
-                            RaisedButton(
+                            ElevatedButton(
                                 child: Text("Sign in"), onPressed: _doLogin)
                           ],
                         )
