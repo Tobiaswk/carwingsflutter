@@ -44,15 +44,15 @@ class MyAppState extends State<MyApp> {
   ThemeData get theme {
     switch (_configuration.theme) {
       case ThemeColor.standard:
-        return ThemeData(primarySwatch: Colors.blue, buttonColor: Colors.white);
+        return ThemeData(primarySwatch: Colors.blue);
       case ThemeColor.green:
         return ThemeData(
-            primarySwatch: Colors.green, buttonColor: Colors.white);
+            primarySwatch: Colors.green);
       case ThemeColor.red:
-        return ThemeData(primarySwatch: Colors.red, buttonColor: Colors.white);
+        return ThemeData(primarySwatch: Colors.red);
       case ThemeColor.purple:
         return ThemeData(
-            primarySwatch: Colors.purple, buttonColor: Colors.white);
+            primarySwatch: Colors.purple);
       case ThemeColor.dark:
         return ThemeData(
           brightness: Brightness.dark,
