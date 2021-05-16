@@ -145,6 +145,14 @@ class _LoginPageState extends State<LoginPage> {
                 textTheme: TextTheme(bodyText2: TextStyle(color: Colors.white)),
                 primaryColor: Colors.white,
                 accentColor: Colors.white,
+                inputDecorationTheme: InputDecorationTheme(
+                    labelStyle: TextStyle(color: Colors.white),
+                    enabledBorder: UnderlineInputBorder(
+                      borderSide: BorderSide(color: Colors.white),
+                    ),
+                    focusedBorder: UnderlineInputBorder(
+                      borderSide: BorderSide(color: Colors.white),
+                    )),
                 textSelectionTheme: TextSelectionThemeData(
                   cursorColor: Colors.white,
                   selectionColor: Colors.white,
@@ -188,23 +196,18 @@ class _LoginPageState extends State<LoginPage> {
                           style: TextStyle(fontSize: 15.0, color: Colors.white),
                         ),
                         TextFormField(
-                          controller: _usernameTextController,
-                          autofocus: false,
-                          autocorrect: false,
-                          enableSuggestions: false,
-                          decoration: InputDecoration(
+                            controller: _usernameTextController,
+                            autofocus: false,
+                            autocorrect: false,
+                            enableSuggestions: false,
+                            decoration: InputDecoration(
                               labelText: 'Username',
-                              enabledBorder: UnderlineInputBorder(
-                                borderSide: BorderSide(color: Colors.white),
-                              )),
-                        ),
+                            )),
                         TextFormField(
                           controller: _passwordTextController,
                           decoration: InputDecoration(
-                              labelText: 'Password',
-                              enabledBorder: UnderlineInputBorder(
-                                borderSide: BorderSide(color: Colors.white),
-                              )),
+                            labelText: 'Password',
+                          ),
                           obscureText: true,
                         ),
                         Row(

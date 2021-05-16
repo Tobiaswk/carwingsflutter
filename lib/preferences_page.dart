@@ -130,7 +130,7 @@ class _PreferencesPageState extends State<PreferencesPage> {
   }
 
   void sendUpdates(Setting value) {
-    if (widget.updater != null) widget.updater(value);
+    widget.updater(value);
   }
 
   Widget buildSettingsPane(BuildContext context) {
