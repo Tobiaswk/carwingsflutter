@@ -198,14 +198,10 @@ class _MainPageState extends State<MainPage> {
           return snapshot.hasData
               ? ListView(
                   children: <Widget>[
-                    Column(
-                      children: <Widget>[
-                        WidgetAPIChooser.batteryLatestCard(
-                            widget.session, snapshot.data!),
-                        WidgetAPIChooser.statisticsDailyCard(widget.session),
-                        WidgetAPIChooser.statisticsMonthlyCard(widget.session),
-                      ],
-                    )
+                    WidgetAPIChooser.batteryLatestCard(
+                        widget.session, snapshot.data!),
+                    WidgetAPIChooser.statisticsDailyCard(widget.session),
+                    WidgetAPIChooser.statisticsMonthlyCard(widget.session)
                   ],
                 )
               : Container();
