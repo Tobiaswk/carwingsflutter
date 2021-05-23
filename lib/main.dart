@@ -46,13 +46,11 @@ class MyAppState extends State<MyApp> {
       case ThemeColor.standard:
         return ThemeData(primarySwatch: Colors.blue);
       case ThemeColor.green:
-        return ThemeData(
-            primarySwatch: Colors.green);
+        return ThemeData(primarySwatch: Colors.green);
       case ThemeColor.red:
         return ThemeData(primarySwatch: Colors.red);
       case ThemeColor.purple:
-        return ThemeData(
-            primarySwatch: Colors.purple);
+        return ThemeData(primarySwatch: Colors.purple);
       case ThemeColor.dark:
         return ThemeData(
           brightness: Brightness.dark,
