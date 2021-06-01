@@ -109,6 +109,11 @@ class _ChargeControlPageState extends State<ChargeControlPage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
+            Text(
+              'Tap to engage',
+              style: TextStyle(
+                  fontSize: 12, color: Theme.of(context).disabledColor),
+            ),
             IconButton(
               icon: Icon(Icons.power),
               iconSize: 200.0,

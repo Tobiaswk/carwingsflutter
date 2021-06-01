@@ -133,35 +133,48 @@ class _ClimateControlPageState extends State<ClimateControlPage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            IconButton(
-              icon: ImageIcon(AssetImage('images/aircondition.png')),
-              iconSize: 200.0,
-              color: _climateControlOn
-                  ? Util.primaryColor(context)
-                  : Theme.of(context).disabledColor,
-              onPressed: _climateControlToggle,
+            Column(
+              children: [
+                Text(
+                  'Tap to engage',
+                  style: TextStyle(
+                      fontSize: 12, color: Theme.of(context).disabledColor),
+                ),
+                IconButton(
+                  icon: ImageIcon(AssetImage('images/aircondition.png')),
+                  iconSize: 200.0,
+                  color: _climateControlOn
+                      ? Util.primaryColor(context)
+                      : Theme.of(context).disabledColor,
+                  onPressed: _climateControlToggle,
+                ),
+                Text(
+                  'Climate Control is ${_climateControlIsReady ? _climateControlOn ? 'on' : 'off' : 'updating...'}',
+                  style: TextStyle(fontSize: 18.0),
+                ),
+                !widget.session.carwings.isFirstGeneration
+                    ? Text(
+                        'Cabin temperature is ${_cabinTemperature != null ? '${_cabinTemperature!.temperature.floor()}°C / ${_toFahrenheit(_cabinTemperature!.temperature.floor())}°F' : 'updating...'}')
+                    : Column(),
+              ],
             ),
-            Text(
-              'Climate Control is ${_climateControlIsReady ? _climateControlOn ? 'on' : 'off' : 'updating...'}',
-              style: TextStyle(fontSize: 18.0),
-            ),
-            !widget.session.carwings.isFirstGeneration
-                ? Text(
-                    'Cabin temperature is ${_cabinTemperature != null ? '${_cabinTemperature!.temperature.floor()}°C / ${_toFahrenheit(_cabinTemperature!.temperature.floor())}°F' : 'updating...'}')
-                : Column(),
-            IconButton(
-              icon: Icon(Icons.access_time),
-              iconSize: 200.0,
-              color: _climateControlScheduled != null
-                  ? Util.primaryColor(context)
-                  : Theme.of(context).disabledColor,
-              onPressed: _climateControlSchedule,
-            ),
-            Text(
-              _climateControlScheduled != null
-                  ? 'At ${DateFormat('HH:mm \'this\' EEEE').format(_climateControlScheduled!)}'
-                  : 'Not scheduled',
-              style: TextStyle(fontSize: 18.0),
+            Column(
+              children: [
+                IconButton(
+                  icon: Icon(Icons.access_time),
+                  iconSize: 200.0,
+                  color: _climateControlScheduled != null
+                      ? Util.primaryColor(context)
+                      : Theme.of(context).disabledColor,
+                  onPressed: _climateControlSchedule,
+                ),
+                Text(
+                  _climateControlScheduled != null
+                      ? 'At ${DateFormat('HH:mm \'this\' EEEE').format(_climateControlScheduled!)}'
+                      : 'Not scheduled',
+                  style: TextStyle(fontSize: 18.0),
+                ),
+              ],
             ),
           ],
         ),

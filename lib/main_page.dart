@@ -33,7 +33,7 @@ class _MainPageState extends State<MainPage> {
   }
 
   _locateVehicleGoogleMaps() async {
-    Util.showLoadingDialog(context, 'Locating vehicle...');
+    Util.showLoadingDialog(context, 'Locating vehicle');
     try {
       var location;
       switch (widget.session.getAPIType()) {
