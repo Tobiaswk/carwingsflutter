@@ -120,6 +120,11 @@ class _ClimateControlPageState extends State<ClimateControlPage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
+            Text(
+              'Tap to engage',
+              style: TextStyle(
+                  fontSize: 12, color: Theme.of(context).disabledColor),
+            ),
             IconButton(
               icon: ImageIcon(AssetImage('images/aircondition.png')),
               iconSize: 200.0,

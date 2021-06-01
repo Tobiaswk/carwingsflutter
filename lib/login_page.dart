@@ -62,7 +62,7 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   _doLogin() {
-    Util.showLoadingDialog(context, 'Signing in...');
+    Util.showBigLoadingDialog(context, 'Signing in');
 
     _getServerStatus();
 
@@ -79,7 +79,7 @@ class _LoginPageState extends State<LoginPage> {
             },
             region: _regionSelected)
         .then((vehicle) {
-      Util.dismissLoadingDialog(context);
+      Util.dismissBigLoadingDialog(context);
 
       // Login was successful, push main view
       _openMainPage();
@@ -91,7 +91,7 @@ class _LoginPageState extends State<LoginPage> {
         preferencesManager.clearLoginSettings();
       }
     }).catchError((error) {
-      Util.dismissLoadingDialog(context);
+      Util.dismissBigLoadingDialog(context);
 
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
           duration: Duration(seconds: 5),
