@@ -20,6 +20,7 @@ class _ChargeControlPageState extends State<ChargeControlPage> {
         await widget.session.nissanConnect.vehicle.requestBatteryStatus();
     setState(() {
       _isCharging = battery.isCharging;
+      _chargingOn = battery.isCharging;
       _isConnected = battery.isConnected;
       _chargeControlReady = true;
     });
