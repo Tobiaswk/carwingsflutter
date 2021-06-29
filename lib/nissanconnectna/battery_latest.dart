@@ -278,8 +278,8 @@ class _BatteryLatestState extends State<BatteryLatest> {
                 _battery!.cruisingRangeAcOnKm,
                 _battery!.cruisingRangeAcOnMiles,
                 _battery!.timeToFullTrickle,
-                _battery!.timeToFullL2_6kw,
                 _battery!.timeToFullL2,
+                _battery!.timeToFullL2_6kw,
                 _battery!.chargingkWLevelText,
                 _battery!.chargingRemainingText)
             : _withValues(
