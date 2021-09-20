@@ -2,6 +2,7 @@ import 'package:dartcarwings/dartcarwings.dart';
 import 'package:dartnissanconnect/dartnissanconnect.dart' as nissanconnect;
 import 'package:dartnissanconnectna/dartnissanconnectna.dart'
     as nissanconnectna;
+import 'package:fk_user_agent/fk_user_agent.dart';
 
 enum API_TYPE { CARWINGS, NISSANCONNECTNA, NISSANCONNECT }
 
@@ -86,11 +87,22 @@ class Session {
             blowfishEncryptCallback: blowfishEncryptCallback!);
         break;
       case API_TYPE.NISSANCONNECTNA:
+
+        /// Used to get appropriate user-agent header for the
+        /// North American API client below
+        await FkUserAgent.init();
+
         if (isCanada()) {
           await nissanConnectNa.login(
-              username: username, password: password, countryCode: 'CA');
+              username: username,
+              password: password,
+              countryCode: 'CA',
+              userAgent: FkUserAgent.userAgent);
         } else {
-          await nissanConnectNa.login(username: username, password: password);
+          await nissanConnectNa.login(
+              username: username,
+              password: password,
+              userAgent: FkUserAgent.userAgent);
         }
         break;
       case API_TYPE.NISSANCONNECT:

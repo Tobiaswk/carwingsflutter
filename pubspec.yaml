@@ -12,6 +12,7 @@ dependencies:
   url_launcher: ^6.0.3
   sleek_circular_slider: ^2.0.0
   in_app_purchase: ^0.5.2
+  fk_user_agent: ^2.0.1
   dartcarwings:
     git: https://gitlab.com/tobiaswkjeldsen/dartcarwings.git
   dartnissanconnectna:
