@@ -81,10 +81,7 @@ class Session {
     switch (getAPIType()) {
       case API_TYPE.CARWINGS:
         await carwings.login(
-            username: username,
-            password: password,
-            region: region,
-            blowfishEncryptCallback: blowfishEncryptCallback!);
+            username: username, password: password, region: region);
         break;
       case API_TYPE.NISSANCONNECTNA:
 

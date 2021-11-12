@@ -1,4 +1,3 @@
-import 'package:blowfish_native/blowfish_native.dart';
 import 'package:carwingsflutter/help_page.dart';
 import 'package:carwingsflutter/main_page.dart';
 import 'package:carwingsflutter/preferences_manager.dart';
@@ -70,14 +69,7 @@ class _LoginPageState extends State<LoginPage> {
     var password = _passwordTextController.text.trim();
 
     widget.session
-        .login(
-            username: username,
-            password: password,
-            blowfishEncryptCallback: (String key, String password) async {
-              var encodedPassword = await BlowfishNative.encrypt(key, password);
-              return encodedPassword;
-            },
-            region: _regionSelected)
+        .login(username: username, password: password, region: _regionSelected)
         .then((vehicle) {
       Util.dismissBigLoadingDialog(context);
 
