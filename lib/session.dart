@@ -74,9 +74,7 @@ class Session {
   Future<Null> login(
       {required String username,
       required String password,
-      CarwingsRegion region = CarwingsRegion.Europe,
-      Future<String> blowfishEncryptCallback(
-          String key, String password)?}) async {
+      CarwingsRegion region = CarwingsRegion.Europe}) async {
     this.region = region;
     switch (getAPIType()) {
       case API_TYPE.CARWINGS:
