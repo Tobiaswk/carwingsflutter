@@ -61,7 +61,7 @@ flutter {
 }
 
 dependencies {
-    implementation 'com.squareup.okhttp3:okhttp:3.14.0'
+    implementation 'com.squareup.okhttp3:okhttp:3.14.9'
     implementation 'joda-time:joda-time:2.10.1'
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test:runner:1.1.0-alpha4'
