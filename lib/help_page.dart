@@ -16,28 +16,21 @@ class _HelpPageState extends State<HelpPage> {
                   Padding(padding: const EdgeInsets.all(5.0)),
                   Text('Having problems signing in? Follow these steps below'),
                   Padding(padding: const EdgeInsets.all(5.0)),
+                  Text('Setup / Before you use',
+                      style: TextStyle(fontSize: 18.0)),
+                  Text(
+                      'Remember to first complete the initial sign up process of your NissanConnect account and vehicle with the official app from Nissan before trying My Leaf'),
+                  Padding(padding: const EdgeInsets.all(5.0)),
+                  Text(
+                      'Remember that My Leaf is directly affected by Nissan\'s (sometimes poor) infrastructure! If the services/official app are down/unstable so is My Leaf'),
+                  Padding(padding: const EdgeInsets.all(5.0)),
+                  Text(
+                      'To use My Leaf a NissanConnect subscription from Nissan is required'),
+                  Padding(padding: const EdgeInsets.all(5.0)),
                   Text('Vehicles produced after May 2019',
                       style: TextStyle(fontSize: 18.0)),
                   Text(
                       'If you have a vehicle that was produced after May 2019 you need to select \'World\' as your region'),
-                  Padding(padding: const EdgeInsets.all(5.0)),
-                  Text('Try the official app first',
-                      style: TextStyle(fontSize: 18.0)),
-                  Text(
-                      'If possible make sure you are able to sign in using the official app before you try My Leaf'),
-                  Padding(padding: const EdgeInsets.all(5.0)),
-                  Text('You+Nissan / NissanConnect',
-                      style: TextStyle(fontSize: 18.0)),
-                  Text(
-                      'Follow the process on the You+Nissan / NissanConnect website for connecting your vehicle to your account. It can take up to 24 hours before you are able to sign in using the app'),
-                  Padding(padding: const EdgeInsets.all(5.0)),
-                  Text('Password', style: TextStyle(fontSize: 18.0)),
-                  Text(
-                      'Use a password with a length between 8 and 15 characters'),
-                  Padding(padding: const EdgeInsets.all(5.0)),
-                  Text('Signing in', style: TextStyle(fontSize: 18.0)),
-                  Text(
-                      'Make sure you are able to sign in to the You+Nissan / NissanConnect website. You should be able to see your connected vehicles on You+Nissan'),
                   Padding(padding: const EdgeInsets.all(5.0)),
                   Text('Turn on debugging', style: TextStyle(fontSize: 18.0)),
                   Text(
