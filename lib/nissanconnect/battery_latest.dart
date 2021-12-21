@@ -6,6 +6,7 @@ import 'package:carwingsflutter/widget_rotater.dart';
 import 'package:dartnissanconnect/dartnissanconnect.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 import 'package:sleek_circular_slider/sleek_circular_slider.dart';
 
@@ -30,6 +31,12 @@ class _BatteryLatestState extends State<BatteryLatest> {
   @override
   void initState() {
     super.initState();
+
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.portraitUp,
+      DeviceOrientation.portraitDown,
+    ]);
+
     _update();
   }
 
@@ -111,11 +118,11 @@ class _BatteryLatestState extends State<BatteryLatest> {
                 : Row(),
           ),
           Positioned(
-            top: 12,
+            top: 10,
             left: 20,
             child: SleekCircularSlider(
               appearance: CircularSliderAppearance(
-                  size: 175,
+                  size: MediaQuery.of(context).size.width * 0.46,
                   infoProperties: InfoProperties(
                     mainLabelStyle:
                         TextStyle(fontSize: 35.0, color: Colors.white),
@@ -125,7 +132,7 @@ class _BatteryLatestState extends State<BatteryLatest> {
                   customColors: CustomSliderColors(
                       progressBarColors: [Colors.white, Colors.white],
                       hideShadow: true,
-                      dotColor: Theme.of(context).primaryColor,
+                      dotColor: Colors.white,
                       trackColor: Colors.white,
                       shadowColor: Colors.white)),
               min: 0,
@@ -137,17 +144,15 @@ class _BatteryLatestState extends State<BatteryLatest> {
             top: 45,
             right: 30,
             child: Container(
-              decoration: MediaQuery.of(context).size.width < 390
-                  ? BoxDecoration(
-                      color: Colors.transparent,
-                      shape: BoxShape.rectangle,
-                      boxShadow: [
-                          BoxShadow(
-                              blurRadius: 15,
-                              spreadRadius: 15,
-                              color: Theme.of(context).primaryColor),
-                        ])
-                  : null,
+              decoration: BoxDecoration(
+                  color: Colors.transparent,
+                  shape: BoxShape.circle,
+                  boxShadow: [
+                    BoxShadow(
+                        blurRadius: 10,
+                        spreadRadius: 60,
+                        color: Theme.of(context).primaryColor),
+                  ]),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.end,
                 children: <Widget>[

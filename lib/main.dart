@@ -51,6 +51,17 @@ class MyAppState extends State<MyApp> {
           brightness: Brightness.dark,
           primarySwatch: Colors.grey,
         );
+      case ThemeColor.amoledDark:
+        return ThemeData(
+          appBarTheme: AppBarTheme(backgroundColor: Colors.transparent),
+          scaffoldBackgroundColor: Colors.transparent,
+          primaryColor: Colors.black,
+          cardColor: Color(0xFF282828),
+          dialogBackgroundColor: Color(0xFF282828),
+          drawerTheme: DrawerThemeData(backgroundColor: Colors.black),
+          brightness: Brightness.dark,
+          primarySwatch: Colors.grey,
+        );
     }
   }
 

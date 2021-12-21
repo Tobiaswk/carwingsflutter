@@ -117,13 +117,26 @@ class _PreferencesPageState extends State<PreferencesPage> {
             subtitle: Container(
               decoration: BoxDecoration(
                 border: Border.all(
-                  color: Colors.black87,
+                  color: Colors.black54,
                   width: 20.0,
                 ),
               ),
             ),
             onTap: () {
               _handleThemeChanged(ThemeColor.dark);
+            }),
+        ListTile(
+            title: Text("AMOLED Dark"),
+            subtitle: Container(
+              decoration: BoxDecoration(
+                border: Border.all(
+                  color: Colors.black,
+                  width: 20.0,
+                ),
+              ),
+            ),
+            onTap: () {
+              _handleThemeChanged(ThemeColor.amoledDark);
             }),
       ]),
     );
