@@ -47,7 +47,7 @@ class GeneralSettings {
   Map<String, dynamic> toJson() => _$GeneralSettingsToJson(this);
 }
 
-enum ThemeColor { standard, green, red, purple, dark }
+enum ThemeColor { standard, green, red, purple, dark, amoledDark }
 
 class Setting {
   Setting({

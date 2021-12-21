@@ -293,7 +293,8 @@ class _MainPageState extends State<MainPage> {
                     ],
                   )),
                   SimpleDialogOption(
-                    child: Text('Thank you either way!'),
+                    child: Text(
+                        'Thank you either way! Also if you have the time I\'d appreciate a review! ☺️'),
                   )
                 ],
               ));

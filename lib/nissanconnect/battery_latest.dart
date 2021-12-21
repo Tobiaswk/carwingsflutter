@@ -118,12 +118,11 @@ class _BatteryLatestState extends State<BatteryLatest> {
                 : Row(),
           ),
           Positioned(
-            top: 5,
+            top: 10,
             left: 20,
             child: SleekCircularSlider(
               appearance: CircularSliderAppearance(
-                  angleRange: 220,
-                  size: MediaQuery.of(context).size.width * 0.48,
+                  size: MediaQuery.of(context).size.width * 0.46,
                   infoProperties: InfoProperties(
                     mainLabelStyle:
                         TextStyle(fontSize: 35.0, color: Colors.white),
@@ -151,7 +150,7 @@ class _BatteryLatestState extends State<BatteryLatest> {
                   boxShadow: [
                     BoxShadow(
                         blurRadius: 10,
-                        spreadRadius: 50,
+                        spreadRadius: 60,
                         color: Theme.of(context).primaryColor),
                   ]),
               child: Column(
