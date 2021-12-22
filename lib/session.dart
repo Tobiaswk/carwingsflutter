@@ -76,17 +76,19 @@ class Session {
       required String password,
       CarwingsRegion region = CarwingsRegion.Europe}) async {
     this.region = region;
+
+    /// Used to get appropriate user-agent header for the API clients below
+    await FkUserAgent.init();
+
     switch (getAPIType()) {
       case API_TYPE.CARWINGS:
         await carwings.login(
-            username: username, password: password, region: region);
+            username: username,
+            password: password,
+            region: region,
+            userAgent: FkUserAgent.userAgent);
         break;
       case API_TYPE.NISSANCONNECTNA:
-
-        /// Used to get appropriate user-agent header for the
-        /// North American API client below
-        await FkUserAgent.init();
-
         if (isCanada()) {
           await nissanConnectNa.login(
               username: username,
