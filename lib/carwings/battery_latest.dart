@@ -141,18 +141,24 @@ class _BatteryLatestState extends State<BatteryLatest> {
             ),
           ),
           Positioned(
+              right: 0,
+              child: Container(
+                height: 155,
+                width: MediaQuery.of(context).size.width / 2,
+                decoration: BoxDecoration(
+                    color: Colors.transparent,
+                    shape: BoxShape.rectangle,
+                    boxShadow: [
+                      BoxShadow(
+                          blurRadius: 10,
+                          spreadRadius: 40,
+                          color: Theme.of(context).primaryColor),
+                    ]),
+              )),
+          Positioned(
             top: 45,
             right: 30,
             child: Container(
-              decoration: BoxDecoration(
-                  color: Colors.transparent,
-                  shape: BoxShape.circle,
-                  boxShadow: [
-                    BoxShadow(
-                        blurRadius: 10,
-                        spreadRadius: 70,
-                        color: Theme.of(context).primaryColor),
-                  ]),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.end,
                 children: <Widget>[
