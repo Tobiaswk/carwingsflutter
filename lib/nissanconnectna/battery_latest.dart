@@ -144,7 +144,7 @@ class _BatteryLatestState extends State<BatteryLatest> {
                   boxShadow: [
                     BoxShadow(
                         blurRadius: 10,
-                        spreadRadius: 60,
+                        spreadRadius: 70,
                         color: Theme.of(context).primaryColor),
                   ]),
               child: Column(
