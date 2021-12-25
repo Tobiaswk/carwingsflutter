@@ -8,6 +8,7 @@ import 'package:carwingsflutter/session.dart';
 import 'package:carwingsflutter/util.dart';
 import 'package:carwingsflutter/widget_api_chooser.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:in_app_purchase/in_app_purchase.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -39,8 +40,16 @@ class _MainPageState extends State<MainPage> {
   @override
   void initState() {
     super.initState();
+
     _donationMadeCheck();
+
     _initSelectedVehicle();
+
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.portraitUp,
+      DeviceOrientation.portraitDown,
+    ]);
+
     Stream<List<PurchaseDetails>> purchaseUpdated =
         InAppPurchaseConnection.instance.purchaseUpdatedStream;
     _subscription = purchaseUpdated.listen((purchaseDetailsList) {

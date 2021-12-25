@@ -6,7 +6,6 @@ import 'package:carwingsflutter/widget_rotater.dart';
 import 'package:dartnissanconnectna/dartnissanconnectna.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 import 'package:sleek_circular_slider/sleek_circular_slider.dart';
 
@@ -31,11 +30,6 @@ class _BatteryLatestState extends State<BatteryLatest> {
   @override
   void initState() {
     super.initState();
-
-    SystemChrome.setPreferredOrientations([
-      DeviceOrientation.portraitUp,
-      DeviceOrientation.portraitDown,
-    ]);
 
     _update();
   }
