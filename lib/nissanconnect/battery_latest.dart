@@ -6,7 +6,6 @@ import 'package:carwingsflutter/widget_rotater.dart';
 import 'package:dartnissanconnect/dartnissanconnect.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 import 'package:sleek_circular_slider/sleek_circular_slider.dart';
 
@@ -31,11 +30,6 @@ class _BatteryLatestState extends State<BatteryLatest> {
   @override
   void initState() {
     super.initState();
-
-    SystemChrome.setPreferredOrientations([
-      DeviceOrientation.portraitUp,
-      DeviceOrientation.portraitDown,
-    ]);
 
     _update();
   }
@@ -141,18 +135,24 @@ class _BatteryLatestState extends State<BatteryLatest> {
             ),
           ),
           Positioned(
+              right: 0,
+              child: Container(
+                height: 155,
+                width: MediaQuery.of(context).size.width / 2,
+                decoration: BoxDecoration(
+                    color: Colors.transparent,
+                    shape: BoxShape.rectangle,
+                    boxShadow: [
+                      BoxShadow(
+                          blurRadius: 10,
+                          spreadRadius: 40,
+                          color: Theme.of(context).primaryColor),
+                    ]),
+              )),
+          Positioned(
             top: 45,
             right: 30,
             child: Container(
-              decoration: BoxDecoration(
-                  color: Colors.transparent,
-                  shape: BoxShape.circle,
-                  boxShadow: [
-                    BoxShadow(
-                        blurRadius: 10,
-                        spreadRadius: 60,
-                        color: Theme.of(context).primaryColor),
-                  ]),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.end,
                 children: <Widget>[

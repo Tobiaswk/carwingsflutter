@@ -4,6 +4,7 @@ import 'package:carwingsflutter/session.dart';
 import 'package:carwingsflutter/util.dart';
 import 'package:carwingsflutter/widget_api_chooser.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class MainPage extends StatefulWidget {
@@ -23,7 +24,13 @@ class _MainPageState extends State<MainPage> {
   @override
   void initState() {
     super.initState();
+
     _initSelectedVehicle();
+
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.portraitUp,
+      DeviceOrientation.portraitDown,
+    ]);
   }
 
   _initSelectedVehicle() {
