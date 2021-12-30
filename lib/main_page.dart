@@ -28,10 +28,11 @@ class _MainPageState extends State<MainPage> {
   static const String SKU_DONATE_10 = 'donate10';
   static const String SKU_DONATE_30 = 'donate30';
   static const String SKU_DONATE_50 = 'donate50';
+  static const String SKU_PATRON = 'patron';
 
-  final InAppPurchaseConnection _connection = InAppPurchaseConnection.instance;
-  late StreamSubscription<List<PurchaseDetails>> _subscription;
-  List<ProductDetails>? productsAvailable;
+  final InAppPurchase _inAppPurchase = InAppPurchase.instance;
+  late StreamSubscription<List<PurchaseDetails>> _inAppPurchaseSubscription;
+  List<ProductDetails>? _inAppProductsAvailable;
 
   bool _donated = false;
 
@@ -39,45 +40,57 @@ class _MainPageState extends State<MainPage> {
 
   @override
   void initState() {
-    super.initState();
-
-    _donationMadeCheck();
-
     _initSelectedVehicle();
+
+    _initInAppPurchases();
 
     SystemChrome.setPreferredOrientations([
       DeviceOrientation.portraitUp,
       DeviceOrientation.portraitDown,
     ]);
 
+    super.initState();
+  }
+
+  Future<void> _initInAppPurchases() async {
     Stream<List<PurchaseDetails>> purchaseUpdated =
-        InAppPurchaseConnection.instance.purchaseUpdatedStream;
-    _subscription = purchaseUpdated.listen((purchaseDetailsList) {
+        _inAppPurchase.purchaseStream;
+
+    _inAppPurchaseSubscription = purchaseUpdated.listen((purchaseDetailsList) {
       _listenToPurchaseUpdated(purchaseDetailsList);
     }, onDone: () {
-      _subscription.cancel();
+      _inAppPurchaseSubscription.cancel();
     });
+
+    if (await _inAppPurchase.isAvailable()) {
+      await _inAppPurchase.restorePurchases();
+
+      final ProductDetailsResponse availableProductsResponse =
+          await _inAppPurchase.queryProductDetails(<String>{
+        SKU_PATRON,
+        SKU_DONATE_10,
+        SKU_DONATE_30,
+        SKU_DONATE_50,
+        SKU_DONATE
+      });
+
+      _inAppProductsAvailable = availableProductsResponse.productDetails;
+
+      _donateDialog(context, false);
+    }
   }
 
   void _listenToPurchaseUpdated(List<PurchaseDetails> purchaseDetailsList) {
     purchaseDetailsList.forEach((PurchaseDetails purchaseDetails) async {
-      if (purchaseDetails.status == PurchaseStatus.error) {
-        _snackBar('Too bad, donation failed!');
-      } else if (purchaseDetails.status == PurchaseStatus.purchased) {
-        Navigator.pop(context);
+      _verifyPurchase(purchaseDetails);
 
-        _snackBar('Thank you for the donation!');
-
-        _donationMadeCheck();
-      }
       if (purchaseDetails.pendingCompletePurchase) {
-        await InAppPurchaseConnection.instance
-            .completePurchase(purchaseDetails);
+        await _inAppPurchase.completePurchase(purchaseDetails);
       }
     });
   }
 
-  _donationMadeCheck() async {
+  _verifyPurchase(PurchaseDetails purchaseDetails) async {
     if (Platform.isIOS) {
       // iOS is paid app; set as donated
       setState(() {
@@ -86,33 +99,45 @@ class _MainPageState extends State<MainPage> {
       return;
     }
 
-    if (await _connection.isAvailable()) {
-      final ProductDetailsResponse availableProductsResponse =
-          await InAppPurchaseConnection.instance.queryProductDetails(<String>{
-        SKU_DONATE_10,
-        SKU_DONATE_30,
-        SKU_DONATE_50,
-        SKU_DONATE
-      });
+    switch (purchaseDetails.productID) {
+      case SKU_PATRON:
+      case SKU_DONATE:
+      case SKU_DONATE_10:
+      case SKU_DONATE_30:
+      case SKU_DONATE_50:
+        switch (purchaseDetails.status) {
+          case PurchaseStatus.error:
+            _snackBar('Too bad, donation failed!');
+            break;
+          case PurchaseStatus.purchased:
+            Navigator.pop(context); // Donate dialog
+            Navigator.pop(context); // Drawer
 
-      productsAvailable = availableProductsResponse.productDetails;
+            _snackBar('Thank you for being a donater! 😊');
 
-      final QueryPurchaseDetailsResponse response =
-          await InAppPurchaseConnection.instance.queryPastPurchases();
+            setState(() {
+              _donated = true;
+            });
 
-      bool donated = response.pastPurchases.any((purchase) =>
-          purchase.productID == SKU_DONATE ||
-          purchase.productID == SKU_DONATE_10 ||
-          purchase.productID == SKU_DONATE_30 ||
-          purchase.productID == SKU_DONATE_50);
+            await preferencesManager.setDonated(true);
 
-      await preferencesManager.setDonated(donated);
+            break;
+          case PurchaseStatus.restored:
+            setState(() {
+              _donated = true;
+            });
 
-      setState(() {
-        _donated = donated;
-      });
+            await preferencesManager.setDonated(true);
+            break;
+          default:
+        }
+    }
+  }
 
-      _donateDialog(context, false);
+  _donate(ProductDetails? productDetails) async {
+    if (productDetails != null) {
+      _inAppPurchase.buyNonConsumable(
+          purchaseParam: PurchaseParam(productDetails: productDetails));
     }
   }
 
@@ -217,7 +242,7 @@ class _MainPageState extends State<MainPage> {
             title: const Text('Sign out'),
             onTap: _signOut,
           ),
-          _donated ? Row() : _buildDonateListTile(context)
+          _buildDonateListTile(context)
         ],
       ),
     );
@@ -275,12 +300,12 @@ class _MainPageState extends State<MainPage> {
                     children: [
                       TextButton(
                           onPressed: () => _donate(
-                              productsAvailable?.firstWhere(
+                              _inAppProductsAvailable?.firstWhere(
                                   (product) => product.id == SKU_DONATE_10)),
                           child: const Text('☕️ A coffee')),
                       TextButton(
                           onPressed: () => _donate(
-                              productsAvailable?.firstWhere(
+                              _inAppProductsAvailable?.firstWhere(
                                   (product) => product.id == SKU_DONATE_30)),
                           child: const Text('🍜 Some ramen'))
                     ],
@@ -291,14 +316,25 @@ class _MainPageState extends State<MainPage> {
                     children: [
                       TextButton(
                           onPressed: () => _donate(
-                              productsAvailable?.firstWhere(
+                              _inAppProductsAvailable?.firstWhere(
                                   (product) => product.id == SKU_DONATE_50)),
                           child: const Text('🍱 A dinner')),
                       TextButton(
                           onPressed: () => _donate(
-                              productsAvailable?.firstWhere(
+                              _inAppProductsAvailable?.firstWhere(
                                   (product) => product.id == SKU_DONATE)),
-                          child: const Text('🥳 You\'re awesome'))
+                          child: const Text('🥳 You\'re awesome')),
+                    ],
+                  )),
+                  SimpleDialogOption(
+                      child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      TextButton(
+                          onPressed: () => _donate(
+                              _inAppProductsAvailable?.firstWhere(
+                                  (product) => product.id == SKU_PATRON)),
+                          child: const Text('❤️ Be a My Leaf monthly patron!'))
                     ],
                   )),
                   SimpleDialogOption(
@@ -307,13 +343,6 @@ class _MainPageState extends State<MainPage> {
                   )
                 ],
               ));
-    }
-  }
-
-  _donate(ProductDetails? productDetails) async {
-    if (productDetails != null) {
-      InAppPurchaseConnection.instance.buyNonConsumable(
-          purchaseParam: PurchaseParam(productDetails: productDetails));
     }
   }
 
