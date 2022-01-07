@@ -41,7 +41,7 @@ class _AboutPageState extends State<AboutPage> {
                 style: TextStyle(fontSize: 18.0),
               ),
               ListTile(
-                title: const Text('Developed by'),
+                title: const Text('Developer and maintainer'),
                 subtitle:
                     const Text('Tobias Westergaard Kjeldsen <me@tobis.dk>'),
                 onTap: () {
@@ -49,7 +49,7 @@ class _AboutPageState extends State<AboutPage> {
                 },
               ),
               ListTile(
-                title: const Text('My Leaf icon by'),
+                title: const Text('My Leaf icon'),
                 subtitle: const Text('Freepik at flaticon.com'),
               ),
               Text(

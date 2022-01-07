@@ -79,197 +79,166 @@ class _BatteryLatestState extends State<BatteryLatest> {
       Duration timeToFullL2_6kw,
       String? chargingkWLevelText,
       String? chargingRemainingText) {
-    return Container(
-      height: 155,
-      child: Stack(
-        children: <Widget>[
-          Positioned(
-            top: 43,
-            left: 94,
-            child: isCharging
-                ? Row(
-                    children: <Widget>[
-                      WidgetPulse(
-                          Icon(
-                            Icons.power,
-                            color: Colors.white,
-                          ),
-                          1.0,
-                          1.5,
-                          Duration(milliseconds: 1500))
-                    ],
-                  )
-                : Row(),
-          ),
-          Positioned(
-            top: 125,
-            left: 76,
-            child: isCharging
-                ? Text(
-                    'Charging!',
-                    style: TextStyle(color: Colors.white),
-                  )
-                : Row(),
-          ),
-          Positioned(
-            top: 10,
-            left: 20,
-            child: SleekCircularSlider(
-              appearance: CircularSliderAppearance(
-                  size: MediaQuery.of(context).size.width * 0.46,
-                  infoProperties: InfoProperties(
-                    mainLabelStyle:
-                        TextStyle(fontSize: 35.0, color: Colors.white),
-                    topLabelText: 'Battery SOC',
-                    topLabelStyle: TextStyle(color: Colors.white),
-                  ),
-                  customColors: CustomSliderColors(
-                      progressBarColors: [Colors.white, Colors.white],
-                      hideShadow: true,
-                      dotColor: Colors.white,
-                      trackColor: Colors.white,
-                      shadowColor: Colors.white)),
-              min: 0,
-              max: 100,
-              initialValue: double.parse(batteryPercentage.replaceAll('%', '')),
-            ),
-          ),
-          Positioned(
-              right: 0,
-              child: Container(
-                height: 155,
-                width: MediaQuery.of(context).size.width / 2,
-                decoration: BoxDecoration(
-                    color: Colors.transparent,
-                    shape: BoxShape.rectangle,
-                    boxShadow: [
-                      BoxShadow(
-                          blurRadius: 10,
-                          spreadRadius: 40,
-                          color: Theme.of(context).primaryColor),
-                    ]),
-              )),
-          Positioned(
-            top: 45,
-            right: 30,
-            child: Container(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.end,
-                children: <Widget>[
-                  Text('Ideal Range', style: TextStyle(color: Colors.white)),
-                  Row(
-                    children: <Widget>[
+    return Padding(
+      padding: const EdgeInsets.only(left: 25, right: 33, top: 15, bottom: 8),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Flexible(
+            child: FittedBox(
+              alignment: Alignment.center,
+              fit: BoxFit.scaleDown,
+              child: SleekCircularSlider(
+                appearance: CircularSliderAppearance(
+                    angleRange: 360,
+                    startAngle: 90,
+                    customColors: CustomSliderColors(
+                        progressBarColors: [Colors.white, Colors.white],
+                        hideShadow: true,
+                        dotColor: Theme.of(context).primaryColor,
+                        trackColor: Colors.white,
+                        shadowColor: Colors.white)),
+                min: 0,
+                innerWidget: (double percentage) {
+                  return Center(
+                      child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      isCharging
+                          ? WidgetPulse(
+                              Icon(
+                                Icons.power,
+                                color: Colors.white,
+                              ),
+                              1.0,
+                              1.5,
+                              Duration(milliseconds: 1500))
+                          : Container(),
                       Text(
-                        '${_generalSettings.useMiles ? cruisingRangeAcOffMiles : cruisingRangeAcOffKm}',
-                        style: TextStyle(color: Colors.white, fontSize: 18.0),
+                        'Battery SOC',
+                        style: TextStyle(color: Colors.white),
                       ),
-                      Text(' / ',
-                          style:
-                              TextStyle(color: Colors.white, fontSize: 30.0)),
-                      Row(
-                        children: <Widget>[
-                          Text(
-                            '${_generalSettings.useMiles ? cruisingRangeAcOnMiles : cruisingRangeAcOnKm}',
-                            style:
-                                TextStyle(color: Colors.white, fontSize: 18.0),
-                          ),
-                          Text(
-                            ' AC',
-                            style: TextStyle(color: Colors.white),
-                          )
-                        ],
+                      Text(
+                        '${percentage.floor()} %',
+                        style: TextStyle(fontSize: 35.0, color: Colors.white),
                       ),
                     ],
-                  ),
-                  Text("Charging Times", style: TextStyle(color: Colors.white)),
-                  isCharging
-                      ? Column(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          crossAxisAlignment: CrossAxisAlignment.end,
-                          children: <Widget>[
-                            Text(
-                              chargingRemainingText ?? '',
-                              style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.white),
-                            ),
-                            Text(
-                              chargingkWLevelText ?? '',
-                              style: TextStyle(color: Colors.white),
-                            ),
-                          ],
-                        )
-                      : Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: <Widget>[
-                            Column(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: <Widget>[
-                                Text('~1kW',
-                                    style: TextStyle(color: Colors.white)),
-                                Text('${timeToFullTrickle.inHours} hrs',
-                                    style: TextStyle(color: Colors.white)),
-                              ],
-                            ),
-                            Text(' / ',
-                                style: TextStyle(
-                                    color: Colors.white, fontSize: 30.0)),
-                            Column(
-                              children: <Widget>[
-                                Text('~3kW',
-                                    style: TextStyle(color: Colors.white)),
-                                Text('${timeToFullL2.inHours} hrs',
-                                    style: TextStyle(color: Colors.white)),
-                              ],
-                            ),
-                            Text(' / ',
-                                style: TextStyle(
-                                    color: Colors.white, fontSize: 30.0)),
-                            Column(
-                              children: <Widget>[
-                                Text('~6kW',
-                                    style: TextStyle(color: Colors.white)),
-                                Text('${timeToFullL2_6kw.inHours} hrs',
-                                    style: TextStyle(color: Colors.white)),
-                              ],
-                            )
-                          ],
-                        )
-                ],
+                  ));
+                },
+                max: 100,
+                initialValue:
+                    double.parse(batteryPercentage.replaceAll('%', '')),
               ),
             ),
           ),
-          Positioned(
-            top: 0,
-            right: 28,
-            child: Row(
-              children: <Widget>[
-                Row(
-                  children: <Widget>[
-                    Icon(Icons.access_time, color: Colors.white),
-                    Padding(padding: const EdgeInsets.all(3.0)),
-                    Text(
-                        date != null
-                            ? DateFormat("EEE H:mm").format(date)
-                            : '-',
-                        style: TextStyle(color: Colors.white)),
-                  ],
-                ),
-                _isLoading
-                    ? WidgetRotater(IconButton(
-                        icon: Icon(
-                          Icons.refresh,
-                          color: Colors.white,
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.end,
+            children: <Widget>[
+              Row(
+                children: <Widget>[
+                  Row(
+                    children: <Widget>[
+                      Icon(Icons.access_time, color: Colors.white),
+                      Padding(padding: const EdgeInsets.all(3.0)),
+                      Text(
+                          date != null
+                              ? DateFormat("EEE H:mm").format(date)
+                              : '-',
+                          style: TextStyle(color: Colors.white)),
+                    ],
+                  ),
+                  _isLoading
+                      ? WidgetRotater(IconButton(
+                          visualDensity: VisualDensity.compact,
+                          icon: Icon(
+                            Icons.refresh,
+                            color: Colors.white,
+                          ),
+                          onPressed: () => {},
+                        ))
+                      : IconButton(
+                          visualDensity: VisualDensity.compact,
+                          icon: Icon(Icons.refresh, color: Colors.white),
+                          onPressed: _update,
                         ),
-                        onPressed: () => {},
-                      ))
-                    : IconButton(
-                        icon: Icon(Icons.refresh, color: Colors.white),
-                        onPressed: _update,
+                ],
+              ),
+              Text('Ideal Range', style: TextStyle(color: Colors.white)),
+              Row(
+                children: <Widget>[
+                  Text(
+                    '${_generalSettings.useMiles ? cruisingRangeAcOffMiles : cruisingRangeAcOffKm}',
+                    style: TextStyle(color: Colors.white, fontSize: 18.0),
+                  ),
+                  Text(' / ',
+                      style: TextStyle(color: Colors.white, fontSize: 30.0)),
+                  Row(
+                    children: <Widget>[
+                      Text(
+                        '${_generalSettings.useMiles ? cruisingRangeAcOnMiles : cruisingRangeAcOnKm}',
+                        style: TextStyle(color: Colors.white, fontSize: 18.0),
                       ),
-              ],
-            ),
-          )
+                      Text(
+                        ' AC',
+                        style: TextStyle(color: Colors.white),
+                      )
+                    ],
+                  ),
+                ],
+              ),
+              Text("Charging Times", style: TextStyle(color: Colors.white)),
+              isCharging
+                  ? Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      crossAxisAlignment: CrossAxisAlignment.end,
+                      children: <Widget>[
+                        Text(
+                          chargingRemainingText ?? '',
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold, color: Colors.white),
+                        ),
+                        Text(
+                          chargingkWLevelText ?? '',
+                          style: TextStyle(color: Colors.white),
+                        ),
+                      ],
+                    )
+                  : Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        Column(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: <Widget>[
+                            Text('~1kW', style: TextStyle(color: Colors.white)),
+                            Text('${timeToFullTrickle.inHours} hrs',
+                                style: TextStyle(color: Colors.white)),
+                          ],
+                        ),
+                        Text(' / ',
+                            style:
+                                TextStyle(color: Colors.white, fontSize: 30.0)),
+                        Column(
+                          children: <Widget>[
+                            Text('~3kW', style: TextStyle(color: Colors.white)),
+                            Text('${timeToFullL2.inHours} hrs',
+                                style: TextStyle(color: Colors.white)),
+                          ],
+                        ),
+                        Text(' / ',
+                            style:
+                                TextStyle(color: Colors.white, fontSize: 30.0)),
+                        Column(
+                          children: <Widget>[
+                            Text('~6kW', style: TextStyle(color: Colors.white)),
+                            Text('${timeToFullL2_6kw.inHours} hrs',
+                                style: TextStyle(color: Colors.white)),
+                          ],
+                        )
+                      ],
+                    ),
+            ],
+          ),
         ],
       ),
     );
