@@ -253,7 +253,6 @@ class _BatteryLatestState extends State<BatteryLatest> {
   @override
   Widget build(BuildContext context) {
     return Container(
-        padding: const EdgeInsets.fromLTRB(0.0, 8.0, 0.0, 0.0),
         child: _battery != null
             ? _withValues(
                 _battery!.dateTime,
