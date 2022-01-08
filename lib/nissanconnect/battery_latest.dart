@@ -106,14 +106,20 @@ class _BatteryLatestState extends State<BatteryLatest> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       isCharging
-                          ? WidgetPulse(
-                              Icon(
-                                Icons.power,
-                                color: Colors.white,
-                              ),
-                              1.0,
-                              1.5,
-                              Duration(milliseconds: 1500))
+                          ? Column(
+                              children: [
+                                WidgetPulse(
+                                    Icon(
+                                      Icons.power,
+                                      color: Colors.white,
+                                    ),
+                                    1.0,
+                                    1.5,
+                                    Duration(milliseconds: 1500)),
+                                Text('Charging!',
+                                    style: TextStyle(color: Colors.white))
+                              ],
+                            )
                           : Container(),
                       Text(
                         'Battery SOC',

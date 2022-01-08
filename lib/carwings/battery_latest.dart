@@ -106,14 +106,20 @@ class _BatteryLatestState extends State<BatteryLatest> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       isCharging
-                          ? WidgetPulse(
-                              Icon(
-                                Icons.power,
-                                color: Colors.white,
-                              ),
-                              1.0,
-                              1.5,
-                              Duration(milliseconds: 1500))
+                          ? Column(
+                              children: [
+                                WidgetPulse(
+                                    Icon(
+                                      Icons.power,
+                                      color: Colors.white,
+                                    ),
+                                    1.0,
+                                    1.5,
+                                    Duration(milliseconds: 1500)),
+                                Text('Charging!',
+                                    style: TextStyle(color: Colors.white))
+                              ],
+                            )
                           : Container(),
                       Text(
                         'Battery SOC',
@@ -247,7 +253,6 @@ class _BatteryLatestState extends State<BatteryLatest> {
   @override
   Widget build(BuildContext context) {
     return Container(
-        padding: const EdgeInsets.fromLTRB(0.0, 8.0, 0.0, 0.0),
         child: _battery != null
             ? _withValues(
                 _battery!.dateTime,
