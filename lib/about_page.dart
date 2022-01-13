@@ -23,7 +23,6 @@ class _AboutPageState extends State<AboutPage> {
       body: ListView(
         children: <Widget>[
           Column(
-            mainAxisSize: MainAxisSize.min,
             children: <Widget>[
               Padding(padding: const EdgeInsets.all(8.0)),
               ImageIcon(
@@ -37,7 +36,8 @@ class _AboutPageState extends State<AboutPage> {
                 style: TextStyle(fontSize: 20.0),
               ),
               Text(
-                'Third party NissanConnect app',
+                'A free and open source third party NissanConnect app',
+                textAlign: TextAlign.center,
                 style: TextStyle(fontSize: 18.0),
               ),
               ListTile(
@@ -46,6 +46,13 @@ class _AboutPageState extends State<AboutPage> {
                     const Text('Tobias Westergaard Kjeldsen <me@tobis.dk>'),
                 onTap: () {
                   _launchUrl('mailto:me@tobis.dk');
+                },
+              ),
+              ListTile(
+                title: const Text('Visit my blog'),
+                subtitle: const Text('tobis.dk/blog'),
+                onTap: () {
+                  _launchUrl('http://tobis.dk/blog');
                 },
               ),
               ListTile(
