@@ -284,6 +284,7 @@ class _MainPageState extends State<MainPage> {
   }
 
   void _donateDialog(BuildContext context, bool force) async {
+    if (Platform.isIOS) return;
     if ((!_donated && Random.secure().nextInt(10) > 6) || force) {
       showDialog<bool>(
           context: context,
@@ -347,6 +348,7 @@ class _MainPageState extends State<MainPage> {
   }
 
   Widget _buildDonateListTile(BuildContext context) {
+    if (Platform.isIOS) return Container();
     return ListTile(
       onTap: () => _donateDialog(context, true),
       leading: const Icon(Icons.monetization_on),
