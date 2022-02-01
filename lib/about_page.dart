@@ -52,7 +52,7 @@ class _AboutPageState extends State<AboutPage> {
                 title: const Text('Visit my blog'),
                 subtitle: const Text('tobis.dk/blog'),
                 onTap: () {
-                  _launchUrl('http://tobis.dk/blog');
+                  _launchUrl('https://tobis.dk/blog');
                 },
               ),
               ListTile(
