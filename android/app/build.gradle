@@ -33,9 +33,9 @@ android {
         applicationId "dk.kjeldsen.carwingsflutter"
         minSdkVersion 16
         targetSdkVersion 30
-        versionCode 196
+        versionCode 197
 
-        versionName "2.0.20"
+        versionName "2.0.21"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
