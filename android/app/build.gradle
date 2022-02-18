@@ -21,7 +21,7 @@ if (keystorePropertiesFile.exists()) {
 }
 
 android {
-    compileSdkVersion 30
+    compileSdkVersion 31
 
     lintOptions {
         disable 'InvalidPackage'
@@ -32,10 +32,10 @@ android {
         // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
         applicationId "dk.kjeldsen.carwingsflutter"
         minSdkVersion 16
-        targetSdkVersion 30
-        versionCode 197
+        targetSdkVersion 31
+        versionCode 198
 
-        versionName "2.0.21"
+        versionName "2.0.22"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 

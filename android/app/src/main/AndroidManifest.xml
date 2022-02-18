@@ -2,6 +2,20 @@
     package="dk.kjeldsen.carwingsflutter"
           android:installLocation="auto">
 
+
+    <queries>
+        <!-- If your app opens https URLs -->
+        <intent>
+            <action android:name="android.intent.action.VIEW" />
+            <data android:scheme="https" />
+        </intent>
+        <!-- If your app sends emails -->
+        <intent>
+            <action android:name="android.intent.action.SEND" />
+            <data android:mimeType="*/*" />
+        </intent>
+    </queries>
+
     <uses-permission android:name="android.permission.INTERNET"/>
 
     <!-- io.flutter.app.FlutterApplication is an android.app.Application that
@@ -14,6 +28,7 @@
         android:icon="@mipmap/ic_launcher">
         <activity
             android:name=".MainActivity"
+            android:exported="true"
             android:launchMode="singleTop"
             android:theme="@style/LaunchTheme"
             android:configChanges="orientation|keyboardHidden|keyboard|screenSize|locale|layoutDirection|fontScale|screenLayout|density"
@@ -34,12 +49,14 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
-        <activity android:name=".ClimateControlConfigWidget">
+        <activity android:name=".ClimateControlConfigWidget"
+                  android:exported="true">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_CONFIGURE"/>
             </intent-filter>
         </activity>
-        <receiver android:name=".ClimateControlWidget" android:label="Climate Control">
+        <receiver android:name=".ClimateControlWidget"
+                  android:exported="true" android:label="Climate Control">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE"/>
             </intent-filter>
@@ -48,12 +65,14 @@
                     android:name="android.appwidget.provider"
                     android:resource="@xml/climate_control_widget_info"/>
         </receiver>
-        <activity android:name=".ChargingControlConfigWidget">
+        <activity android:name=".ChargingControlConfigWidget"
+                  android:exported="true">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_CONFIGURE"/>
             </intent-filter>
         </activity>
-        <receiver android:name=".ChargingControlWidget" android:label="Charging Control">
+        <receiver android:name=".ChargingControlWidget"
+                  android:exported="true" android:label="Charging Control">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE"/>
             </intent-filter>

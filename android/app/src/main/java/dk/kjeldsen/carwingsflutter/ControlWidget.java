@@ -24,6 +24,10 @@ public abstract class ControlWidget extends AppWidgetProvider {
     protected PendingIntent getPendingSelfIntent(Context context, String action, int appWidgetId) {
         Intent intent = new Intent(context, getClass());
         intent.setAction(getAction(action, appWidgetId));
-        return PendingIntent.getBroadcast(context, 0, intent, 0);
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.S) {
+            return PendingIntent.getBroadcast(context, 0, intent, PendingIntent.FLAG_MUTABLE);
+        } else {
+            return PendingIntent.getBroadcast(context, 0, intent, PendingIntent.FLAG_ONE_SHOT);
+        }
     }
 }
