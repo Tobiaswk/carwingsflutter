@@ -1,4 +1,7 @@
+import 'dart:io';
+
 import 'package:carwingsflutter/about_page.dart';
+import 'package:carwingsflutter/keep_alive_vehicle_helper.dart';
 import 'package:carwingsflutter/preferences_manager.dart';
 import 'package:carwingsflutter/session.dart';
 import 'package:carwingsflutter/widget_api_chooser.dart';
@@ -232,6 +235,27 @@ class _PreferencesPageState extends State<PreferencesPage> {
                 widget.session.nissanConnect.debug = value;
               });
             }),
+      ),
+      Visibility(
+        visible: widget.session.isWorld() && Platform.isAndroid,
+        child: ListTile(
+          title: Text(
+              'Keep vehicle(s) alive (experimental; use with CAUTION; will keep your vehicle(s) from sleeping through polling data at 30 minute intervals)'),
+          trailing: Switch(
+              value: _generalSettings.keepAlive,
+              onChanged: (bool value) {
+                setState(() {
+                  _generalSettings.keepAlive = value;
+
+                  if (value)
+                    KeepAliveVehicleHelper.enableKeepAlive(preferencesManager);
+                  else
+                    KeepAliveVehicleHelper.disableKeepAlive();
+
+                  persistGeneralSettings();
+                });
+              }),
+        ),
       ),
       ListTile(
           leading: Icon(Icons.info),

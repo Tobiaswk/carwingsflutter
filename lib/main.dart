@@ -1,11 +1,61 @@
+import 'dart:io';
+
 import 'package:carwingsflutter/login_page.dart';
 import 'package:carwingsflutter/preferences_manager.dart';
 import 'package:carwingsflutter/preferences_page.dart';
 import 'package:carwingsflutter/preferences_types.dart';
 import 'package:carwingsflutter/session.dart';
+import 'package:dartnissanconnect/dartnissanconnect.dart';
 import 'package:flutter/material.dart';
+import 'package:workmanager/workmanager.dart';
+
+/// Used for "keep vehicle alive" functionality
+///
+/// Some users have issues with their vehicles going to "deep sleep"
+/// causing their vehicle to not be reachable through the API/app.
+/// This functionality is reserved for European vehicles produced after
+/// May 2019.
+///
+/// This is the callback that gets called at intervals in the background; also
+/// when the app is not active either in background, foreground or not at all.
+/// See the [KeepAliveVehicleHelper].
+///
+/// This method must be a top level function to be accessible as a
+/// Flutter entry point.
+void keepAliveVehicleTaskCallbackDispatcher() {
+  Workmanager().executeTask((task, inputData) async {
+    String username = inputData!['username'];
+    String password = inputData['password'];
+    bool isWorld = inputData['isWorld'];
+
+    if (isWorld) {
+      NissanConnectSession nissanConnect = NissanConnectSession();
+
+      try {
+        var vehicle =
+            await nissanConnect.login(username: username, password: password);
+
+        for (vehicle in nissanConnect.vehicles)
+          await vehicle.requestBatteryStatusRefresh();
+      } catch (e) {
+        return Future.value(false);
+      }
+
+      return Future.value(true);
+    }
+
+    return Future.value(true);
+  });
+}
 
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  if (Platform.isAndroid) {
+    Workmanager().initialize(keepAliveVehicleTaskCallbackDispatcher,
+        isInDebugMode: true);
+  }
+
   runApp(MyApp());
 }
 
