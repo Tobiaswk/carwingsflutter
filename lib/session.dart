@@ -17,7 +17,7 @@ class Session {
   nissanconnect.NissanConnectSession nissanConnect =
       nissanconnect.NissanConnectSession();
 
-  late CarwingsRegion region;
+  CarwingsRegion region = CarwingsRegion.World;
 
   API_TYPE getAPIType() => isWorld()
       ? API_TYPE.NISSANCONNECT
