@@ -52,8 +52,7 @@ void main() {
   WidgetsFlutterBinding.ensureInitialized();
 
   if (Platform.isAndroid) {
-    Workmanager().initialize(keepAliveVehicleTaskCallbackDispatcher,
-        isInDebugMode: true);
+    Workmanager().initialize(keepAliveVehicleTaskCallbackDispatcher);
   }
 
   runApp(MyApp());
