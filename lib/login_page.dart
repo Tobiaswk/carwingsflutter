@@ -136,7 +136,6 @@ class _LoginPageState extends State<LoginPage> {
                 primaryColorLight: Colors.white,
                 textTheme: TextTheme(bodyText2: TextStyle(color: Colors.white)),
                 primaryColor: Colors.white,
-                accentColor: Colors.white,
                 inputDecorationTheme: InputDecorationTheme(
                     labelStyle: TextStyle(color: Colors.white),
                     enabledBorder: UnderlineInputBorder(

@@ -1,5 +1,3 @@
-import 'dart:async';
-
 import 'package:carwingsflutter/util.dart';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -7,14 +5,6 @@ import 'package:url_launcher/url_launcher.dart';
 class _AboutPageState extends State<AboutPage> {
   static var _LICENSE =
       'The MIT License\n\nCopyright (c) 2022 Tobias Westergaard Kjeldsen\n\nPermission is hereby granted, free of charge, to any person obtaining a copyof this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:\n\nThe above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.\n\nTHE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NON INFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.';
-
-  Future _launchUrl(url) async {
-    if (await canLaunch(url)) {
-      await launch(url);
-    } else {
-      throw 'Could not launch $url';
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -45,14 +35,14 @@ class _AboutPageState extends State<AboutPage> {
                 subtitle:
                     const Text('Tobias Westergaard Kjeldsen <me@tobis.dk>'),
                 onTap: () {
-                  _launchUrl('mailto:me@tobis.dk');
+                  launchUrl(Uri.parse('mailto:me@tobis.dk'));
                 },
               ),
               ListTile(
                 title: const Text('Visit my blog'),
                 subtitle: const Text('tobis.dk/blog'),
                 onTap: () {
-                  _launchUrl('https://tobis.dk/blog');
+                  launchUrl(Uri.parse('https://tobis.dk/blog'));
                 },
               ),
               ListTile(
@@ -68,7 +58,8 @@ class _AboutPageState extends State<AboutPage> {
                 subtitle: const Text(
                     'https://gitlab.com/tobiaswkjeldsen/dartcarwings'),
                 onTap: () {
-                  _launchUrl('https://gitlab.com/tobiaswkjeldsen/dartcarwings');
+                  launchUrl(Uri.parse(
+                      'https://gitlab.com/tobiaswkjeldsen/dartcarwings'));
                 },
               ),
               ListTile(
@@ -76,8 +67,8 @@ class _AboutPageState extends State<AboutPage> {
                 subtitle: const Text(
                     'https://gitlab.com/tobiaswkjeldsen/dartnissanconnect'),
                 onTap: () {
-                  _launchUrl(
-                      'https://gitlab.com/tobiaswkjeldsen/dartnissanconnect');
+                  launchUrl(Uri.parse(
+                      'https://gitlab.com/tobiaswkjeldsen/dartnissanconnect'));
                 },
               ),
               ListTile(
@@ -85,8 +76,8 @@ class _AboutPageState extends State<AboutPage> {
                 subtitle: const Text(
                     'https://gitlab.com/tobiaswkjeldsen/dartnissanconnectna'),
                 onTap: () {
-                  _launchUrl(
-                      'https://gitlab.com/tobiaswkjeldsen/dartnissanconnectna');
+                  launchUrl(Uri.parse(
+                      'https://gitlab.com/tobiaswkjeldsen/dartnissanconnectna'));
                 },
               ),
               ListTile(
@@ -94,8 +85,8 @@ class _AboutPageState extends State<AboutPage> {
                 subtitle: const Text(
                     'https://gitlab.com/tobiaswkjeldsen/blowfish_native'),
                 onTap: () {
-                  _launchUrl(
-                      'https://gitlab.com/tobiaswkjeldsen/blowfish_native');
+                  launchUrl(Uri.parse(
+                      'https://gitlab.com/tobiaswkjeldsen/blowfish_native'));
                 },
               ),
               ListTile(
@@ -103,8 +94,8 @@ class _AboutPageState extends State<AboutPage> {
                 subtitle: const Text(
                     'https://gitlab.com/tobiaswkjeldsen/carwingsflutter'),
                 onTap: () {
-                  _launchUrl(
-                      'https://gitlab.com/tobiaswkjeldsen/carwingsflutter');
+                  launchUrl(Uri.parse(
+                      'https://gitlab.com/tobiaswkjeldsen/carwingsflutter'));
                 },
               ),
               Text(

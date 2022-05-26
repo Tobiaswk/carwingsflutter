@@ -5,7 +5,6 @@ import 'package:carwingsflutter/widget_pulse.dart';
 import 'package:carwingsflutter/widget_rotater.dart';
 import 'package:dartnissanconnect/dartnissanconnect.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 import 'package:intl/intl.dart';
 import 'package:sleek_circular_slider/sleek_circular_slider.dart';
 
