@@ -118,7 +118,7 @@ class _TripDetailListState extends State<TripDetailList> {
                         ),
                         Column(
                           children: <Widget>[
-                            Icon(Icons.timer),
+                            Icon(Icons.timer_outlined),
                             Text('${trip.travelTime.inMinutes.toString()} min')
                           ],
                         ),

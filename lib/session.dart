@@ -91,15 +91,17 @@ class Session {
       case API_TYPE.NISSANCONNECTNA:
         if (isCanada()) {
           await nissanConnectNa.login(
-              username: username,
-              password: password,
-              countryCode: 'CA',
-              userAgent: FkUserAgent.userAgent);
+            username: username,
+            password: password,
+            countryCode: 'CA',
+            userAgent: '',
+          );
         } else {
           await nissanConnectNa.login(
-              username: username,
-              password: password,
-              userAgent: FkUserAgent.userAgent);
+            username: username,
+            password: password,
+            userAgent: '',
+          );
         }
         break;
       case API_TYPE.NISSANCONNECT:

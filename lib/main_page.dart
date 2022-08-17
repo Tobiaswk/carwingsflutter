@@ -57,8 +57,8 @@ class _MainPageState extends State<MainPage> {
               await widget.session.nissanConnect.vehicle.requestLocation();
           break;
       }
-      launch(
-          'https://www.google.com/maps/search/?api=1&query=${location.latitude},${location.longitude}');
+      launchUrl(
+          Uri.parse('https://www.google.com/maps/search/?api=1&query=${location.latitude},${location.longitude}'));
     } catch (error) {
       _snackBar('Could not locate your vehicle!');
     } finally {

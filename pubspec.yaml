@@ -7,12 +7,12 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  shared_preferences: ^2.0.5
+  shared_preferences: ^2.0.15
   json_annotation: ^4.4.0
   url_launcher: ^6.0.18
   sleek_circular_slider: ^2.0.0
   fk_user_agent: ^2.0.1
-  workmanager: ^0.5.0-dev.7
+  workmanager: ^0.5.0
   dartcarwings:
     git: https://gitlab.com/tobiaswkjeldsen/dartcarwings.git
   dartnissanconnectna:
