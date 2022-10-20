@@ -33,28 +33,34 @@ class _LoginPageState extends State<LoginPage> {
   @override
   void initState() {
     super.initState();
+
     preferencesManager.getLoginSettings().then((login) {
       if (login != null) {
         _usernameTextController.text = login.username;
         _passwordTextController.text = login.password;
         _regionSelected = login.region;
+
         setState(() {
           _rememberLoginSettings = true;
         });
+
         if (widget.autoLogin) _doLogin();
       }
     });
+
     preferencesManager.getGeneralSettings().then((generalSettings) {
       if (generalSettings.timeZoneOverride) {
         widget.session.carwings.setTimeZoneOverride(generalSettings.timeZone);
       }
     });
+
     _getServerStatus();
   }
 
   _getServerStatus() async {
     http.Response response =
         await http.get(Uri.parse('https://wkjeldsen.dk/myleaf/server_status'));
+
     setState(() {
       _serverStatus = response.body.trim();
     });
@@ -70,7 +76,7 @@ class _LoginPageState extends State<LoginPage> {
 
     widget.session
         .login(username: username, password: password, region: _regionSelected)
-        .then((vehicle) {
+        .then((_) {
       Util.dismissBigLoadingDialog(context);
 
       // Login was successful, push main view

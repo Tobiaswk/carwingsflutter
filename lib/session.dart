@@ -71,7 +71,7 @@ class Session {
     }
   }
 
-  Future<Null> login(
+  Future<void> login(
       {required String username,
       required String password,
       CarwingsRegion region = CarwingsRegion.Europe}) async {

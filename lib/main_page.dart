@@ -149,9 +149,7 @@ class _MainPageState extends State<MainPage> {
 
     // Push replacement page to force refresh with selected vehicle
     Navigator.of(context).pushReplacement(MaterialPageRoute<Null>(
-      builder: (BuildContext context) {
-        return MainPage(widget.session);
-      },
+      builder: (BuildContext context) => MainPage(widget.session),
     ));
   }
 
