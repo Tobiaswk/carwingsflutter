@@ -11,7 +11,7 @@ dependencies:
   json_annotation: ^4.4.0
   url_launcher: ^6.0.18
   sleek_circular_slider: ^2.0.0
-  in_app_purchase: ^3.0.4
+  in_app_purchase: ^3.1.1
   fk_user_agent: ^2.0.1
   workmanager: ^0.5.0
   dartcarwings:
