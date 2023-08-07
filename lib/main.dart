@@ -22,6 +22,7 @@ import 'package:workmanager/workmanager.dart';
 ///
 /// This method must be a top level function to be accessible as a
 /// Flutter entry point.
+@pragma('vm:entry-point')
 void keepAliveVehicleTaskCallbackDispatcher() {
   Workmanager().executeTask((task, inputData) async {
     String username = inputData!['username'];
