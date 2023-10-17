@@ -26,11 +26,6 @@ class _MainPageState extends State<MainPage> {
     super.initState();
 
     _initSelectedVehicle();
-
-    SystemChrome.setPreferredOrientations([
-      DeviceOrientation.portraitUp,
-      DeviceOrientation.portraitDown,
-    ]);
   }
 
   _initSelectedVehicle() {
