@@ -6,10 +6,10 @@ import 'package:fk_user_agent/fk_user_agent.dart';
 
 enum API_TYPE { CARWINGS, NISSANCONNECTNA, NISSANCONNECT }
 
-// This class holds a session for the old Carwings API (still used in Europe)
-// a session for the newer North American NissanConnect API
-// and finally a session for the new NissanConnect API
-// For now this class only wraps a subset of calls
+/// This class holds a session for the old Carwings API (still used in Europe)
+/// a session for the newer North American NissanConnect API
+/// and finally a session for the new NissanConnect API.
+/// For now this class only wraps a subset of calls.
 class Session {
   CarwingsSession carwings = CarwingsSession();
   nissanconnectna.NissanConnectSession nissanConnectNa =
