@@ -44,11 +44,6 @@ class _MainPageState extends State<MainPage> {
 
     _initInAppPurchases();
 
-    SystemChrome.setPreferredOrientations([
-      DeviceOrientation.portraitUp,
-      DeviceOrientation.portraitDown,
-    ]);
-
     super.initState();
   }
 
