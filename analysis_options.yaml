@@ -1,4 +1,3 @@
 analyzer:
-  strong-mode: true
   errors:
     mixin_inherits_from_not_object: ignore

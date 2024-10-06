@@ -23,12 +23,15 @@ class _AboutPageState extends State<AboutPage> {
               Padding(padding: const EdgeInsets.all(5.0)),
               Text(
                 'My Leaf',
-                style: TextStyle(fontSize: 20.0),
+                style: TextStyle(fontSize: 25.0),
               ),
-              Text(
-                'A free and open source third party NissanConnect app',
-                textAlign: TextAlign.center,
-                style: TextStyle(fontSize: 18.0),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Text(
+                  'A free and open source third party NissanConnect app',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(fontSize: 18.0),
+                ),
               ),
               ListTile(
                 title: const Text('Developer and maintainer'),

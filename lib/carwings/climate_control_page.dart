@@ -186,7 +186,7 @@ class _ClimateControlPageState extends State<ClimateControlPage> {
 class ClimateControlPage extends StatefulWidget {
   ClimateControlPage(this.session);
 
-  Session session;
+  final Session session;
 
   @override
   _ClimateControlPageState createState() => _ClimateControlPageState();

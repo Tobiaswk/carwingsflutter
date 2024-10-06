@@ -89,28 +89,37 @@ class MyAppState extends State<MyApp> {
   ThemeData get theme {
     switch (_configuration.theme) {
       case ThemeColor.standard:
-        return ThemeData(primarySwatch: Colors.blue);
+        return ThemeData(
+            colorScheme: ColorScheme.fromSeed(
+                seedColor: Colors.blue, primary: Colors.blue));
       case ThemeColor.green:
-        return ThemeData(primarySwatch: Colors.green);
+        return ThemeData(
+          colorSchemeSeed: Colors.green,
+        );
       case ThemeColor.red:
-        return ThemeData(primarySwatch: Colors.red);
+        return ThemeData(colorSchemeSeed: Colors.red);
       case ThemeColor.purple:
-        return ThemeData(primarySwatch: Colors.purple);
+        return ThemeData(colorSchemeSeed: Colors.purple);
       case ThemeColor.dark:
         return ThemeData(
+          appBarTheme:
+              AppBarTheme(backgroundColor: Colors.grey.withOpacity(.21)),
+          //scaffoldBackgroundColor: Colors.transparent,
+          colorSchemeSeed: Colors.grey,
+          cardColor: Colors.grey.withOpacity(.2),
+          //dialogBackgroundColor: Color(0xFF282828),
+          //drawerTheme: DrawerThemeData(backgroundColor: Colors.black),
           brightness: Brightness.dark,
-          primarySwatch: Colors.grey,
         );
       case ThemeColor.amoledDark:
         return ThemeData(
           appBarTheme: AppBarTheme(backgroundColor: Colors.transparent),
           scaffoldBackgroundColor: Colors.transparent,
           primaryColor: Colors.black,
-          cardColor: Color(0xFF282828),
+          cardColor: Colors.black,
           dialogBackgroundColor: Color(0xFF282828),
           drawerTheme: DrawerThemeData(backgroundColor: Colors.black),
           brightness: Brightness.dark,
-          primarySwatch: Colors.grey,
         );
     }
   }
@@ -122,7 +131,7 @@ class MyAppState extends State<MyApp> {
       builder: (BuildContext context, Widget? child) {
         final MediaQueryData data = MediaQuery.of(context);
         return MediaQuery(
-          data: data.copyWith(textScaleFactor: 1),
+          data: data.copyWith(textScaler: TextScaler.linear(1)),
           child: child!,
         );
       },

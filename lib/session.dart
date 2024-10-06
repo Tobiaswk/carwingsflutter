@@ -2,7 +2,6 @@ import 'package:dartcarwings/dartcarwings.dart';
 import 'package:dartnissanconnect/dartnissanconnect.dart' as nissanconnect;
 import 'package:dartnissanconnectna/dartnissanconnectna.dart'
     as nissanconnectna;
-import 'package:fk_user_agent/fk_user_agent.dart';
 
 enum API_TYPE { CARWINGS, NISSANCONNECTNA, NISSANCONNECT }
 
@@ -77,16 +76,13 @@ class Session {
       CarwingsRegion region = CarwingsRegion.Europe}) async {
     this.region = region;
 
-    /// Used to get appropriate user-agent header for the API clients below
-    await FkUserAgent.init();
-
     switch (getAPIType()) {
       case API_TYPE.CARWINGS:
         await carwings.login(
-            username: username,
-            password: password,
-            region: region,
-            userAgent: FkUserAgent.userAgent);
+          username: username,
+          password: password,
+          region: region,
+        );
         break;
       case API_TYPE.NISSANCONNECTNA:
         if (isCanada()) {

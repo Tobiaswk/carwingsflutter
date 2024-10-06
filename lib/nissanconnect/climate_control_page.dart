@@ -1,7 +1,6 @@
 import 'package:carwingsflutter/session.dart';
 import 'package:carwingsflutter/util.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 import 'package:intl/intl.dart';
 
 class _ClimateControlPageState extends State<ClimateControlPage> {
@@ -206,7 +205,7 @@ class _ClimateControlPageState extends State<ClimateControlPage> {
 class ClimateControlPage extends StatefulWidget {
   ClimateControlPage(this.session);
 
-  Session session;
+  final Session session;
 
   @override
   _ClimateControlPageState createState() => _ClimateControlPageState();
