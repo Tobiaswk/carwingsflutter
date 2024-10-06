@@ -8,7 +8,6 @@ import 'package:carwingsflutter/session.dart';
 import 'package:carwingsflutter/util.dart';
 import 'package:carwingsflutter/widget_api_chooser.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:in_app_purchase/in_app_purchase.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -160,8 +159,8 @@ class _MainPageState extends State<MainPage> {
               await widget.session.nissanConnect.vehicle.requestLocation();
           break;
       }
-      launchUrl(
-          Uri.parse('https://www.google.com/maps/search/?api=1&query=${location.latitude},${location.longitude}'));
+      launchUrl(Uri.parse(
+          'https://www.google.com/maps/search/?api=1&query=${location.latitude},${location.longitude}'));
     } catch (error) {
       _snackBar('Could not locate your vehicle!');
     } finally {
@@ -363,16 +362,15 @@ class _MainPageState extends State<MainPage> {
         IconButton(
             icon: Icon(
               Icons.format_list_numbered,
-              color: Colors.white,
             ),
             onPressed: _openTripDetailListPage),
         IconButton(
-            icon: ImageIcon(AssetImage('images/aircondition.png'),
-                color: Colors.white),
+            icon: ImageIcon(
+              AssetImage('images/aircondition.png'),
+            ),
             onPressed: _openClimateControlPage),
         IconButton(
-            icon: Icon(Icons.power, color: Colors.white),
-            onPressed: _openChargingControlPage),
+            icon: Icon(Icons.power), onPressed: _openChargingControlPage),
       ]),
       body: FutureBuilder<GeneralSettings>(
         future: preferencesManager.getGeneralSettings(),

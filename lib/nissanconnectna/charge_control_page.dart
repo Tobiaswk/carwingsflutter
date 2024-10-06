@@ -78,7 +78,7 @@ class _ChargeControlPageState extends State<ChargeControlPage> {
 class ChargeControlPage extends StatefulWidget {
   ChargeControlPage(this.session);
 
-  Session session;
+  final Session session;
 
   @override
   _ChargeControlPageState createState() => _ChargeControlPageState();

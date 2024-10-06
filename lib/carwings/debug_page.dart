@@ -46,7 +46,7 @@ class _DebugPageState extends State<DebugPage> {
 class DebugPage extends StatefulWidget {
   DebugPage(this.session);
 
-  Session session;
+  final Session session;
 
   @override
   _DebugPageState createState() => _DebugPageState();

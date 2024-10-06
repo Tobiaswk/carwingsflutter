@@ -8,10 +8,9 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
 class LoginPage extends StatefulWidget {
-  LoginPage(this.session, [this.autoLogin = true]);
+  LoginPage(this.session);
 
-  Session session;
-  bool autoLogin;
+  final Session session;
 
   @override
   _LoginPageState createState() => _LoginPageState();
@@ -44,7 +43,7 @@ class _LoginPageState extends State<LoginPage> {
           _rememberLoginSettings = true;
         });
 
-        if (widget.autoLogin) _doLogin();
+        _doLogin();
       }
     });
 
@@ -134,38 +133,39 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: Theme.of(context).primaryColor,
+        backgroundColor: Theme.of(context).primaryColor.withOpacity(.8),
         key: scaffoldKey,
         body: Theme(
             data: Theme.of(context).copyWith(
-                primaryColorDark: Colors.white,
-                primaryColorLight: Colors.white,
-                textTheme: TextTheme(bodyText2: TextStyle(color: Colors.white)),
-                primaryColor: Colors.white,
-                inputDecorationTheme: InputDecorationTheme(
-                    labelStyle: TextStyle(color: Colors.white),
-                    enabledBorder: UnderlineInputBorder(
-                      borderSide: BorderSide(color: Colors.white),
-                    ),
-                    focusedBorder: UnderlineInputBorder(
-                      borderSide: BorderSide(color: Colors.white),
-                    )),
-                textSelectionTheme: TextSelectionThemeData(
-                  cursorColor: Colors.white,
-                  selectionColor: Colors.white,
-                  selectionHandleColor: Colors.white,
-                ),
-                elevatedButtonTheme: ElevatedButtonThemeData(
-                    style: ButtonStyle(
-                        foregroundColor:
-                            MaterialStateProperty.resolveWith<Color>(
-                                (states) => Colors.black),
-                        backgroundColor:
-                            MaterialStateProperty.resolveWith<Color>(
-                                (states) => Colors.white))),
-                hintColor: Colors.white,
-                canvasColor: Theme.of(context).primaryColor,
-                toggleableActiveColor: Colors.white),
+              primaryColorDark: Colors.white,
+              primaryColorLight: Colors.white,
+              textTheme: TextTheme(
+                  bodySmall: TextStyle(color: Colors.white),
+                  bodyMedium: TextStyle(color: Colors.white),
+                  bodyLarge: TextStyle(color: Colors.white)),
+              primaryColor: Colors.white,
+              inputDecorationTheme: InputDecorationTheme(
+                  labelStyle: TextStyle(color: Colors.white),
+                  enabledBorder: UnderlineInputBorder(
+                    borderSide: BorderSide(color: Colors.white),
+                  ),
+                  focusedBorder: UnderlineInputBorder(
+                    borderSide: BorderSide(color: Colors.white),
+                  )),
+              textSelectionTheme: TextSelectionThemeData(
+                cursorColor: Colors.white,
+                selectionColor: Colors.white,
+                selectionHandleColor: Colors.white,
+              ),
+              elevatedButtonTheme: ElevatedButtonThemeData(
+                  style: ButtonStyle(
+                      foregroundColor: MaterialStateProperty.resolveWith<Color>(
+                          (states) => Colors.black),
+                      backgroundColor: MaterialStateProperty.resolveWith<Color>(
+                          (states) => Colors.white))),
+              hintColor: Colors.white,
+              canvasColor: Theme.of(context).primaryColor,
+            ),
             child: Container(
               padding: const EdgeInsets.fromLTRB(30.0, 20.0, 30.0, 0.0),
               child: Column(

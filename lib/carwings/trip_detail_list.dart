@@ -74,9 +74,7 @@ class _TripDetailListState extends State<TripDetailList> {
       appBar: AppBar(
         title: Text("Trip Details"),
         actions: <Widget>[
-          IconButton(
-              icon: Icon(Icons.calendar_today, color: Colors.white),
-              onPressed: _pickDate),
+          IconButton(icon: Icon(Icons.calendar_today), onPressed: _pickDate),
         ],
       ),
       body: _statsTrips != null

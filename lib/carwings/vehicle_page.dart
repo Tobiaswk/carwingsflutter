@@ -30,7 +30,7 @@ class _VehiclePageState extends State<VehiclePage> {
 class VehiclePage extends StatefulWidget {
   VehiclePage(this.session);
 
-  Session session;
+  final Session session;
 
   @override
   _VehiclePageState createState() => _VehiclePageState();
