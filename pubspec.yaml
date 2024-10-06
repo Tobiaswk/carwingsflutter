@@ -11,7 +11,6 @@ dependencies:
   json_annotation: ^4.9.0
   url_launcher: ^6.3.0
   sleek_circular_slider: ^2.0.0
-  in_app_purchase: ^3.2.0
   workmanager: ^0.5.2
   dartcarwings:
     git: https://gitlab.com/tobiaswkjeldsen/dartcarwings.git
