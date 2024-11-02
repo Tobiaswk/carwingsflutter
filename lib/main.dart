@@ -90,12 +90,9 @@ class MyAppState extends State<MyApp> {
     switch (_configuration.theme) {
       case ThemeColor.standard:
         return ThemeData(
-            colorScheme: ColorScheme.fromSeed(
-                seedColor: Colors.blue, primary: Colors.blue));
+            colorScheme: ColorScheme.fromSeed(seedColor: Colors.blue));
       case ThemeColor.green:
-        return ThemeData(
-          colorSchemeSeed: Colors.green,
-        );
+        return ThemeData(colorSchemeSeed: Colors.green);
       case ThemeColor.red:
         return ThemeData(colorSchemeSeed: Colors.red);
       case ThemeColor.purple:
