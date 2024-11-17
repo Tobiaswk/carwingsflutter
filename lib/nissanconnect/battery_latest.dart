@@ -73,9 +73,9 @@ class _BatteryLatestState extends State<BatteryLatest> {
       String cruisingRangeAcOffMiles,
       String cruisingRangeAcOnKm,
       String cruisingRangeAcOnMiles,
-      Duration? timeToFullTrickle,
-      Duration? timeToFullL2,
-      Duration? timeToFullL2_6kw,
+      Duration? timeToFullSlow,
+      Duration? timeToFullNormal,
+      Duration? timeToFullFast,
       String? chargingkWLevelText,
       String? chargingRemainingText) {
     return Padding(
@@ -219,7 +219,7 @@ class _BatteryLatestState extends State<BatteryLatest> {
                             Text('slow',
                                 style: TextStyle(
                                     color: Colors.white, fontSize: 12.0)),
-                            Text('${timeToFullTrickle?.inHours ?? '-'} hrs',
+                            Text('${timeToFullSlow?.inHours ?? '-'} hrs',
                                 style: TextStyle(color: Colors.white)),
                           ],
                         ),
@@ -232,7 +232,7 @@ class _BatteryLatestState extends State<BatteryLatest> {
                             Text('normal',
                                 style: TextStyle(
                                     color: Colors.white, fontSize: 12.0)),
-                            Text('${timeToFullL2?.inHours ?? '-'} hrs',
+                            Text('${timeToFullNormal?.inHours ?? '-'} hrs',
                                 style: TextStyle(color: Colors.white)),
                           ],
                         ),
@@ -245,7 +245,7 @@ class _BatteryLatestState extends State<BatteryLatest> {
                             Text('fast',
                                 style: TextStyle(
                                     color: Colors.white, fontSize: 12.0)),
-                            Text('${timeToFullL2_6kw?.inHours ?? '-'} hrs',
+                            Text('${timeToFullFast?.inHours ?? '-'} hrs',
                                 style: TextStyle(color: Colors.white)),
                           ],
                         )
