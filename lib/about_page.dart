@@ -34,7 +34,7 @@ class _AboutPageState extends State<AboutPage> {
                 ),
               ),
               ListTile(
-                title: const Text('Developer and maintainer'),
+                title: const Text('Creator, developer and maintainer'),
                 subtitle:
                     const Text('Tobias Westergaard Kjeldsen <me@tobis.dk>'),
                 onTap: () {
@@ -56,6 +56,7 @@ class _AboutPageState extends State<AboutPage> {
                 'Libraries and source code',
                 style: TextStyle(fontSize: 20.0),
               ),
+              Divider(),
               ListTile(
                 title: const Text('dartcarwings library'),
                 subtitle: const Text(
@@ -105,6 +106,7 @@ class _AboutPageState extends State<AboutPage> {
                 'License',
                 style: TextStyle(fontSize: 20.0),
               ),
+              Divider(),
               Container(
                 padding: const EdgeInsets.all(15.0),
                 child: Text(_LICENSE),
