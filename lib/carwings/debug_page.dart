@@ -24,6 +24,7 @@ class _DebugPageState extends State<DebugPage> {
         children:
             widget.session.carwings.debugLog.reversed.map((String logEntry) {
           return Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               Container(
                 padding: EdgeInsets.all(8),
