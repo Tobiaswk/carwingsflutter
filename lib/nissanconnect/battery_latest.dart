@@ -73,9 +73,9 @@ class _BatteryLatestState extends State<BatteryLatest> {
       String cruisingRangeAcOffMiles,
       String cruisingRangeAcOnKm,
       String cruisingRangeAcOnMiles,
-      Duration timeToFullTrickle,
-      Duration timeToFullL2,
-      Duration timeToFullL2_6kw,
+      Duration? timeToFullSlow,
+      Duration? timeToFullNormal,
+      Duration? timeToFullFast,
       String? chargingkWLevelText,
       String? chargingRemainingText) {
     return Padding(
@@ -186,7 +186,7 @@ class _BatteryLatestState extends State<BatteryLatest> {
                       ),
                       Text(
                         ' AC',
-                        style: TextStyle(color: Colors.white),
+                        style: TextStyle(color: Colors.white, fontSize: 12.0),
                       )
                     ],
                   ),
@@ -213,10 +213,13 @@ class _BatteryLatestState extends State<BatteryLatest> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
                         Column(
+                          crossAxisAlignment: CrossAxisAlignment.end,
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: <Widget>[
-                            Text('~1kW', style: TextStyle(color: Colors.white)),
-                            Text('${timeToFullTrickle.inHours} hrs',
+                            Text('slow',
+                                style: TextStyle(
+                                    color: Colors.white, fontSize: 12.0)),
+                            Text('${timeToFullSlow?.inHours ?? '-'} hrs',
                                 style: TextStyle(color: Colors.white)),
                           ],
                         ),
@@ -224,9 +227,12 @@ class _BatteryLatestState extends State<BatteryLatest> {
                             style:
                                 TextStyle(color: Colors.white, fontSize: 30.0)),
                         Column(
+                          crossAxisAlignment: CrossAxisAlignment.end,
                           children: <Widget>[
-                            Text('~3kW', style: TextStyle(color: Colors.white)),
-                            Text('${timeToFullL2.inHours} hrs',
+                            Text('normal',
+                                style: TextStyle(
+                                    color: Colors.white, fontSize: 12.0)),
+                            Text('${timeToFullNormal?.inHours ?? '-'} hrs',
                                 style: TextStyle(color: Colors.white)),
                           ],
                         ),
@@ -234,9 +240,12 @@ class _BatteryLatestState extends State<BatteryLatest> {
                             style:
                                 TextStyle(color: Colors.white, fontSize: 30.0)),
                         Column(
+                          crossAxisAlignment: CrossAxisAlignment.end,
                           children: <Widget>[
-                            Text('~6kW', style: TextStyle(color: Colors.white)),
-                            Text('${timeToFullL2_6kw.inHours} hrs',
+                            Text('fast',
+                                style: TextStyle(
+                                    color: Colors.white, fontSize: 12.0)),
+                            Text('${timeToFullFast?.inHours ?? '-'} hrs',
                                 style: TextStyle(color: Colors.white)),
                           ],
                         )

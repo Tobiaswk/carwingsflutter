@@ -4,7 +4,7 @@ import 'package:url_launcher/url_launcher.dart';
 
 class _AboutPageState extends State<AboutPage> {
   static var _LICENSE =
-      'The MIT License\n\nCopyright (c) 2022 Tobias Westergaard Kjeldsen\n\nPermission is hereby granted, free of charge, to any person obtaining a copyof this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:\n\nThe above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.\n\nTHE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NON INFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.';
+      'The MIT License\n\nCopyright (c) 2018-2024 Tobias Westergaard Kjeldsen\n\nPermission is hereby granted, free of charge, to any person obtaining a copyof this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:\n\nThe above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.\n\nTHE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NON INFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.';
 
   @override
   Widget build(BuildContext context) {
@@ -34,7 +34,7 @@ class _AboutPageState extends State<AboutPage> {
                 ),
               ),
               ListTile(
-                title: const Text('Developer and maintainer'),
+                title: const Text('Creator, developer and maintainer'),
                 subtitle:
                     const Text('Tobias Westergaard Kjeldsen <me@tobis.dk>'),
                 onTap: () {
@@ -56,6 +56,7 @@ class _AboutPageState extends State<AboutPage> {
                 'Libraries and source code',
                 style: TextStyle(fontSize: 20.0),
               ),
+              Divider(),
               ListTile(
                 title: const Text('dartcarwings library'),
                 subtitle: const Text(
@@ -105,6 +106,7 @@ class _AboutPageState extends State<AboutPage> {
                 'License',
                 style: TextStyle(fontSize: 20.0),
               ),
+              Divider(),
               Container(
                 padding: const EdgeInsets.all(15.0),
                 child: Text(_LICENSE),

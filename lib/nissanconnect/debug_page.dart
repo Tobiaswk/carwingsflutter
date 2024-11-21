@@ -24,15 +24,27 @@ class _DebugPageState extends State<DebugPage> {
         children: widget.session.nissanConnect.debugLog.reversed
             .map((String logEntry) {
           return Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              InkWell(
-                child: Text(logEntry),
-                onLongPress: () {
-                  Clipboard.setData(ClipboardData(text: logEntry));
-                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                    content: Text("Copied to Clipboard"),
-                  ));
-                },
+              Container(
+                padding: EdgeInsets.all(8),
+                decoration: BoxDecoration(
+                  color: logEntry.contains('Result:')
+                      ? Colors.green.withOpacity(.3)
+                      : Colors.blue.withOpacity(.3),
+                  borderRadius: BorderRadius.circular(20),
+                ),
+                child: InkWell(
+                  child: Text(
+                    logEntry,
+                  ),
+                  onLongPress: () {
+                    Clipboard.setData(ClipboardData(text: logEntry));
+                    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                      content: Text("Copied to Clipboard"),
+                    ));
+                  },
+                ),
               ),
               Padding(padding: const EdgeInsets.all(3.0))
             ],
