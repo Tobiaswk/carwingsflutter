@@ -14,17 +14,15 @@ class _HelpPageState extends State<HelpPage> {
             children: <Widget>[
               Padding(padding: const EdgeInsets.all(5.0)),
               Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 15),
+                padding: const EdgeInsets.all(15),
                 child: Text(
                   'Having problems signing in? Follow these steps below',
                   style: TextStyle(fontSize: 20.0),
                 ),
               ),
-              Padding(padding: const EdgeInsets.all(5.0)),
               Text('Setup / Before you use', style: TextStyle(fontSize: 18.0)),
-              Divider(),
               Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 15),
+                padding: const EdgeInsets.all(15),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -39,20 +37,16 @@ class _HelpPageState extends State<HelpPage> {
                   ],
                 ),
               ),
-              Padding(padding: const EdgeInsets.all(5.0)),
               Text('Vehicles produced after May 2019',
                   style: TextStyle(fontSize: 18.0)),
-              Divider(),
               Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 15),
+                padding: const EdgeInsets.all(15),
                 child: Text(
                     'If you have a vehicle that was produced after May 2019 you need to select \'World\' as your region'),
               ),
-              Padding(padding: const EdgeInsets.all(5.0)),
               Text('Turn on debugging', style: TextStyle(fontSize: 18.0)),
-              Divider(),
               Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 15),
+                padding: const EdgeInsets.all(15),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -66,13 +60,13 @@ class _HelpPageState extends State<HelpPage> {
                   ],
                 ),
               ),
-              Padding(padding: const EdgeInsets.all(5.0)),
               Text('Direct contact', style: TextStyle(fontSize: 18.0)),
-              Divider(),
               Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 15),
+                padding: const EdgeInsets.all(15),
                 child: Column(
                   children: [
+                    Text(
+                        'Include the debugging information from above step. Please do this instead of turning to a 1-star review.'),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
@@ -96,8 +90,6 @@ class _HelpPageState extends State<HelpPage> {
                         )
                       ],
                     ),
-                    Text(
-                        'Include the debugging information from above step. Please do this instead of turning to a 1-star review.'),
                     Padding(padding: EdgeInsets.all(5))
                   ],
                 ),
