@@ -1,4 +1,4 @@
-image: ghcr.io/cirruslabs/flutter
+image: ghcr.io/cirruslabs/flutter:3.24.3
 
 stages:
     - build
