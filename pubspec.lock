@@ -187,8 +187,8 @@ packages:
     dependency: "direct main"
     description:
       path: "."
-      ref: HEAD
-      resolved-ref: "0e1826f40792ca8784484309234d3ca470f67763"
+      ref: "0cabf82d90db878630dd540b7a018b2a2404c0cd"
+      resolved-ref: "0cabf82d90db878630dd540b7a018b2a2404c0cd"
       url: "https://gitlab.com/tobiaswkjeldsen/dartnissanconnect.git"
     source: git
     version: "1.0.0"

@@ -18,7 +18,9 @@ dependencies:
   dartnissanconnectna:
     git: https://gitlab.com/tobiaswkjeldsen/dartnissanconnectna.git
   dartnissanconnect:
-    git: https://gitlab.com/tobiaswkjeldsen/dartnissanconnect.git
+    git:
+      url: https://gitlab.com/tobiaswkjeldsen/dartnissanconnect.git
+      ref: 0cabf82d90db878630dd540b7a018b2a2404c0cd
 
 
 dev_dependencies:
