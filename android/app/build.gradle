@@ -24,9 +24,9 @@ android {
         namespace("dk.kjeldsen.carwingsflutter")
         minSdkVersion flutter.minSdkVersion
         targetSdkVersion 35
-        versionCode 216
+        versionCode 217
 
-        versionName "2.4.6"
+        versionName "2.4.7"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
