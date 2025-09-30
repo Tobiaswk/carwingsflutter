@@ -2,7 +2,8 @@ import 'dart:async';
 import 'dart:io' show Platform;
 import 'dart:math';
 
-import 'package:carwingsflutter/preferences_page.dart';
+import 'package:carwingsflutter/safe_area_scaffold.dart';
+import 'package:carwingsflutter/preferences_manager.dart';
 import 'package:carwingsflutter/preferences_types.dart';
 import 'package:carwingsflutter/session.dart';
 import 'package:carwingsflutter/util.dart';
@@ -21,8 +22,6 @@ class MainPage extends StatefulWidget {
 }
 
 class _MainPageState extends State<MainPage> {
-  final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
-
   static const String SKU_DONATE = 'donate2';
   static const String SKU_DONATE_10 = 'donate10';
   static const String SKU_DONATE_30 = 'donate30';
@@ -50,23 +49,26 @@ class _MainPageState extends State<MainPage> {
     Stream<List<PurchaseDetails>> purchaseUpdated =
         _inAppPurchase.purchaseStream;
 
-    _inAppPurchaseSubscription = purchaseUpdated.listen((purchaseDetailsList) {
-      _listenToPurchaseUpdated(purchaseDetailsList);
-    }, onDone: () {
-      _inAppPurchaseSubscription.cancel();
-    });
+    _inAppPurchaseSubscription = purchaseUpdated.listen(
+      (purchaseDetailsList) {
+        _listenToPurchaseUpdated(purchaseDetailsList);
+      },
+      onDone: () {
+        _inAppPurchaseSubscription.cancel();
+      },
+    );
 
     if (await _inAppPurchase.isAvailable()) {
       await _inAppPurchase.restorePurchases();
 
       final ProductDetailsResponse availableProductsResponse =
           await _inAppPurchase.queryProductDetails(<String>{
-        SKU_PATRON,
-        SKU_DONATE_10,
-        SKU_DONATE_30,
-        SKU_DONATE_50,
-        SKU_DONATE
-      });
+            SKU_PATRON,
+            SKU_DONATE_10,
+            SKU_DONATE_30,
+            SKU_DONATE_50,
+            SKU_DONATE,
+          });
 
       _inAppProductsAvailable = availableProductsResponse.productDetails;
 
@@ -113,7 +115,7 @@ class _MainPageState extends State<MainPage> {
               _donated = true;
             });
 
-            await preferencesManager.setDonated(true);
+            await PreferencesManager.setDonated(true);
 
             break;
           case PurchaseStatus.restored:
@@ -121,7 +123,7 @@ class _MainPageState extends State<MainPage> {
               _donated = true;
             });
 
-            await preferencesManager.setDonated(true);
+            await PreferencesManager.setDonated(true);
             break;
           default:
         }
@@ -131,7 +133,8 @@ class _MainPageState extends State<MainPage> {
   _donate(ProductDetails? productDetails) async {
     if (productDetails != null) {
       _inAppPurchase.buyNonConsumable(
-          purchaseParam: PurchaseParam(productDetails: productDetails));
+        purchaseParam: PurchaseParam(productDetails: productDetails),
+      );
     }
   }
 
@@ -155,12 +158,15 @@ class _MainPageState extends State<MainPage> {
           break;
         case API_TYPE.NISSANCONNECT:
           await widget.session.nissanConnect.vehicle.requestLocationRefresh();
-          location =
-              await widget.session.nissanConnect.vehicle.requestLocation();
+          location = await widget.session.nissanConnect.vehicle
+              .requestLocation();
           break;
       }
-      launchUrl(Uri.parse(
-          'https://www.google.com/maps/search/?api=1&query=${location.latitude},${location.longitude}'));
+      launchUrl(
+        Uri.parse(
+          'https://www.google.com/maps/search/?api=1&query=${location.latitude},${location.longitude}',
+        ),
+      );
     } catch (error) {
       _snackBar('Could not locate your vehicle!');
     } finally {
@@ -169,35 +175,43 @@ class _MainPageState extends State<MainPage> {
   }
 
   _openVehicleInfoPage(vehicle) {
-    Navigator.of(context).push(MaterialPageRoute<Null>(
-      builder: (BuildContext context) {
-        return WidgetAPIChooser.vehiclePage(widget.session);
-      },
-    ));
+    Navigator.of(context).push(
+      MaterialPageRoute<Null>(
+        builder: (BuildContext context) {
+          return WidgetAPIChooser.vehiclePage(widget.session);
+        },
+      ),
+    );
   }
 
   _openClimateControlPage() {
-    Navigator.of(context).push(MaterialPageRoute<Null>(
-      builder: (BuildContext context) {
-        return WidgetAPIChooser.climateControlPage(widget.session);
-      },
-    ));
+    Navigator.of(context).push(
+      MaterialPageRoute<Null>(
+        builder: (BuildContext context) {
+          return WidgetAPIChooser.climateControlPage(widget.session);
+        },
+      ),
+    );
   }
 
   _openChargingControlPage() {
-    Navigator.of(context).push(MaterialPageRoute<Null>(
-      builder: (BuildContext context) {
-        return WidgetAPIChooser.chargingControlPage(widget.session);
-      },
-    ));
+    Navigator.of(context).push(
+      MaterialPageRoute<Null>(
+        builder: (BuildContext context) {
+          return WidgetAPIChooser.chargingControlPage(widget.session);
+        },
+      ),
+    );
   }
 
   _openTripDetailListPage() {
-    Navigator.of(context).push(MaterialPageRoute<Null>(
-      builder: (BuildContext context) {
-        return WidgetAPIChooser.tripDetailsPage(widget.session);
-      },
-    ));
+    Navigator.of(context).push(
+      MaterialPageRoute<Null>(
+        builder: (BuildContext context) {
+          return WidgetAPIChooser.tripDetailsPage(widget.session);
+        },
+      ),
+    );
   }
 
   _openPreferencesPage() {
@@ -213,12 +227,14 @@ class _MainPageState extends State<MainPage> {
       child: ListView(
         children: <Widget>[
           DrawerHeader(
-              child: Center(
-                  child: ImageIcon(
-            AssetImage('images/car-leaf.png'),
-            size: 100.0,
-            color: Util.primaryColor(context),
-          ))),
+            child: Center(
+              child: ImageIcon(
+                AssetImage('images/car-leaf.png'),
+                size: 100.0,
+                color: Util.primaryColor(context),
+              ),
+            ),
+          ),
           _buildVehicleListTiles(context),
           ListTile(
             leading: const Icon(Icons.map),
@@ -236,7 +252,7 @@ class _MainPageState extends State<MainPage> {
             title: const Text('Sign out'),
             onTap: _signOut,
           ),
-          _buildDonateListTile(context)
+          _buildDonateListTile(context),
         ],
       ),
     );
@@ -251,26 +267,30 @@ class _MainPageState extends State<MainPage> {
     widget.session.changeVehicle(nickname);
 
     // Push replacement page to force refresh with selected vehicle
-    Navigator.of(context).pushReplacement(MaterialPageRoute<Null>(
-      builder: (BuildContext context) => MainPage(widget.session),
-    ));
+    Navigator.of(context).pushReplacement(
+      MaterialPageRoute<Null>(
+        builder: (BuildContext context) => MainPage(widget.session),
+      ),
+    );
   }
 
   Column _buildVehicleListTiles(context) {
     List<ListTile> vehicleListTiles = <ListTile>[];
     var vehicles = widget.session.getVehicles();
     for (dynamic vehicle in vehicles) {
-      vehicleListTiles.add(ListTile(
-        leading: ImageIcon(AssetImage('images/sports-car.png')),
-        trailing: Radio(
-          value: vehicle.nickname,
-          groupValue: _selectedVehicleValue,
-          onChanged: _handleVehicleChange,
+      vehicleListTiles.add(
+        ListTile(
+          leading: ImageIcon(AssetImage('images/sports-car.png')),
+          trailing: Radio(
+            value: vehicle.nickname,
+            groupValue: _selectedVehicleValue,
+            onChanged: _handleVehicleChange,
+          ),
+          title: Text(vehicle.nickname),
+          onTap: () => _openVehicleInfoPage(vehicle),
+          onLongPress: () => null,
         ),
-        title: Text(vehicle.nickname),
-        onTap: () => _openVehicleInfoPage(vehicle),
-        onLongPress: () => null,
-      ));
+      );
     }
     return Column(children: vehicleListTiles);
   }
@@ -279,63 +299,84 @@ class _MainPageState extends State<MainPage> {
     if (Platform.isIOS) return;
     if ((!_donated && Random.secure().nextInt(10) > 6) || force) {
       showDialog<bool>(
-          context: context,
-          builder: (BuildContext context) => SimpleDialog(
-                title: const Text("Consider supporting My Leaf!"),
+        context: context,
+        builder: (BuildContext context) => SimpleDialog(
+          title: const Text("Consider supporting My Leaf!"),
+          children: [
+            SimpleDialogOption(
+              child: Text(
+                'This is Tobias! The developer behind My Leaf! As you may know My Leaf is a free and fully open source project! Naturally it takes time to maintain, improve and support! Even a small donation goes a long way!',
+              ),
+            ),
+            SimpleDialogOption(
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  SimpleDialogOption(
-                    child: Text(
-                        'This is Tobias! The developer behind My Leaf! As you may know My Leaf is a free and fully open source project! Naturally it takes time to maintain, improve and support! Even a small donation goes a long way!'),
+                  TextButton(
+                    onPressed: () => _donate(
+                      _inAppProductsAvailable?.firstWhere(
+                        (product) => product.id == SKU_DONATE_10,
+                      ),
+                    ),
+                    child: const Text('☕️ A coffee'),
                   ),
-                  SimpleDialogOption(
-                      child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      TextButton(
-                          onPressed: () => _donate(
-                              _inAppProductsAvailable?.firstWhere(
-                                  (product) => product.id == SKU_DONATE_10)),
-                          child: const Text('☕️ A coffee')),
-                      TextButton(
-                          onPressed: () => _donate(
-                              _inAppProductsAvailable?.firstWhere(
-                                  (product) => product.id == SKU_DONATE_30)),
-                          child: const Text('🍜 Some ramen'))
-                    ],
-                  )),
-                  SimpleDialogOption(
-                      child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      TextButton(
-                          onPressed: () => _donate(
-                              _inAppProductsAvailable?.firstWhere(
-                                  (product) => product.id == SKU_DONATE_50)),
-                          child: const Text('🍱 A dinner')),
-                      TextButton(
-                          onPressed: () => _donate(
-                              _inAppProductsAvailable?.firstWhere(
-                                  (product) => product.id == SKU_DONATE)),
-                          child: const Text('🥳 You\'re awesome')),
-                    ],
-                  )),
-                  SimpleDialogOption(
-                      child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      TextButton(
-                          onPressed: () => _donate(
-                              _inAppProductsAvailable?.firstWhere(
-                                  (product) => product.id == SKU_PATRON)),
-                          child: const Text('❤️ Be a My Leaf monthly patron!'))
-                    ],
-                  )),
-                  SimpleDialogOption(
-                    child: Text(
-                        'Thank you either way! Also if you have the time I\'d appreciate a review! ☺️'),
-                  )
+                  TextButton(
+                    onPressed: () => _donate(
+                      _inAppProductsAvailable?.firstWhere(
+                        (product) => product.id == SKU_DONATE_30,
+                      ),
+                    ),
+                    child: const Text('🍜 Some ramen'),
+                  ),
                 ],
-              ));
+              ),
+            ),
+            SimpleDialogOption(
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  TextButton(
+                    onPressed: () => _donate(
+                      _inAppProductsAvailable?.firstWhere(
+                        (product) => product.id == SKU_DONATE_50,
+                      ),
+                    ),
+                    child: const Text('🍱 A dinner'),
+                  ),
+                  TextButton(
+                    onPressed: () => _donate(
+                      _inAppProductsAvailable?.firstWhere(
+                        (product) => product.id == SKU_DONATE,
+                      ),
+                    ),
+                    child: const Text('🥳 You\'re awesome'),
+                  ),
+                ],
+              ),
+            ),
+            SimpleDialogOption(
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  TextButton(
+                    onPressed: () => _donate(
+                      _inAppProductsAvailable?.firstWhere(
+                        (product) => product.id == SKU_PATRON,
+                      ),
+                    ),
+                    child: const Text('❤️ Be a My Leaf monthly patron!'),
+                  ),
+                ],
+              ),
+            ),
+            SimpleDialogOption(
+              child: Text(
+                'Thank you either way! Also if you have the time I\'d appreciate a review! ☺️',
+              ),
+            ),
+          ],
+        ),
+      );
     }
   }
 
@@ -350,38 +391,43 @@ class _MainPageState extends State<MainPage> {
 
   void _snackBar(message) {
     ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(duration: Duration(seconds: 5), content: Text(message)));
+      SnackBar(duration: Duration(seconds: 5), content: Text(message)),
+    );
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      key: scaffoldKey,
+    return SafeAreaScaffold(
       backgroundColor: Theme.of(context).primaryColor,
-      appBar: AppBar(title: Text('Dashboard'), actions: [
-        IconButton(
-            icon: Icon(
-              Icons.format_list_numbered,
-            ),
-            onPressed: _openTripDetailListPage),
-        IconButton(
-            icon: ImageIcon(
-              AssetImage('images/aircondition.png'),
-            ),
-            onPressed: _openClimateControlPage),
-        IconButton(
-            icon: Icon(Icons.power), onPressed: _openChargingControlPage),
-      ]),
+      appBar: AppBar(
+        title: Text('Dashboard'),
+        actions: [
+          IconButton(
+            icon: Icon(Icons.format_list_numbered),
+            onPressed: _openTripDetailListPage,
+          ),
+          IconButton(
+            icon: ImageIcon(AssetImage('images/aircondition.png')),
+            onPressed: _openClimateControlPage,
+          ),
+          IconButton(
+            icon: Icon(Icons.power),
+            onPressed: _openChargingControlPage,
+          ),
+        ],
+      ),
       body: FutureBuilder<GeneralSettings>(
-        future: preferencesManager.getGeneralSettings(),
+        future: PreferencesManager.getGeneralSettings(),
         builder: (context, snapshot) {
           return snapshot.hasData
               ? ListView(
                   children: <Widget>[
                     WidgetAPIChooser.batteryLatestCard(
-                        widget.session, snapshot.data!),
+                      widget.session,
+                      snapshot.data!,
+                    ),
                     WidgetAPIChooser.statisticsDailyCard(widget.session),
-                    WidgetAPIChooser.statisticsMonthlyCard(widget.session)
+                    WidgetAPIChooser.statisticsMonthlyCard(widget.session),
                   ],
                 )
               : Container();

@@ -1,7 +1,6 @@
-import 'dart:io';
-
 import 'package:carwingsflutter/about_page.dart';
-import 'package:carwingsflutter/keep_alive_vehicle_helper.dart';
+import 'package:carwingsflutter/background_service.dart';
+import 'package:carwingsflutter/safe_area_scaffold.dart';
 import 'package:carwingsflutter/preferences_manager.dart';
 import 'package:carwingsflutter/session.dart';
 import 'package:carwingsflutter/widget_api_chooser.dart';
@@ -10,7 +9,7 @@ import 'package:flutter/material.dart';
 import 'preferences_types.dart';
 import 'time_zones.dart';
 
-var preferencesManager = PreferencesManager();
+var preferencesManager = PreferencesManager;
 
 class PreferencesPage extends StatefulWidget {
   const PreferencesPage(this.configuration, this.updater, this.session);
@@ -29,7 +28,7 @@ class _PreferencesPageState extends State<PreferencesPage> {
   @override
   void initState() {
     super.initState();
-    preferencesManager.getGeneralSettings().then((generalSettings) {
+    PreferencesManager.getGeneralSettings().then((generalSettings) {
       setState(() {
         _generalSettings = generalSettings;
       });
@@ -38,110 +37,104 @@ class _PreferencesPageState extends State<PreferencesPage> {
 
   void _handleThemeChanged(ThemeColor color) {
     sendUpdates(widget.configuration.copyWith(theme: color));
-    preferencesManager.setTheme(color.index);
+    PreferencesManager.setTheme(color.index);
     Navigator.pop(context, true);
   }
 
   _openAboutPage() {
-    Navigator.of(context).push(MaterialPageRoute<Null>(
-      builder: (BuildContext context) {
-        return AboutPage();
-      },
-    ));
+    Navigator.of(context).push(
+      MaterialPageRoute<Null>(
+        builder: (BuildContext context) {
+          return AboutPage();
+        },
+      ),
+    );
   }
 
   _openDebugPage() {
-    Navigator.of(context).push(MaterialPageRoute<Null>(
-      builder: (BuildContext context) {
-        return WidgetAPIChooser.debugPage(widget.session);
-      },
-    ));
+    Navigator.of(context).push(
+      MaterialPageRoute<Null>(
+        builder: (BuildContext context) {
+          return WidgetAPIChooser.debugPage(widget.session);
+        },
+      ),
+    );
   }
 
   void _changeTheme() {
     showDialog<bool>(
       context: context,
-      builder: (BuildContext context) =>
-          SimpleDialog(title: const Text("Color preference"), children: [
-        ListTile(
+      builder: (BuildContext context) => SimpleDialog(
+        title: const Text("Color preference"),
+        children: [
+          ListTile(
             title: Text("Standard"),
             subtitle: Container(
               decoration: BoxDecoration(
-                border: Border.all(
-                  color: Colors.blue,
-                  width: 20.0,
-                ),
+                border: Border.all(color: Colors.blue, width: 20.0),
               ),
             ),
             onTap: () {
               _handleThemeChanged(ThemeColor.standard);
-            }),
-        ListTile(
+            },
+          ),
+          ListTile(
             title: Text("Green"),
             subtitle: Container(
               decoration: BoxDecoration(
-                border: Border.all(
-                  color: Colors.green,
-                  width: 20.0,
-                ),
+                border: Border.all(color: Colors.green, width: 20.0),
               ),
             ),
             onTap: () {
               _handleThemeChanged(ThemeColor.green);
-            }),
-        ListTile(
+            },
+          ),
+          ListTile(
             title: Text("Red"),
             subtitle: Container(
               decoration: BoxDecoration(
-                border: Border.all(
-                  color: Colors.red,
-                  width: 20.0,
-                ),
+                border: Border.all(color: Colors.red, width: 20.0),
               ),
             ),
             onTap: () {
               _handleThemeChanged(ThemeColor.red);
-            }),
-        ListTile(
+            },
+          ),
+          ListTile(
             title: Text("Purple"),
             subtitle: Container(
               decoration: BoxDecoration(
-                border: Border.all(
-                  color: Colors.purple,
-                  width: 20.0,
-                ),
+                border: Border.all(color: Colors.purple, width: 20.0),
               ),
             ),
             onTap: () {
               _handleThemeChanged(ThemeColor.purple);
-            }),
-        ListTile(
+            },
+          ),
+          ListTile(
             title: Text("Dark"),
             subtitle: Container(
               decoration: BoxDecoration(
-                border: Border.all(
-                  color: Colors.black54,
-                  width: 20.0,
-                ),
+                border: Border.all(color: Colors.black54, width: 20.0),
               ),
             ),
             onTap: () {
               _handleThemeChanged(ThemeColor.dark);
-            }),
-        ListTile(
+            },
+          ),
+          ListTile(
             title: Text("AMOLED Dark"),
             subtitle: Container(
               decoration: BoxDecoration(
-                border: Border.all(
-                  color: Colors.black,
-                  width: 20.0,
-                ),
+                border: Border.all(color: Colors.black, width: 20.0),
               ),
             ),
             onTap: () {
               _handleThemeChanged(ThemeColor.amoledDark);
-            }),
-      ]),
+            },
+          ),
+        ],
+      ),
     );
   }
 
@@ -157,57 +150,66 @@ class _PreferencesPageState extends State<PreferencesPage> {
         onTap: _changeTheme,
       ),
       ListTile(
-          title: Text('Show statistics in miles'),
-          trailing: Switch(
-              value: _generalSettings.useMiles,
-              onChanged: (bool value) {
-                setState(() {
-                  _generalSettings.useMiles = value;
-                  persistGeneralSettings();
-                });
-              })),
+        title: Text('Show statistics in miles'),
+        trailing: Switch(
+          value: _generalSettings.useMiles,
+          onChanged: (bool value) {
+            setState(() {
+              _generalSettings.useMiles = value;
+              persistGeneralSettings();
+            });
+          },
+        ),
+      ),
       ListTile(
-          title: Text('Show CO2 reductions'),
-          trailing: Switch(
-              value: _generalSettings.showCO2,
-              onChanged: (bool value) {
-                setState(() {
-                  _generalSettings.showCO2 = value;
-                  persistGeneralSettings();
-                });
-              })),
+        title: Text('Show CO2 reductions'),
+        trailing: Switch(
+          value: _generalSettings.showCO2,
+          onChanged: (bool value) {
+            setState(() {
+              _generalSettings.showCO2 = value;
+              persistGeneralSettings();
+            });
+          },
+        ),
+      ),
       ListTile(
         title: Text('Use mileage/kWh'),
         trailing: Switch(
-            value: _generalSettings.useMileagePerKWh,
-            onChanged: (bool value) {
-              setState(() {
-                _generalSettings.useMileagePerKWh = value;
-                persistGeneralSettings();
-              });
-            }),
+          value: _generalSettings.useMileagePerKWh,
+          onChanged: (bool value) {
+            setState(() {
+              _generalSettings.useMileagePerKWh = value;
+              persistGeneralSettings();
+            });
+          },
+        ),
       ),
       ListTile(
-        title: Text('Use 12th bar notation (if applicable)'),
+        title: Text('Use 12th bar notation '),
+        subtitle: Text('If applicable'),
         trailing: Switch(
-            value: _generalSettings.use12thBarNotation,
-            onChanged: (bool value) {
-              setState(() {
-                _generalSettings.use12thBarNotation = value;
-                persistGeneralSettings();
-              });
-            }),
+          value: _generalSettings.use12thBarNotation,
+          onChanged: (bool value) {
+            setState(() {
+              _generalSettings.use12thBarNotation = value;
+              persistGeneralSettings();
+            });
+          },
+        ),
       ),
       ListTile(
-          title: Text('Override time zone'),
-          trailing: Switch(
-              value: _generalSettings.timeZoneOverride,
-              onChanged: (bool value) {
-                setState(() {
-                  _generalSettings.timeZoneOverride = value;
-                  persistGeneralSettings();
-                });
-              })),
+        title: Text('Override time zone'),
+        trailing: Switch(
+          value: _generalSettings.timeZoneOverride,
+          onChanged: (bool value) {
+            setState(() {
+              _generalSettings.timeZoneOverride = value;
+              persistGeneralSettings();
+            });
+          },
+        ),
+      ),
       _generalSettings.timeZoneOverride
           ? ListTile(
               trailing: DropdownButton<String>(
@@ -227,44 +229,49 @@ class _PreferencesPageState extends State<PreferencesPage> {
       ListTile(
         title: Text('Turn on debugging'),
         trailing: Switch(
-            value: widget.session.carwings.debug,
-            onChanged: (bool value) {
-              setState(() {
-                widget.session.carwings.debug = value;
-                widget.session.nissanConnectNa.debug = value;
-                widget.session.nissanConnect.debug = value;
-              });
-            }),
+          value: widget.session.carwings.debug,
+          onChanged: (bool value) {
+            setState(() {
+              widget.session.carwings.debug = value;
+              widget.session.nissanConnectNa.debug = value;
+              widget.session.nissanConnect.debug = value;
+            });
+          },
+        ),
       ),
       Visibility(
-        visible: widget.session.isWorld() && Platform.isAndroid,
+        visible: widget.session.isWorld(),
         child: ListTile(
           title: Text(
-              'Keep vehicle(s) alive (experimental; use with CAUTION; will keep your vehicle(s) from sleeping through polling data at 30 minute intervals)'),
+            'Keep vehicle(s) alive (experimental; use with CAUTION; will keep your vehicle(s) from sleeping through polling data at 30 minute intervals)',
+          ),
           trailing: Switch(
-              value: _generalSettings.keepAlive,
-              onChanged: (bool value) {
-                setState(() {
-                  _generalSettings.keepAlive = value;
+            value: _generalSettings.keepAlive,
+            onChanged: (bool value) async {
+              setState(() {
+                _generalSettings.keepAlive = value;
+              });
 
-                  if (value)
-                    KeepAliveVehicleHelper.enableKeepAlive(preferencesManager);
-                  else
-                    KeepAliveVehicleHelper.disableKeepAlive();
+              await persistGeneralSettings();
 
-                  persistGeneralSettings();
-                });
-              }),
+              if (value)
+                BackgroundService.enable();
+              else
+                BackgroundService.disable();
+            },
+          ),
         ),
       ),
       ListTile(
-          leading: Icon(Icons.info),
-          title: Text("Debug log"),
-          onTap: _openDebugPage),
+        leading: Icon(Icons.info),
+        title: Text("Debug log"),
+        onTap: _openDebugPage,
+      ),
       ListTile(
-          leading: Icon(Icons.info),
-          title: Text("About"),
-          onTap: _openAboutPage),
+        leading: Icon(Icons.info),
+        title: Text("About"),
+        onTap: _openAboutPage,
+      ),
     ];
     return ListView(
       padding: const EdgeInsets.symmetric(vertical: 20.0),
@@ -272,13 +279,15 @@ class _PreferencesPageState extends State<PreferencesPage> {
     );
   }
 
-  void persistGeneralSettings() {
-    preferencesManager.setGeneralSettings(_generalSettings);
-    if (_generalSettings.timeZoneOverride) {
-      widget.session.carwings.setTimeZoneOverride(_generalSettings.timeZone);
-    } else {
-      widget.session.carwings.setTimeZoneOverride(null);
-    }
+  Future<void> persistGeneralSettings() {
+    return PreferencesManager.setGeneralSettings((_) {
+      if (_generalSettings.timeZoneOverride) {
+        widget.session.carwings.setTimeZoneOverride(_generalSettings.timeZone);
+      } else {
+        widget.session.carwings.setTimeZoneOverride(null);
+      }
+      return _generalSettings;
+    });
   }
 
   List<DropdownMenuItem<String>> _buildTimeZoneDropDownMenuItems() {
@@ -291,8 +300,9 @@ class _PreferencesPageState extends State<PreferencesPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        appBar: AppBar(title: const Text('Preferences')),
-        body: buildSettingsPane(context));
+    return SafeAreaScaffold(
+      appBar: AppBar(title: const Text('Preferences')),
+      body: buildSettingsPane(context),
+    );
   }
 }

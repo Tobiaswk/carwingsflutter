@@ -1,60 +1,16 @@
-import 'dart:io';
-
+import 'package:carwingsflutter/background_service.dart';
 import 'package:carwingsflutter/login_page.dart';
 import 'package:carwingsflutter/preferences_manager.dart';
 import 'package:carwingsflutter/preferences_page.dart';
 import 'package:carwingsflutter/preferences_types.dart';
 import 'package:carwingsflutter/session.dart';
-import 'package:dartnissanconnect/dartnissanconnect.dart';
 import 'package:flutter/material.dart';
 import 'package:workmanager/workmanager.dart';
-
-/// Used for "keep vehicle alive" functionality
-///
-/// Some users have issues with their vehicles going to "deep sleep"
-/// causing their vehicle to not be reachable through the API/app.
-/// This functionality is reserved for European vehicles produced after
-/// May 2019.
-///
-/// This is the callback that gets called at intervals in the background; also
-/// when the app is not active either in background, foreground or not at all.
-/// See the [KeepAliveVehicleHelper].
-///
-/// This method must be a top level function to be accessible as a
-/// Flutter entry point.
-@pragma('vm:entry-point')
-void keepAliveVehicleTaskCallbackDispatcher() {
-  Workmanager().executeTask((task, inputData) async {
-    String username = inputData!['username'];
-    String password = inputData['password'];
-    bool isWorld = inputData['isWorld'];
-
-    if (isWorld) {
-      NissanConnectSession nissanConnect = NissanConnectSession();
-
-      try {
-        var vehicle =
-            await nissanConnect.login(username: username, password: password);
-
-        for (vehicle in nissanConnect.vehicles)
-          await vehicle.requestBatteryStatusRefresh();
-      } catch (e) {
-        return Future.value(false);
-      }
-
-      return Future.value(true);
-    }
-
-    return Future.value(true);
-  });
-}
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
 
-  if (Platform.isAndroid) {
-    Workmanager().initialize(keepAliveVehicleTaskCallbackDispatcher);
-  }
+  Workmanager().initialize(backgroundServiceCallback);
 
   runApp(MyApp());
 }
@@ -65,20 +21,19 @@ class MyApp extends StatefulWidget {
 }
 
 class MyAppState extends State<MyApp> {
-  var preferencesManager = PreferencesManager();
+  var preferencesManager = PreferencesManager;
 
   Session _session = Session();
 
   MyAppState() {
-    preferencesManager.getTheme().then((themeColor) {
+    PreferencesManager.getTheme().then((themeColor) {
       configurationUpdater(
-          _configuration.copyWith(theme: ThemeColor.values[themeColor]));
+        _configuration.copyWith(theme: ThemeColor.values[themeColor]),
+      );
     });
   }
 
-  Setting _configuration = Setting(
-    theme: ThemeColor.standard,
-  );
+  Setting _configuration = Setting(theme: ThemeColor.standard);
 
   void configurationUpdater(Setting value) {
     setState(() {
@@ -90,7 +45,8 @@ class MyAppState extends State<MyApp> {
     switch (_configuration.theme) {
       case ThemeColor.standard:
         return ThemeData(
-            colorScheme: ColorScheme.fromSeed(seedColor: Colors.blue));
+          colorScheme: ColorScheme.fromSeed(seedColor: Colors.blue),
+        );
       case ThemeColor.green:
         return ThemeData(colorSchemeSeed: Colors.green);
       case ThemeColor.red:
@@ -99,11 +55,12 @@ class MyAppState extends State<MyApp> {
         return ThemeData(colorSchemeSeed: Colors.purple);
       case ThemeColor.dark:
         return ThemeData(
-          appBarTheme:
-              AppBarTheme(backgroundColor: Colors.grey.withOpacity(.21)),
+          appBarTheme: AppBarTheme(
+            backgroundColor: Colors.grey.withValues(alpha: .21),
+          ),
           //scaffoldBackgroundColor: Colors.transparent,
           colorSchemeSeed: Colors.grey,
-          cardColor: Colors.grey.withOpacity(.2),
+          cardColor: Colors.grey.withValues(alpha: .2),
           //dialogBackgroundColor: Color(0xFF282828),
           //drawerTheme: DrawerThemeData(backgroundColor: Colors.black),
           brightness: Brightness.dark,
@@ -134,12 +91,10 @@ class MyAppState extends State<MyApp> {
       },
       title: 'My Leaf',
       theme: theme,
-      home: LoginPage(
-        _session,
-      ),
+      home: LoginPage(_session),
       routes: <String, WidgetBuilder>{
         '/preferences': (BuildContext context) =>
-            PreferencesPage(_configuration, configurationUpdater, _session)
+            PreferencesPage(_configuration, configurationUpdater, _session),
       },
     );
   }

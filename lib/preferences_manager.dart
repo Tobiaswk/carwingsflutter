@@ -13,47 +13,55 @@ class PreferencesManager {
   static final PREF_GENERAL_SETTINGS = 'generalSettings';
   static final PREF_CHARGING_SCHEDULED = 'chargingScheduled';
 
-  Future<SharedPreferences> getPreferences() async {
+  static Future<SharedPreferences> getPreferences() async {
     return SharedPreferences.getInstance();
   }
 
-  Future<Null> setDonated(bool donated) async {
+  static Future<Null> setDonated(bool donated) async {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
     sharedPreferences.setBool(PREF_DONATED, donated);
   }
 
-  Future<int> getTheme() async {
+  static Future<int> getTheme() async {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
     return sharedPreferences.getInt(PREF_THEME) ?? 0;
   }
 
-  Future<Null> setTheme(int theme) async {
+  static Future<Null> setTheme(int theme) async {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
     sharedPreferences.setInt(PREF_THEME, theme);
   }
 
-  Future<LoginSettings?> getLoginSettings() async {
+  static Future<LoginSettings?> getLoginSettings() async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
     String? data = preferences.getString(PREF_LOGIN);
     return data != null ? LoginSettings.fromJson(json.decode(data)) : null;
   }
 
-  Future<Null> setLoginSettings(
-      String username, String password, CarwingsRegion region) async {
+  static Future<Null> setLoginSettings(
+    String username,
+    String password,
+    CarwingsRegion region,
+  ) async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
     preferences.setString(
-        PREF_LOGIN,
-        json.encode(LoginSettings(
-                username: username, password: password, region: region)
-            .toJson()));
+      PREF_LOGIN,
+      json.encode(
+        LoginSettings(
+          username: username,
+          password: password,
+          region: region,
+        ).toJson(),
+      ),
+    );
   }
 
-  Future<Null> clearLoginSettings() async {
+  static Future<Null> clearLoginSettings() async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
     preferences.remove(PREF_LOGIN);
   }
 
-  Future<GeneralSettings> getGeneralSettings() async {
+  static Future<GeneralSettings> getGeneralSettings() async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
     String? data = preferences.getString(PREF_GENERAL_SETTINGS);
     return data != null
@@ -61,27 +69,36 @@ class PreferencesManager {
         : GeneralSettings();
   }
 
-  Future<Null> setGeneralSettings(GeneralSettings generalSettings) async {
+  static Future<void> setGeneralSettings(
+    GeneralSettings Function(GeneralSettings) settings,
+  ) async {
+    final generalSettings = settings.call(await getGeneralSettings());
+
     SharedPreferences preferences = await SharedPreferences.getInstance();
+
     preferences.setString(
-        PREF_GENERAL_SETTINGS, json.encode(generalSettings.toJson()));
+      PREF_GENERAL_SETTINGS,
+      json.encode(generalSettings.toJson()),
+    );
   }
 
   // For now save charging schedule in preferences
   // It is not possible to get schedule with Carwings API
-  Future<DateTime> getChargingSchedule() async {
+  static Future<DateTime> getChargingSchedule() async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
     int? chargingSchduled = preferences.getInt(PREF_CHARGING_SCHEDULED);
     return DateTime.fromMillisecondsSinceEpoch(chargingSchduled ?? 0);
   }
 
-  Future<Null> setChargingSchedule(DateTime chargingSchedule) async {
+  static Future<Null> setChargingSchedule(DateTime chargingSchedule) async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
     preferences.setInt(
-        PREF_CHARGING_SCHEDULED, chargingSchedule.millisecondsSinceEpoch);
+      PREF_CHARGING_SCHEDULED,
+      chargingSchedule.millisecondsSinceEpoch,
+    );
   }
 
-  Future<Null> clear() async {
+  static Future<Null> clear() async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
     preferences.clear();
   }

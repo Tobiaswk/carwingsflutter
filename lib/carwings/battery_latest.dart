@@ -18,8 +18,6 @@ class BatteryLatest extends StatefulWidget {
 }
 
 class _BatteryLatestState extends State<BatteryLatest> {
-  PreferencesManager preferencesManager = PreferencesManager();
-
   GeneralSettings _generalSettings = GeneralSettings();
 
   CarwingsBattery? _battery;
@@ -34,13 +32,13 @@ class _BatteryLatestState extends State<BatteryLatest> {
   }
 
   _getBatteryStatusLatest() async {
-    CarwingsBattery? battery =
-        await widget.session.carwings.vehicle.requestBatteryStatusLatest();
+    CarwingsBattery? battery = await widget.session.carwings.vehicle
+        .requestBatteryStatusLatest();
     setState(() {
       this._battery = battery;
     });
     GeneralSettings generalSettings =
-        await preferencesManager.getGeneralSettings();
+        await PreferencesManager.getGeneralSettings();
     setState(() {
       _generalSettings = generalSettings;
     });
@@ -66,19 +64,20 @@ class _BatteryLatestState extends State<BatteryLatest> {
   }
 
   _withValues(
-      DateTime? date,
-      bool isCharging,
-      String batteryPercentage,
-      String? battery12thBar,
-      String cruisingRangeAcOffKm,
-      String cruisingRangeAcOffMiles,
-      String cruisingRangeAcOnKm,
-      String cruisingRangeAcOnMiles,
-      Duration timeToFullTrickle,
-      Duration timeToFullL2,
-      Duration timeToFullL2_6kw,
-      String? chargingkWLevelText,
-      String? chargingRemainingText) {
+    DateTime? date,
+    bool isCharging,
+    String batteryPercentage,
+    String? battery12thBar,
+    String cruisingRangeAcOffKm,
+    String cruisingRangeAcOffMiles,
+    String cruisingRangeAcOnKm,
+    String cruisingRangeAcOnMiles,
+    Duration timeToFullTrickle,
+    Duration timeToFullL2,
+    Duration timeToFullL2_6kw,
+    String? chargingkWLevelText,
+    String? chargingRemainingText,
+  ) {
     return Padding(
       padding: const EdgeInsets.only(left: 25, right: 33, top: 15, bottom: 8),
       child: Row(
@@ -91,50 +90,54 @@ class _BatteryLatestState extends State<BatteryLatest> {
               fit: BoxFit.scaleDown,
               child: SleekCircularSlider(
                 appearance: CircularSliderAppearance(
-                    angleRange: 360,
-                    startAngle: 90,
-                    customColors: CustomSliderColors(
-                        progressBarColors: [Colors.white, Colors.white],
-                        hideShadow: true,
-                        dotColor: Theme.of(context).primaryColor,
-                        trackColor: Colors.white,
-                        shadowColor: Colors.white)),
+                  angleRange: 360,
+                  startAngle: 90,
+                  customColors: CustomSliderColors(
+                    progressBarColors: [Colors.white, Colors.white],
+                    hideShadow: true,
+                    dotColor: Theme.of(context).primaryColor,
+                    trackColor: Colors.white,
+                    shadowColor: Colors.white,
+                  ),
+                ),
                 min: 0,
                 innerWidget: (double percentage) {
                   return Center(
-                      child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      isCharging
-                          ? Column(
-                              children: [
-                                WidgetPulse(
-                                    Icon(
-                                      Icons.power,
-                                      color: Colors.white,
-                                    ),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        isCharging
+                            ? Column(
+                                children: [
+                                  WidgetPulse(
+                                    Icon(Icons.power, color: Colors.white),
                                     1.0,
                                     1.5,
-                                    Duration(milliseconds: 1500)),
-                                Text('Charging!',
-                                    style: TextStyle(color: Colors.white))
-                              ],
-                            )
-                          : Container(),
-                      Text(
-                        'Battery SOC',
-                        style: TextStyle(color: Colors.white),
-                      ),
-                      Text(
-                        '${percentage.floor()} %',
-                        style: TextStyle(fontSize: 35.0, color: Colors.white),
-                      ),
-                    ],
-                  ));
+                                    Duration(milliseconds: 1500),
+                                  ),
+                                  Text(
+                                    'Charging!',
+                                    style: TextStyle(color: Colors.white),
+                                  ),
+                                ],
+                              )
+                            : Container(),
+                        Text(
+                          'Battery SOC',
+                          style: TextStyle(color: Colors.white),
+                        ),
+                        Text(
+                          '${percentage.floor()} %',
+                          style: TextStyle(fontSize: 35.0, color: Colors.white),
+                        ),
+                      ],
+                    ),
+                  );
                 },
                 max: 100,
-                initialValue:
-                    double.parse(batteryPercentage.replaceAll('%', '')),
+                initialValue: double.parse(
+                  batteryPercentage.replaceAll('%', ''),
+                ),
               ),
             ),
           ),
@@ -148,21 +151,21 @@ class _BatteryLatestState extends State<BatteryLatest> {
                       Icon(Icons.access_time, color: Colors.white),
                       Padding(padding: const EdgeInsets.all(3.0)),
                       Text(
-                          date != null
-                              ? DateFormat("EEE H:mm").format(date)
-                              : '-',
-                          style: TextStyle(color: Colors.white)),
+                        date != null
+                            ? DateFormat("EEE H:mm").format(date)
+                            : '-',
+                        style: TextStyle(color: Colors.white),
+                      ),
                     ],
                   ),
                   _isLoading
-                      ? WidgetRotater(IconButton(
-                          visualDensity: VisualDensity.compact,
-                          icon: Icon(
-                            Icons.refresh,
-                            color: Colors.white,
+                      ? WidgetRotater(
+                          IconButton(
+                            visualDensity: VisualDensity.compact,
+                            icon: Icon(Icons.refresh, color: Colors.white),
+                            onPressed: () => {},
                           ),
-                          onPressed: () => {},
-                        ))
+                        )
                       : IconButton(
                           visualDensity: VisualDensity.compact,
                           icon: Icon(Icons.refresh, color: Colors.white),
@@ -177,18 +180,17 @@ class _BatteryLatestState extends State<BatteryLatest> {
                     '${_generalSettings.useMiles ? cruisingRangeAcOffMiles : cruisingRangeAcOffKm}',
                     style: TextStyle(color: Colors.white, fontSize: 18.0),
                   ),
-                  Text(' / ',
-                      style: TextStyle(color: Colors.white, fontSize: 30.0)),
+                  Text(
+                    ' / ',
+                    style: TextStyle(color: Colors.white, fontSize: 30.0),
+                  ),
                   Row(
                     children: <Widget>[
                       Text(
                         '${_generalSettings.useMiles ? cruisingRangeAcOnMiles : cruisingRangeAcOnKm}',
                         style: TextStyle(color: Colors.white, fontSize: 18.0),
                       ),
-                      Text(
-                        ' AC',
-                        style: TextStyle(color: Colors.white),
-                      )
+                      Text(' AC', style: TextStyle(color: Colors.white)),
                     ],
                   ),
                 ],
@@ -202,7 +204,9 @@ class _BatteryLatestState extends State<BatteryLatest> {
                         Text(
                           chargingRemainingText ?? '',
                           style: TextStyle(
-                              fontWeight: FontWeight.bold, color: Colors.white),
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white,
+                          ),
                         ),
                         Text(
                           chargingkWLevelText ?? '',
@@ -217,30 +221,38 @@ class _BatteryLatestState extends State<BatteryLatest> {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: <Widget>[
                             Text('~1kW', style: TextStyle(color: Colors.white)),
-                            Text('${timeToFullTrickle.inHours} hrs',
-                                style: TextStyle(color: Colors.white)),
+                            Text(
+                              '${timeToFullTrickle.inHours} hrs',
+                              style: TextStyle(color: Colors.white),
+                            ),
                           ],
                         ),
-                        Text(' / ',
-                            style:
-                                TextStyle(color: Colors.white, fontSize: 30.0)),
+                        Text(
+                          ' / ',
+                          style: TextStyle(color: Colors.white, fontSize: 30.0),
+                        ),
                         Column(
                           children: <Widget>[
                             Text('~3kW', style: TextStyle(color: Colors.white)),
-                            Text('${timeToFullL2.inHours} hrs',
-                                style: TextStyle(color: Colors.white)),
+                            Text(
+                              '${timeToFullL2.inHours} hrs',
+                              style: TextStyle(color: Colors.white),
+                            ),
                           ],
                         ),
-                        Text(' / ',
-                            style:
-                                TextStyle(color: Colors.white, fontSize: 30.0)),
+                        Text(
+                          ' / ',
+                          style: TextStyle(color: Colors.white, fontSize: 30.0),
+                        ),
                         Column(
                           children: <Widget>[
                             Text('~6kW', style: TextStyle(color: Colors.white)),
-                            Text('${timeToFullL2_6kw.inHours} hrs',
-                                style: TextStyle(color: Colors.white)),
+                            Text(
+                              '${timeToFullL2_6kw.inHours} hrs',
+                              style: TextStyle(color: Colors.white),
+                            ),
                           ],
-                        )
+                        ),
                       ],
                     ),
             ],
@@ -253,34 +265,37 @@ class _BatteryLatestState extends State<BatteryLatest> {
   @override
   Widget build(BuildContext context) {
     return Container(
-        child: _battery != null
-            ? _withValues(
-                _battery!.dateTime,
-                _battery!.isCharging,
-                _battery!.batteryPercentage,
-                _battery!.battery12thBar,
-                _battery!.cruisingRangeAcOffKm,
-                _battery!.cruisingRangeAcOffMiles,
-                _battery!.cruisingRangeAcOnKm,
-                _battery!.cruisingRangeAcOnMiles,
-                _battery!.timeToFullTrickle,
-                _battery!.timeToFullL2,
-                _battery!.timeToFullL2_6kw,
-                _battery!.chargingkWLevelText,
-                _battery!.chargingRemainingText)
-            : _withValues(
-                null,
-                false,
-                '0',
-                '-',
-                '-',
-                '-',
-                '-',
-                '-',
-                Duration(hours: 0),
-                Duration(hours: 0),
-                Duration(hours: 0),
-                '',
-                ''));
+      child: _battery != null
+          ? _withValues(
+              _battery!.dateTime,
+              _battery!.isCharging,
+              _battery!.batteryPercentage,
+              _battery!.battery12thBar,
+              _battery!.cruisingRangeAcOffKm,
+              _battery!.cruisingRangeAcOffMiles,
+              _battery!.cruisingRangeAcOnKm,
+              _battery!.cruisingRangeAcOnMiles,
+              _battery!.timeToFullTrickle,
+              _battery!.timeToFullL2,
+              _battery!.timeToFullL2_6kw,
+              _battery!.chargingkWLevelText,
+              _battery!.chargingRemainingText,
+            )
+          : _withValues(
+              null,
+              false,
+              '0',
+              '-',
+              '-',
+              '-',
+              '-',
+              '-',
+              Duration(hours: 0),
+              Duration(hours: 0),
+              Duration(hours: 0),
+              '',
+              '',
+            ),
+    );
   }
 }
