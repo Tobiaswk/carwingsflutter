@@ -10,14 +10,19 @@ import org.json.JSONObject;
 
 import javax.crypto.Cipher;
 import javax.crypto.spec.SecretKeySpec;
+import javax.crypto.Cipher;
+import javax.crypto.spec.IvParameterSpec;
+import javax.crypto.spec.SecretKeySpec;
+import java.nio.charset.StandardCharsets;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
 
+
 public class CarwingsSession {
 
-    final String baseUrl = "https://gdcportalgw.its-mo.com/api_v230317_NE/gdc/";
+    final String baseUrl = "https://gdcportalgw.its-mo.com/api_v250205_NE/gdc/";
 
     // Result of the call to InitialApp.php, which appears to
     // always be the same.  It'll probably break at some point but
@@ -99,7 +104,7 @@ public class CarwingsSession {
         JSONObject response = request("UserLoginRequest.php", new HashMap() {{
             put("RegionCode", CarwingsSession.this.region);
             put("UserId", username);
-            put("Password", encrypt(basePrm, password));
+            put("Password", encryptAES256CBC(password));
         }});
 
         if (getStatus(response) != 200) {
@@ -160,12 +165,22 @@ public class CarwingsSession {
         }
     }
 
-    private String encrypt(String key, String password) throws Exception {
-        byte[] KeyData = key.getBytes();
-        SecretKeySpec KS = new SecretKeySpec(KeyData, "Blowfish");
-        Cipher cipher = Cipher.getInstance("Blowfish");
-        cipher.init(Cipher.ENCRYPT_MODE, KS);
-        return Base64.encodeToString(cipher.doFinal(password.getBytes()), Base64.NO_CLOSE);
+    private String encryptAES256CBC(String input) {
+        try {
+            String cipherKey = "H9YsaE6mr3jBEsAaLC4EJRjn9VXEtTzV"; // BuildConfig.PS
+            String cipherIv = "xaX4ui2PLnwqcc74"; // BuildConfig.IV
+
+            SecretKeySpec keySpec = new SecretKeySpec(cipherKey.getBytes(StandardCharsets.UTF_8), "AES");
+            IvParameterSpec ivSpec = new IvParameterSpec(cipherIv.getBytes(StandardCharsets.UTF_8));
+
+            Cipher cipher = Cipher.getInstance("AES/CBC/PKCS7Padding");
+            cipher.init(Cipher.ENCRYPT_MODE, keySpec, ivSpec);
+
+            byte[] encrypted = cipher.doFinal(input.getBytes(StandardCharsets.UTF_8));
+            return Base64.encodeToString(encrypted, Base64.DEFAULT);
+        } catch (Exception e) {
+            throw new RuntimeException("Encryption failed", e);
+        }
     }
 
     public boolean climateControlOn(String vehicleNickname) throws Exception {

@@ -1,4 +1,5 @@
-import 'package:carwingsflutter/preferences_page.dart';
+import 'package:carwingsflutter/safe_area_scaffold.dart';
+import 'package:carwingsflutter/preferences_manager.dart';
 import 'package:carwingsflutter/preferences_types.dart';
 import 'package:carwingsflutter/session.dart';
 import 'package:carwingsflutter/util.dart';
@@ -16,8 +17,6 @@ class MainPage extends StatefulWidget {
 }
 
 class _MainPageState extends State<MainPage> {
-  final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
-
   var _selectedVehicleValue; // Represents the current selected vehicle by nickname
 
   @override
@@ -47,12 +46,15 @@ class _MainPageState extends State<MainPage> {
           break;
         case API_TYPE.NISSANCONNECT:
           await widget.session.nissanConnect.vehicle.requestLocationRefresh();
-          location =
-              await widget.session.nissanConnect.vehicle.requestLocation();
+          location = await widget.session.nissanConnect.vehicle
+              .requestLocation();
           break;
       }
-      launchUrl(Uri.parse(
-          'https://www.google.com/maps/search/?api=1&query=${location.latitude},${location.longitude}'));
+      launchUrl(
+        Uri.parse(
+          'https://www.google.com/maps/search/?api=1&query=${location.latitude},${location.longitude}',
+        ),
+      );
     } catch (error) {
       _snackBar('Could not locate your vehicle!');
     } finally {
@@ -61,35 +63,43 @@ class _MainPageState extends State<MainPage> {
   }
 
   _openVehicleInfoPage(vehicle) {
-    Navigator.of(context).push(MaterialPageRoute<Null>(
-      builder: (BuildContext context) {
-        return WidgetAPIChooser.vehiclePage(widget.session);
-      },
-    ));
+    Navigator.of(context).push(
+      MaterialPageRoute<Null>(
+        builder: (BuildContext context) {
+          return WidgetAPIChooser.vehiclePage(widget.session);
+        },
+      ),
+    );
   }
 
   _openClimateControlPage() {
-    Navigator.of(context).push(MaterialPageRoute<Null>(
-      builder: (BuildContext context) {
-        return WidgetAPIChooser.climateControlPage(widget.session);
-      },
-    ));
+    Navigator.of(context).push(
+      MaterialPageRoute<Null>(
+        builder: (BuildContext context) {
+          return WidgetAPIChooser.climateControlPage(widget.session);
+        },
+      ),
+    );
   }
 
   _openChargingControlPage() {
-    Navigator.of(context).push(MaterialPageRoute<Null>(
-      builder: (BuildContext context) {
-        return WidgetAPIChooser.chargingControlPage(widget.session);
-      },
-    ));
+    Navigator.of(context).push(
+      MaterialPageRoute<Null>(
+        builder: (BuildContext context) {
+          return WidgetAPIChooser.chargingControlPage(widget.session);
+        },
+      ),
+    );
   }
 
   _openTripDetailListPage() {
-    Navigator.of(context).push(MaterialPageRoute<Null>(
-      builder: (BuildContext context) {
-        return WidgetAPIChooser.tripDetailsPage(widget.session);
-      },
-    ));
+    Navigator.of(context).push(
+      MaterialPageRoute<Null>(
+        builder: (BuildContext context) {
+          return WidgetAPIChooser.tripDetailsPage(widget.session);
+        },
+      ),
+    );
   }
 
   _openPreferencesPage() {
@@ -105,12 +115,14 @@ class _MainPageState extends State<MainPage> {
       child: ListView(
         children: <Widget>[
           DrawerHeader(
-              child: Center(
-                  child: ImageIcon(
-            AssetImage('images/car-leaf.png'),
-            size: 100.0,
-            color: Util.primaryColor(context),
-          ))),
+            child: Center(
+              child: ImageIcon(
+                AssetImage('images/car-leaf.png'),
+                size: 100.0,
+                color: Util.primaryColor(context),
+              ),
+            ),
+          ),
           _buildVehicleListTiles(context),
           ListTile(
             leading: const Icon(Icons.map),
@@ -142,64 +154,73 @@ class _MainPageState extends State<MainPage> {
     widget.session.changeVehicle(nickname);
 
     // Push replacement page to force refresh with selected vehicle
-    Navigator.of(context).pushReplacement(MaterialPageRoute<Null>(
-      builder: (BuildContext context) => MainPage(widget.session),
-    ));
+    Navigator.of(context).pushReplacement(
+      MaterialPageRoute<Null>(
+        builder: (BuildContext context) => MainPage(widget.session),
+      ),
+    );
   }
 
   Column _buildVehicleListTiles(context) {
     List<ListTile> vehicleListTiles = <ListTile>[];
     var vehicles = widget.session.getVehicles();
     for (dynamic vehicle in vehicles) {
-      vehicleListTiles.add(ListTile(
-        leading: ImageIcon(AssetImage('images/sports-car.png')),
-        trailing: Radio(
-          value: vehicle.nickname,
-          groupValue: _selectedVehicleValue,
-          onChanged: _handleVehicleChange,
+      vehicleListTiles.add(
+        ListTile(
+          leading: ImageIcon(AssetImage('images/sports-car.png')),
+          trailing: Radio(
+            value: vehicle.nickname,
+            groupValue: _selectedVehicleValue,
+            onChanged: _handleVehicleChange,
+          ),
+          title: Text(vehicle.nickname),
+          onTap: () => _openVehicleInfoPage(vehicle),
+          onLongPress: () => null,
         ),
-        title: Text(vehicle.nickname),
-        onTap: () => _openVehicleInfoPage(vehicle),
-        onLongPress: () => null,
-      ));
+      );
     }
     return Column(children: vehicleListTiles);
   }
 
   void _snackBar(message) {
     ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(duration: Duration(seconds: 5), content: Text(message)));
+      SnackBar(duration: Duration(seconds: 5), content: Text(message)),
+    );
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      key: scaffoldKey,
+    return SafeAreaScaffold(
       backgroundColor: Theme.of(context).primaryColor,
-      appBar: AppBar(title: Text('Dashboard'), actions: [
-        IconButton(
-            icon: Icon(
-              Icons.format_list_numbered,
-            ),
-            onPressed: _openTripDetailListPage),
-        IconButton(
-            icon: ImageIcon(
-              AssetImage('images/aircondition.png'),
-            ),
-            onPressed: _openClimateControlPage),
-        IconButton(
-            icon: Icon(Icons.power), onPressed: _openChargingControlPage),
-      ]),
+      appBar: AppBar(
+        title: Text('Dashboard'),
+        actions: [
+          IconButton(
+            icon: Icon(Icons.format_list_numbered),
+            onPressed: _openTripDetailListPage,
+          ),
+          IconButton(
+            icon: ImageIcon(AssetImage('images/aircondition.png')),
+            onPressed: _openClimateControlPage,
+          ),
+          IconButton(
+            icon: Icon(Icons.power),
+            onPressed: _openChargingControlPage,
+          ),
+        ],
+      ),
       body: FutureBuilder<GeneralSettings>(
-        future: preferencesManager.getGeneralSettings(),
+        future: PreferencesManager.getGeneralSettings(),
         builder: (context, snapshot) {
           return snapshot.hasData
               ? ListView(
                   children: <Widget>[
                     WidgetAPIChooser.batteryLatestCard(
-                        widget.session, snapshot.data!),
+                      widget.session,
+                      snapshot.data!,
+                    ),
                     WidgetAPIChooser.statisticsDailyCard(widget.session),
-                    WidgetAPIChooser.statisticsMonthlyCard(widget.session)
+                    WidgetAPIChooser.statisticsMonthlyCard(widget.session),
                   ],
                 )
               : Container();

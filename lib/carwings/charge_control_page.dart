@@ -1,3 +1,4 @@
+import 'package:carwingsflutter/safe_area_scaffold.dart';
 import 'package:carwingsflutter/preferences_manager.dart';
 import 'package:carwingsflutter/session.dart';
 import 'package:carwingsflutter/util.dart';
@@ -6,20 +7,22 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 class _ChargeControlPageState extends State<ChargeControlPage> {
-  PreferencesManager preferencesManager = PreferencesManager();
-
   bool _isCharging = false;
   bool _isConnected = false;
   bool _chargeControlReady = false;
 
-  DateTime _startDate =
-      DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day);
+  DateTime _startDate = DateTime(
+    DateTime.now().year,
+    DateTime.now().month,
+    DateTime.now().day,
+  );
   DateTime _currentDate = DateTime(
-      DateTime.now().year,
-      DateTime.now().month,
-      DateTime.now().day,
-      DateTime.now().hour,
-      DateTime.now().add(Duration(seconds: 5)).minute);
+    DateTime.now().year,
+    DateTime.now().month,
+    DateTime.now().day,
+    DateTime.now().hour,
+    DateTime.now().add(Duration(seconds: 5)).minute,
+  );
   DateTime? _chargingScheduled;
 
   @override
@@ -30,7 +33,7 @@ class _ChargeControlPageState extends State<ChargeControlPage> {
   }
 
   _updateChargingSchedule() {
-    preferencesManager.getChargingSchedule().then((chargingSchedule) {
+    PreferencesManager.getChargingSchedule().then((chargingSchedule) {
       setState(() {
         // Charging is "expired"
         if (chargingSchedule.isAfter(DateTime.now())) {
@@ -44,8 +47,8 @@ class _ChargeControlPageState extends State<ChargeControlPage> {
     try {
       await widget.session.carwings.vehicle.requestBatteryStatus();
     } finally {
-      CarwingsBattery? battery =
-          await widget.session.carwings.vehicle.requestBatteryStatusLatest();
+      CarwingsBattery? battery = await widget.session.carwings.vehicle
+          .requestBatteryStatusLatest();
       setState(() {
         _isCharging = battery?.isCharging ?? false;
         _isConnected = battery?.isConnected ?? false;
@@ -60,17 +63,23 @@ class _ChargeControlPageState extends State<ChargeControlPage> {
       return;
     }
     showDatePicker(
-            context: context,
-            initialDate: _currentDate,
-            firstDate: _startDate,
-            lastDate: DateTime.now().add(Duration(days: 30)))
-        .then((date) {
+      context: context,
+      initialDate: _currentDate,
+      firstDate: _startDate,
+      lastDate: DateTime.now().add(Duration(days: 30)),
+    ).then((date) {
       if (date != null) {
-        showTimePicker(context: context, initialTime: TimeOfDay.now())
-            .then((time) {
+        showTimePicker(context: context, initialTime: TimeOfDay.now()).then((
+          time,
+        ) {
           if (time != null) {
             _currentDate = DateTime(
-                date.year, date.month, date.day, time.hour, time.minute);
+              date.year,
+              date.month,
+              date.day,
+              time.hour,
+              time.minute,
+            );
             setState(() {
               _chargingScheduled = _currentDate;
             });
@@ -86,24 +95,27 @@ class _ChargeControlPageState extends State<ChargeControlPage> {
     widget.session.carwings.vehicle
         .requestChargingStart(_currentDate)
         .then((_) {
-      _updateBatteryStatus();
-      _snackbar('Charging was scheduled');
-      preferencesManager.setChargingSchedule(_currentDate);
-    }).catchError((error) {
-      _isCharging = false;
-      _snackbar('Charging was not scheduled');
-    }).whenComplete(() => Util.dismissLoadingDialog(context));
+          _updateBatteryStatus();
+          _snackbar('Charging was scheduled');
+          PreferencesManager.setChargingSchedule(_currentDate);
+        })
+        .catchError((error) {
+          _isCharging = false;
+          _snackbar('Charging was not scheduled');
+        })
+        .whenComplete(() => Util.dismissLoadingDialog(context));
   }
 
   _snackbar(message) {
     ScaffoldMessenger.of(context).hideCurrentSnackBar();
     ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(duration: Duration(seconds: 5), content: Text(message)));
+      SnackBar(duration: Duration(seconds: 5), content: Text(message)),
+    );
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return SafeAreaScaffold(
       appBar: AppBar(title: Text("Charging")),
       body: Center(
         child: Column(
@@ -112,7 +124,9 @@ class _ChargeControlPageState extends State<ChargeControlPage> {
             Text(
               'Tap to engage',
               style: TextStyle(
-                  fontSize: 12, color: Theme.of(context).disabledColor),
+                fontSize: 12,
+                color: Theme.of(context).disabledColor,
+              ),
             ),
             IconButton(
               icon: Icon(Icons.power),
@@ -123,11 +137,19 @@ class _ChargeControlPageState extends State<ChargeControlPage> {
               onPressed: () => _chargingSchedule(true),
             ),
             Text(
-              'Charging is ${_chargeControlReady ? _isCharging ? 'on' : 'off' : 'updating...'}',
+              'Charging is ${_chargeControlReady
+                  ? _isCharging
+                        ? 'on'
+                        : 'off'
+                  : 'updating...'}',
               style: TextStyle(fontSize: 18.0),
             ),
             Text(
-              'Cable is ${_chargeControlReady ? _isConnected ? 'connected' : 'not connected' : 'updating...'}',
+              'Cable is ${_chargeControlReady
+                  ? _isConnected
+                        ? 'connected'
+                        : 'not connected'
+                  : 'updating...'}',
             ),
             IconButton(
               icon: Icon(Icons.access_time),

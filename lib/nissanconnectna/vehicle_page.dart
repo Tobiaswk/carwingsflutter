@@ -1,10 +1,11 @@
+import 'package:carwingsflutter/safe_area_scaffold.dart';
 import 'package:carwingsflutter/session.dart';
 import 'package:flutter/material.dart';
 
 class _VehiclePageState extends State<VehiclePage> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return SafeAreaScaffold(
       appBar: AppBar(title: Text("Vehicle info")),
       body: Column(
         mainAxisSize: MainAxisSize.min,

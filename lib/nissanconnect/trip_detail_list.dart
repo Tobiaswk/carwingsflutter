@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:carwingsflutter/safe_area_scaffold.dart';
 import 'package:carwingsflutter/preferences_manager.dart';
 import 'package:carwingsflutter/preferences_types.dart';
 import 'package:carwingsflutter/session.dart';
@@ -8,8 +9,6 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 class _TripDetailListState extends State<TripDetailList> {
-  PreferencesManager preferencesManager = PreferencesManager();
-
   GeneralSettings _generalSettings = GeneralSettings();
 
   DateTime _currentDate = DateTime(DateTime.now().year, DateTime.now().month);
@@ -40,13 +39,15 @@ class _TripDetailListState extends State<TripDetailList> {
       _statsTrips = null;
     });
     List<NissanConnectStats>? carwingsStatsTrips = await widget
-        .session.nissanConnect.vehicle
+        .session
+        .nissanConnect
+        .vehicle
         .requestMonthlyTripsStatistics(_currentDate);
     setState(() {
       _statsTrips = carwingsStatsTrips;
     });
     GeneralSettings generalSettings =
-        await preferencesManager.getGeneralSettings();
+        await PreferencesManager.getGeneralSettings();
     setState(() {
       _generalSettings = generalSettings;
     });
@@ -55,11 +56,12 @@ class _TripDetailListState extends State<TripDetailList> {
   void _pickDate() {
     tripCounter = 1;
     showDatePicker(
-        context: context,
-        initialDate: _currentDate,
-        firstDate: _currentDate.subtract(Duration(days: 90)),
-        lastDate: DateTime.now(),
-        selectableDayPredicate: (date) => date.day == 1).then((date) {
+      context: context,
+      initialDate: _currentDate,
+      firstDate: _currentDate.subtract(Duration(days: 90)),
+      lastDate: DateTime.now(),
+      selectableDayPredicate: (date) => date.day == 1,
+    ).then((date) {
       if (date != null) {
         _currentDate = DateTime(date.year, date.month, date.day);
 
@@ -70,7 +72,7 @@ class _TripDetailListState extends State<TripDetailList> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return SafeAreaScaffold(
       appBar: AppBar(
         title: Text("Trip Details"),
         actions: <Widget>[
@@ -80,9 +82,9 @@ class _TripDetailListState extends State<TripDetailList> {
       body: _statsTrips != null
           ? ListView(
               padding: const EdgeInsets.fromLTRB(15.0, 0.0, 15.0, 15.0),
-              children: _statsTrips!
-                  .where((trip) => trip.tripsNumber > 0)
-                  .map((trip) {
+              children: _statsTrips!.where((trip) => trip.tripsNumber > 0).map((
+                trip,
+              ) {
                 return Column(
                   children: <Widget>[
                     Padding(padding: const EdgeInsets.all(8.0)),
@@ -99,25 +101,21 @@ class _TripDetailListState extends State<TripDetailList> {
                         ),
                       ],
                     ),
-                    Divider(
-                      color: Colors.grey,
-                    ),
+                    Divider(color: Colors.grey),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: <Widget>[
-                        Chip(
-                          label: Text((tripCounter++).toString()),
-                        ),
+                        Chip(label: Text((tripCounter++).toString())),
                         Column(
                           children: <Widget>[
                             Icon(Icons.compare_arrows),
-                            Text('${trip.tripsNumber} trips')
+                            Text('${trip.tripsNumber} trips'),
                           ],
                         ),
                         Column(
                           children: <Widget>[
                             Icon(Icons.timer_outlined),
-                            Text('${trip.travelTime.inMinutes.toString()} min')
+                            Text('${trip.travelTime.inMinutes.toString()} min'),
                           ],
                         ),
                         Column(
@@ -128,22 +126,24 @@ class _TripDetailListState extends State<TripDetailList> {
                                   : trip.travelDistanceKilometers,
                               style: TextStyle(fontSize: 18.0),
                             ),
-                            Text(_generalSettings.useMileagePerKWh
-                                ? _generalSettings.useMiles
-                                    ? trip.milesPerKWh
-                                    : trip.kilometersPerKWh
-                                : _generalSettings.useMiles
-                                    ? trip.kWhPerMiles
-                                    : trip.kWhPerKilometers)
+                            Text(
+                              _generalSettings.useMileagePerKWh
+                                  ? _generalSettings.useMiles
+                                        ? trip.milesPerKWh
+                                        : trip.kilometersPerKWh
+                                  : _generalSettings.useMiles
+                                  ? trip.kWhPerMiles
+                                  : trip.kWhPerKilometers,
+                            ),
                           ],
                         ),
                         Column(
                           children: <Widget>[
-                            Text('- ${trip.kWhUsed}',
-                                style: TextStyle(fontSize: 18.0)),
                             Text(
-                              '+ ${trip.kWhGained}',
-                            )
+                              '- ${trip.kWhUsed}',
+                              style: TextStyle(fontSize: 18.0),
+                            ),
+                            Text('+ ${trip.kWhGained}'),
                           ],
                         ),
                       ],

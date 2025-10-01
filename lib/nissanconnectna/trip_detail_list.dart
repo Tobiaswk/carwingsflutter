@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:carwingsflutter/safe_area_scaffold.dart';
 import 'package:carwingsflutter/preferences_manager.dart';
 import 'package:carwingsflutter/preferences_types.dart';
 import 'package:carwingsflutter/session.dart';
@@ -8,8 +9,6 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 class _TripDetailListState extends State<TripDetailList> {
-  PreferencesManager preferencesManager = PreferencesManager();
-
   GeneralSettings _generalSettings = GeneralSettings();
 
   DateTime _currentDate = DateTime(DateTime.now().year, DateTime.now().month);
@@ -41,13 +40,15 @@ class _TripDetailListState extends State<TripDetailList> {
       _statsTrips = null;
     });
     NissanConnectTrips? sStatsTrips = await widget
-        .session.nissanConnectNa.vehicle
+        .session
+        .nissanConnectNa
+        .vehicle
         .requestMonthlyStatisticsTrips(_currentDate);
     setState(() {
       _statsTrips = sStatsTrips;
     });
     GeneralSettings generalSettings =
-        await preferencesManager.getGeneralSettings();
+        await PreferencesManager.getGeneralSettings();
     setState(() {
       _generalSettings = generalSettings;
     });
@@ -55,11 +56,12 @@ class _TripDetailListState extends State<TripDetailList> {
 
   void _pickDate() {
     showDatePicker(
-        context: context,
-        initialDate: _currentDate,
-        firstDate: _currentDate.subtract(Duration(days: 90)),
-        lastDate: DateTime.now(),
-        selectableDayPredicate: (date) => date.day == 1).then((date) {
+      context: context,
+      initialDate: _currentDate,
+      firstDate: _currentDate.subtract(Duration(days: 90)),
+      lastDate: DateTime.now(),
+      selectableDayPredicate: (date) => date.day == 1,
+    ).then((date) {
       if (date != null) {
         _currentDate = DateTime(date.year, date.month, date.day);
 
@@ -70,7 +72,7 @@ class _TripDetailListState extends State<TripDetailList> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return SafeAreaScaffold(
       appBar: AppBar(
         title: Text("Trip Details"),
         actions: <Widget>[
@@ -97,51 +99,56 @@ class _TripDetailListState extends State<TripDetailList> {
                         ),
                       ],
                     ),
-                    Divider(
-                      color: Colors.grey,
-                    ),
+                    Divider(color: Colors.grey),
                     Column(
-                        children:
-                            carwingsTrip.tripDetails.map((carwingsTripDetail) {
-                      return Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: <Widget>[
-                          carwingsTripDetail.tripId % 2 == 0
-                              ? Icon(Icons.arrow_back)
-                              : Icon(Icons.arrow_forward),
-                          Chip(
-                              label:
-                                  Text(carwingsTripDetail.tripId.toString())),
-                          Column(
-                            children: <Widget>[
-                              Text(
-                                _generalSettings.useMiles
-                                    ? carwingsTripDetail.travelDistanceMiles
-                                    : carwingsTripDetail
-                                        .travelDistanceKilometers,
-                                style: TextStyle(fontSize: 18.0),
-                              ),
-                              Text(_generalSettings.useMileagePerKWh
-                                  ? _generalSettings.useMiles
-                                      ? carwingsTripDetail.milesPerKWh
-                                      : carwingsTripDetail.kilometersPerKWh
-                                  : _generalSettings.useMiles
+                      children: carwingsTrip.tripDetails.map((
+                        carwingsTripDetail,
+                      ) {
+                        return Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: <Widget>[
+                            carwingsTripDetail.tripId % 2 == 0
+                                ? Icon(Icons.arrow_back)
+                                : Icon(Icons.arrow_forward),
+                            Chip(
+                              label: Text(carwingsTripDetail.tripId.toString()),
+                            ),
+                            Column(
+                              children: <Widget>[
+                                Text(
+                                  _generalSettings.useMiles
+                                      ? carwingsTripDetail.travelDistanceMiles
+                                      : carwingsTripDetail
+                                            .travelDistanceKilometers,
+                                  style: TextStyle(fontSize: 18.0),
+                                ),
+                                Text(
+                                  _generalSettings.useMileagePerKWh
+                                      ? _generalSettings.useMiles
+                                            ? carwingsTripDetail.milesPerKWh
+                                            : carwingsTripDetail
+                                                  .kilometersPerKWh
+                                      : _generalSettings.useMiles
                                       ? carwingsTripDetail.kWhPerMiles
-                                      : carwingsTripDetail.kWhPerKilometers)
-                            ],
-                          ),
-                          Column(
-                            children: <Widget>[
-                              Text(carwingsTripDetail.kWhUsed,
-                                  style: TextStyle(fontSize: 18.0)),
-                              _generalSettings.showCO2
-                                  ? Text(carwingsTripDetail.co2ReductionKg)
-                                  : Column(),
-                            ],
-                          )
-                        ],
-                      );
-                    }).toList()),
+                                      : carwingsTripDetail.kWhPerKilometers,
+                                ),
+                              ],
+                            ),
+                            Column(
+                              children: <Widget>[
+                                Text(
+                                  carwingsTripDetail.kWhUsed,
+                                  style: TextStyle(fontSize: 18.0),
+                                ),
+                                _generalSettings.showCO2
+                                    ? Text(carwingsTripDetail.co2ReductionKg)
+                                    : Column(),
+                              ],
+                            ),
+                          ],
+                        );
+                      }).toList(),
+                    ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: <Widget>[
@@ -155,26 +162,30 @@ class _TripDetailListState extends State<TripDetailList> {
                                   : carwingsTrip.travelDistanceKilometers,
                               style: TextStyle(fontSize: 18.0),
                             ),
-                            Text(_generalSettings.useMileagePerKWh
-                                ? _generalSettings.useMiles
-                                    ? carwingsTrip.milesPerKWh
-                                    : carwingsTrip.kilometersPerKWh
-                                : _generalSettings.useMiles
-                                    ? carwingsTrip.kWhPerMiles
-                                    : carwingsTrip.kWhPerKilometers)
+                            Text(
+                              _generalSettings.useMileagePerKWh
+                                  ? _generalSettings.useMiles
+                                        ? carwingsTrip.milesPerKWh
+                                        : carwingsTrip.kilometersPerKWh
+                                  : _generalSettings.useMiles
+                                  ? carwingsTrip.kWhPerMiles
+                                  : carwingsTrip.kWhPerKilometers,
+                            ),
                           ],
                         ),
                         Column(
                           children: <Widget>[
-                            Text(carwingsTrip.kWhUsed,
-                                style: TextStyle(fontSize: 18.0)),
+                            Text(
+                              carwingsTrip.kWhUsed,
+                              style: TextStyle(fontSize: 18.0),
+                            ),
                             _generalSettings.showCO2
                                 ? Text(carwingsTrip.co2reductionKg)
                                 : Column(),
                           ],
-                        )
+                        ),
                       ],
-                    )
+                    ),
                   ],
                 );
               }).toList(),
