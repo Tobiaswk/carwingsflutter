@@ -30,8 +30,6 @@ class GeneralSettings {
   bool showCO2;
   String timeZone;
   bool keepAlive;
-  bool useChargingPercentThreshold;
-  int chargingPercentThreshold;
 
   GeneralSettings({
     this.useMiles = false,
@@ -41,8 +39,6 @@ class GeneralSettings {
     this.showCO2 = true,
     this.timeZone = '',
     this.keepAlive = false,
-    this.useChargingPercentThreshold = false,
-    this.chargingPercentThreshold = 80,
   });
 
   factory GeneralSettings.fromJson(Map<String, dynamic> json) =>

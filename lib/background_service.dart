@@ -12,10 +12,6 @@ void backgroundServiceCallback() {
     String password = inputData[BackgroundService.password];
     bool isWorld = inputData[BackgroundService.isWorld];
     bool keepAlive = inputData[BackgroundService.keepAlive];
-    bool useChargingPercentThreshold =
-        inputData[BackgroundService.useChargingPercentThreshold];
-    // int chargingPercentThreshold =
-    //     inputData[BackgroundService.chargingPercentThreshold];
 
     if (isWorld) {
       NissanConnectSession nissanConnect = NissanConnectSession();
@@ -29,30 +25,10 @@ void backgroundServiceCallback() {
         /// causing their vehicle to not be reachable through the API/app.
         /// This functionality is reserved for European vehicles produced after
         /// May 2019.
-        if (keepAlive && !useChargingPercentThreshold) {
+        if (keepAlive) {
           for (final vehicle in nissanConnect.vehicles)
             await vehicle.requestBatteryStatusRefresh();
         }
-
-        // Used for monitoring charging state and stop charging if the
-        // charging percentage treshhold is reached.
-        // Only happens if the vehicle is already charging.
-        // if (useChargingPercentThreshold) {
-        //   for (final vehicle in nissanConnect.vehicles) {
-        //     final battery = await vehicle.requestBatteryStatusRefresh().then((
-        //       ok,
-        //     ) {
-        //       if (ok) return vehicle.requestBatteryStatus();
-        //       return Future.value(null);
-        //     });
-
-        //     if (battery != null &&
-        //         battery.isCharging &&
-        //         battery.batteryPercentage >= chargingPercentThreshold) {
-        //       vehicle.requestChargingStop();
-        //     }
-        //   }
-        // }
       } catch (e) {
         return Future.value(false);
       }
@@ -88,9 +64,9 @@ class BackgroundService {
           username: loginSettings.username,
           password: loginSettings.password,
           keepAlive: generalSettings.keepAlive,
-          useChargingPercentThreshold:
-              generalSettings.useChargingPercentThreshold,
-          chargingPercentThreshold: generalSettings.chargingPercentThreshold,
+          // useChargingPercentThreshold:
+          //     generalSettings.useChargingPercentThreshold,
+          // chargingPercentThreshold: generalSettings.chargingPercentThreshold,
         },
       );
     }
