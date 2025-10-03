@@ -147,85 +147,86 @@ class _ClimateControlPageState extends State<ClimateControlPage> {
     return SafeAreaScaffold(
       appBar: AppBar(title: Text("Climate Control")),
       body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Column(
-              children: [
-                Text(
-                  'Tap to engage',
-                  style: TextStyle(
-                    fontSize: 12,
-                    color: Theme.of(context).disabledColor,
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              Spacer(),
+              Column(
+                children: [
+                  Text(
+                    'Tap to engage',
+                    style: TextStyle(
+                      fontSize: 12,
+                      color: Theme.of(context).disabledColor,
+                    ),
                   ),
-                ),
-                IconButton(
-                  icon: ImageIcon(AssetImage('images/aircondition.png')),
-                  iconSize: 180.0,
-                  color: _climateControlOn
-                      ? Util.primaryColor(context)
-                      : Theme.of(context).disabledColor,
-                  onPressed: _climateControlToggle,
-                ),
-                Text(
-                  'Climate Control is ${_climateControlIsReady
-                      ? _climateControlOn
-                            ? 'on'
-                            : 'off'
-                      : 'updating...'}',
-                  style: TextStyle(fontSize: 18.0),
-                ),
-              ],
-            ),
-            Column(
-              children: [
-                IconButton(
-                  icon: Icon(Icons.access_time),
-                  iconSize: 180.0,
-                  color: _climateControlScheduled != null
-                      ? Util.primaryColor(context)
-                      : Theme.of(context).disabledColor,
-                  onPressed: _climateControlSchedule,
-                ),
-                Text(
-                  _climateControlScheduled != null
-                      ? 'At ${DateFormat('HH:mm \'this\' EEEE').format(_climateControlScheduled!)}'
-                      : 'Not scheduled',
-                  style: TextStyle(fontSize: 18.0),
-                ),
-              ],
-            ),
-            Column(
-              children: [
-                SizedBox(height: 30),
-                Text(
-                  'Cabin temperature is ${_cabinTemperature != null ? '${_cabinTemperature!.floor()}°C / ${_toFahrenheit(_cabinTemperature!.floor())}°F' : 'updating...'}',
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    Slider(
-                      label: 'Desired cabin temperature',
-                      value: _sliderDesiredCabinTemperature,
-                      divisions: 10,
-                      min: 16,
-                      max: 26,
-                      onChanged: !_climateControlOn
-                          ? (value) {
-                              setState(() {
-                                _sliderDesiredCabinTemperature = value;
-                              });
-                            }
-                          : null,
-                    ),
-                    Text(
-                      '${_sliderDesiredCabinTemperature.floor()}°C / ${_toFahrenheit(_sliderDesiredCabinTemperature.floor())}°F',
-                    ),
-                  ],
-                ),
-              ],
-            ),
-          ],
+                  IconButton(
+                    icon: ImageIcon(AssetImage('images/aircondition.png')),
+                    iconSize: 180.0,
+                    color: _climateControlOn
+                        ? Util.primaryColor(context)
+                        : Theme.of(context).disabledColor,
+                    onPressed: _climateControlToggle,
+                  ),
+                  Text(
+                    'Climate Control is ${_climateControlIsReady
+                        ? _climateControlOn
+                              ? 'on'
+                              : 'off'
+                        : 'updating...'}',
+                    style: TextStyle(fontSize: 18.0),
+                  ),
+                ],
+              ),
+              Column(
+                children: [
+                  IconButton(
+                    icon: Icon(Icons.access_time),
+                    iconSize: 180.0,
+                    color: _climateControlScheduled != null
+                        ? Util.primaryColor(context)
+                        : Theme.of(context).disabledColor,
+                    onPressed: _climateControlSchedule,
+                  ),
+                  Text(
+                    _climateControlScheduled != null
+                        ? 'At ${DateFormat('HH:mm \'this\' EEEE').format(_climateControlScheduled!)}'
+                        : 'Not scheduled',
+                    style: TextStyle(fontSize: 18.0),
+                  ),
+                ],
+              ),
+              Spacer(),
+              Column(
+                children: [
+                  Text(
+                    '${_sliderDesiredCabinTemperature.floor()}°C / ${_toFahrenheit(_sliderDesiredCabinTemperature.floor())}°F',
+                    style: TextStyle(fontSize: 20),
+                  ),
+                  Text(
+                    'Cabin temperature is ${_cabinTemperature != null ? '${_cabinTemperature!.floor()}°C / ${_toFahrenheit(_cabinTemperature!.floor())}°F' : 'updating...'}',
+                  ),
+                  Slider(
+                    label: 'Desired cabin temperature',
+                    value: _sliderDesiredCabinTemperature,
+                    padding: EdgeInsets.all(10),
+                    divisions: 10,
+                    min: 16,
+                    max: 26,
+                    onChanged: !_climateControlOn
+                        ? (value) {
+                            setState(() {
+                              _sliderDesiredCabinTemperature = value;
+                            });
+                          }
+                        : null,
+                  ),
+                ],
+              ),
+            ],
+          ),
         ),
       ),
     );

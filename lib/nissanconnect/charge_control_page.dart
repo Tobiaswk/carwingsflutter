@@ -76,11 +76,10 @@ class _ChargeControlPageState extends State<ChargeControlPage> {
   Widget build(BuildContext context) {
     return SafeAreaScaffold(
       appBar: AppBar(title: Text("Charging")),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
+      body: Center(
         child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            Spacer(),
             Text(
               'Tap to engage',
               style: TextStyle(
@@ -111,54 +110,6 @@ class _ChargeControlPageState extends State<ChargeControlPage> {
                         : 'not connected'
                   : 'updating...'}',
             ),
-            Spacer(),
-            // if (!_hasKeepAlive)
-            //   Text(
-            //     'You need to activate the background service in preferences to use charging threshold',
-            //     textAlign: TextAlign.center,
-            //   ),
-            // AbsorbPointer(
-            //   absorbing: !_hasKeepAlive,
-            //   child: Opacity(
-            //     opacity: _hasKeepAlive ? 1 : .5,
-            //     child: Column(
-            //       children: [
-            //         Row(
-            //           mainAxisAlignment: MainAxisAlignment.center,
-            //           children: [
-            //             Text(
-            //               'Charging threshold',
-            //               style: TextStyle(fontSize: 18.0),
-            //             ),
-            //             Padding(padding: EdgeInsetsGeometry.all(8)),
-            //             Text(
-            //               '${_chargingThreshold}%',
-            //               style: TextStyle(fontSize: 25.0),
-            //             ),
-            //           ],
-            //         ),
-            //         Slider(
-            //           value: _chargingThreshold.toDouble(),
-            //           padding: EdgeInsets.symmetric(horizontal: 16),
-            //           divisions: 10,
-            //           min: 0,
-            //           max: 100,
-            //           onChanged: (value) {
-            //             setState(() {
-            //               _chargingThreshold = value.toInt();
-
-            //               PreferencesManager.setGeneralSettings(
-            //                 (settings) =>
-            //                     settings
-            //                       ..chargingPercentThreshold = value.toInt(),
-            //               );
-            //             });
-            //           },
-            //         ),
-            //       ],
-            //     ),
-            //   ),
-            // ),
           ],
         ),
       ),
