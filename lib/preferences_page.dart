@@ -9,8 +9,6 @@ import 'package:flutter/material.dart';
 import 'preferences_types.dart';
 import 'time_zones.dart';
 
-var preferencesManager = PreferencesManager;
-
 class PreferencesPage extends StatefulWidget {
   const PreferencesPage(this.configuration, this.updater, this.session);
 
