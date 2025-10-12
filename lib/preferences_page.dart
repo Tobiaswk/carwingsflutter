@@ -240,8 +240,9 @@ class _PreferencesPageState extends State<PreferencesPage> {
       Visibility(
         visible: widget.session.isWorld(),
         child: ListTile(
-          title: Text(
-            'Keep vehicle(s) alive (experimental; use with CAUTION; will keep your vehicle(s) from sleeping through polling data at 30 minute intervals)',
+          title: Text('Keep vehicle(s) alive '),
+          subtitle: Text(
+            'Experimental; use with CAUTION; will keep your vehicle(s) from sleeping through polling data at 30 minute intervals',
           ),
           trailing: Switch(
             value: _generalSettings.keepAlive,
