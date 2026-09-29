@@ -225,19 +225,19 @@ class _LoginPageState extends State<LoginPage> {
                     obscureText: true,
                   ),
                   Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.end,
                     children: <Widget>[
-                      Text('Region', style: TextStyle(color: Colors.white)),
-                      Padding(padding: const EdgeInsets.all(10.0)),
-                      DropdownButton<CarwingsRegion>(
-                        value: _regionSelected,
-                        items: _buildRegionAndGetDropDownMenuItems(),
-                        onChanged: (region) {
-                          setState(() {
-                            _regionSelected = region ?? CarwingsRegion.World;
-                          });
-                        },
-                      ),
+                      // Text('Region', style: TextStyle(color: Colors.white)),
+                      // Padding(padding: const EdgeInsets.all(10.0)),
+                      // DropdownButton<CarwingsRegion>(
+                      //   value: _regionSelected,
+                      //   items: _buildRegionAndGetDropDownMenuItems(),
+                      //   onChanged: (region) {
+                      //     setState(() {
+                      //       _regionSelected = region ?? CarwingsRegion.World;
+                      //     });
+                      //   },
+                      // ),
                       TextButton.icon(
                         onPressed: _openHelpPage,
                         icon: Icon(Icons.help, color: Colors.white),
