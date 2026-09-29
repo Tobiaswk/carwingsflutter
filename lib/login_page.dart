@@ -34,7 +34,6 @@ class _LoginPageState extends State<LoginPage> {
       if (login != null) {
         _usernameTextController.text = login.username;
         _passwordTextController.text = login.password;
-        _regionSelected = login.region;
 
         setState(() {
           _rememberLoginSettings = true;
