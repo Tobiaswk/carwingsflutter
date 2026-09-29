@@ -1,4 +1,4 @@
-image: ghcr.io/cirruslabs/flutter:3.47.5
+image: ghcr.io/gmeligio/flutter-android:3.47.5
 
 stages:
     - build
