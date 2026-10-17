@@ -11,7 +11,7 @@ if (keystorePropertiesFile.exists()) {
 }
 
 android {
-    compileSdkVersion 35
+    compileSdkVersion 36
 
     lintOptions {
         disable 'InvalidPackage'
@@ -23,10 +23,10 @@ android {
         applicationId "dk.kjeldsen.carwingsflutter"
         namespace("dk.kjeldsen.carwingsflutter")
         minSdkVersion flutter.minSdkVersion
-        targetSdkVersion 35
-        versionCode 219
+        targetSdkVersion 36
+        versionCode 224
 
-        versionName "2.5.0"
+        versionName "2.6.1"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 

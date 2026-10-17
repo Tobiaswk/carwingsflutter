@@ -21,8 +21,6 @@ class MyApp extends StatefulWidget {
 }
 
 class MyAppState extends State<MyApp> {
-  var preferencesManager = PreferencesManager;
-
   Session _session = Session();
 
   MyAppState() {

@@ -19,7 +19,7 @@ dependencies:
   dartnissanconnect:
     git:
       url: https://gitlab.com/tobiaswkjeldsen/dartnissanconnect.git
-      ref: 3bb871e52cc55723a038ce6b1c60da1af6c1c0a8
+      ref: 5e34e8c573d34dc4d3d48e63052f015f99080d2d
 
 
 dev_dependencies:
