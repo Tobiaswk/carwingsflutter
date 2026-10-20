@@ -58,7 +58,7 @@ class BackgroundService {
       Workmanager().registerPeriodicTask(
         '1',
         'backgroundJob',
-        frequency: Duration(seconds: 30),
+        frequency: Duration(minutes: 30),
         inputData: {
           isWorld: loginSettings.region == CarwingsRegion.World,
           username: loginSettings.username,
